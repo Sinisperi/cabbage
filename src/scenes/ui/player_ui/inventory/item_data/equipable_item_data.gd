@@ -1,7 +1,7 @@
 class_name EquipableItemData extends ItemData
 
 
-enum EquipSlot
+enum EquipmentType
 {
 	HELMET,
 	SHIRT,
@@ -12,5 +12,5 @@ enum EquipSlot
 	TRINKET
 }
 
-@export var equip_slot: EquipSlot
+@export var equip_slot: EquipmentType
 @export var stats: ItemStats
