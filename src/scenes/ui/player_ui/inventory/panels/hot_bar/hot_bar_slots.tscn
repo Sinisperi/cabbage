@@ -44,6 +44,8 @@ layout_mode = 2
 
 [node name="ItemSelectorContainer" type="Control" parent="." unique_id=1345210598]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
 [node name="ItemSelector" type="TextureRect" parent="ItemSelectorContainer" unique_id=848999304]
 unique_name_in_owner = true

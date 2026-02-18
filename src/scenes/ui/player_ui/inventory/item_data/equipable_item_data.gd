@@ -3,7 +3,10 @@ class_name EquipableItemData extends ItemData
 
 enum EquipSlot
 {
-	ARMOR,
+	HELMET,
+	SHIRT,
+	PANTS,
+	BOOTS,
 	BACKPACK,
 	POUCH,
 	TRINKET
