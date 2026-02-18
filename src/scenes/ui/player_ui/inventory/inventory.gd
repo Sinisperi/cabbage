@@ -3,13 +3,13 @@ class_name Inventory extends Control
 @export_category("Inventory")
 @export var inventory_size: int = 18
 @export var inventory_items: Array[ItemData]
-@export var inventory_grid: InventoryGrid
+@export var inventory_grid: SlotContainer
 
 
 @export_category("Hot Bar")
 @export var hot_bar_size: int = 4
 @export var hot_bar_items: Array[ItemData]
-@export var hot_bar_slots: HotBarSlots
+@export var hot_bar_slots: SlotContainer
 
 @onready var inventory_container: HBoxContainer = $VBoxContainer/InventoryContainer
 
