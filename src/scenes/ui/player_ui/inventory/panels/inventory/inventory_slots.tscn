@@ -23,6 +23,7 @@ theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 6
 columns = 4
 script = ExtResource("1_y6wcb")
+inventory_slot_scene = ExtResource("2_3cqec")
 
 [node name="InventorySlot" parent="MarginContainer/InventoryGrid" unique_id=2123827407 instance=ExtResource("2_3cqec")]
 layout_mode = 2

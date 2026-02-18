@@ -2,11 +2,19 @@ class_name InventoryGrid extends GridContainer
 
 signal item_picked(index: int)
 signal item_placed(index: int, item_data: ItemData)
+enum InventoryType
+{
+	MAIN,
+	HOT_BAR
+}
+@export var inventory_type: InventoryType
 @export var inventory_slot_scene: PackedScene
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	if inventory_type == InventoryType.MAIN:
+		EventBus.inventory.inventory_expantion_requested.connect(_expand)
+	elif inventory_type == InventoryType.HOT_BAR:
+		EventBus.inventory.hot_bar_expantion_requested.connect(_expand)
 
 
 func init_grid() -> void:
@@ -24,7 +32,7 @@ func place_items(items: Array[ItemData]) -> void:
 		slot.slot_index = i
 
 
-func expand(amount: int) -> void:
+func _expand(amount: int) -> void:
 	@warning_ignore("integer_division")
 	var items_per_column: int = get_child_count() / columns
 	columns += amount
