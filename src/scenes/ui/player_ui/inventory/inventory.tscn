@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot/inventory_slot.tscn" id="1_7ljad"]
 [ext_resource type="PackedScene" uid="uid://14vjj0jwgt72" path="res://src/scenes/ui/player_ui/inventory/inventory_grid/inventory_grid.tscn" id="3_7oh8j"]
 [ext_resource type="PackedScene" uid="uid://ds0vtyffpuskc" path="res://src/scenes/ui/player_ui/inventory/panels/inventory/inventory_slots.tscn" id="4_jnh7g"]
+[ext_resource type="PackedScene" uid="uid://bo3dwjipywpwi" path="res://src/scenes/ui/player_ui/inventory/panels/equipment/equipment_slots.tscn" id="5_2o2pl"]
 [ext_resource type="PackedScene" uid="uid://btoek6whsxq18" path="res://src/scenes/ui/player_ui/inventory/panels/hot_bar/hot_bar_slots.tscn" id="5_jnh7g"]
 
 [node name="Inventory" type="Control" unique_id=1572195943 node_paths=PackedStringArray("inventory_grid", "hot_bar_slots") groups=["inventory"]]
@@ -74,41 +75,7 @@ size_flags_horizontal = 4
 [node name="InventorySlots" parent="VBoxContainer/InventoryContainer" unique_id=491254066 instance=ExtResource("4_jnh7g")]
 layout_mode = 2
 
-[node name="EquipmentSlots" type="PanelContainer" parent="VBoxContainer/InventoryContainer" unique_id=1492190321]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/InventoryContainer/EquipmentSlots" unique_id=991898724]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="EquipmentGrid" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer" unique_id=1087982367 instance=ExtResource("3_7oh8j")]
-layout_mode = 2
-
-[node name="InventorySlot" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=1764529522 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot2" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=1924733497 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot3" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=1381904828 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot4" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=1023851432 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot5" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=665785445 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot6" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=1126048668 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot7" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=1212107338 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot8" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=1083700707 instance=ExtResource("1_7ljad")]
+[node name="EquipmentSlots" parent="VBoxContainer/InventoryContainer" unique_id=2045629739 instance=ExtResource("5_2o2pl")]
 layout_mode = 2
 
 [node name="HotbarSlots" parent="VBoxContainer" unique_id=1751841294 instance=ExtResource("5_jnh7g")]

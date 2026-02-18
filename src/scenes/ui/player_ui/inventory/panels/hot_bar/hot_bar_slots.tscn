@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dlj0ux1uauk8x" path="res://src/scenes/ui/player_ui/inventory/panels/hot_bar/hot_bar_grid.gd" id="1_e0nvv"]
 [ext_resource type="Script" uid="uid://c0r1jsxjf5xei" path="res://src/scenes/ui/player_ui/inventory/panels/slots_panel.gd" id="1_ervq6"]
 [ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot/inventory_slot.tscn" id="2_ervq6"]
-[ext_resource type="Texture2D" uid="uid://b7w4nibovho6d" path="res://assets/icons/debug/selected_item.png" id="3_pkvep"]
+[ext_resource type="Texture2D" uid="uid://b7w4nibovho6d" path="res://assets/icons/inventory/selected_item.png" id="3_pkvep"]
 
 [node name="HotBarSlots" type="PanelContainer" unique_id=1751841294 node_paths=PackedStringArray("inventory_grid")]
 size_flags_horizontal = 4
@@ -42,12 +42,16 @@ layout_mode = 2
 [node name="InventorySlot4" parent="MarginContainer/HotBarGrid" unique_id=1420702767 instance=ExtResource("2_ervq6")]
 layout_mode = 2
 
-[node name="ItemSelector" type="TextureRect" parent="MarginContainer" unique_id=848999304]
+[node name="ItemSelectorContainer" type="Control" parent="." unique_id=1345210598]
+layout_mode = 2
+
+[node name="ItemSelector" type="TextureRect" parent="ItemSelectorContainer" unique_id=848999304]
 unique_name_in_owner = true
 modulate = Color(18.892157, 18.892157, 18.892157, 1)
-top_level = true
 custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2

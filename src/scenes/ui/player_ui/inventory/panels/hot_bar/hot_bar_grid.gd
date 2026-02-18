@@ -11,7 +11,7 @@ const SCROLL_INCREMENT: float = 1.0
 var selected_item_index: int = 0
 var scroll_accumulator: float = 0.0
 
-
+		
 func _ready() -> void:
 	super._ready()
 	await get_tree().process_frame
@@ -40,6 +40,7 @@ func _change_selected_slot() -> void:
 
 
 func _set_slot_selected(index: int, is_selected: bool, animate: bool = true) -> void:
+	if !item_selector: return
 	var slot: InventorySlot = get_child(index)
 	slot.is_hot_bar_selected = is_selected
 	

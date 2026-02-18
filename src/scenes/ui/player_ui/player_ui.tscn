@@ -3,7 +3,7 @@
 [ext_resource type="Shader" uid="uid://dp4dbag5r8put" path="res://src/scenes/player/reticle.gdshader" id="1_jbrfv"]
 [ext_resource type="Script" uid="uid://dh0bi06ixtrov" path="res://src/scenes/ui/player_ui/player_ui.gd" id="1_w5xlc"]
 [ext_resource type="PackedScene" uid="uid://byff31anloyng" path="res://src/scenes/ui/player_ui/inventory/inventory.tscn" id="2_y6ggm"]
-[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data.gd" id="4_pohmq"]
+[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="4_pohmq"]
 [ext_resource type="Texture2D" uid="uid://daklekxe4jsvh" path="res://assets/icons/debug/blue_item.png" id="5_0s6rk"]
 [ext_resource type="Texture2D" uid="uid://cfm8scwu8whpc" path="res://assets/icons/debug/green_item.png" id="6_tajlg"]
 [ext_resource type="Texture2D" uid="uid://b5e4f0pcwa4hl" path="res://assets/icons/debug/magenta_item.png" id="7_asnu3"]
