@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://d0b3fdfc26ir6"]
+
+[ext_resource type="Script" uid="uid://bu1ssahl7fr64" path="res://src/scenes/ui/main_menu/main_menu.gd" id="1_gn1n2"]
+
+[node name="MainMenu" type="Control" unique_id=1100850197]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gn1n2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2099029911]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1297389824]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 80
+text = "Main Menu"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1013404501]
+custom_minimum_size = Vector2(164.445, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="LoadGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1338017537]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load Game"
+
+[node name="NewGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1701401782]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New Game"
+
+[node name="PlayOnlineButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=799093449]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Play Online"

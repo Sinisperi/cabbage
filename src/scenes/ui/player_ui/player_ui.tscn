@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://upma2w865lrs"]
+
+[ext_resource type="Shader" uid="uid://dp4dbag5r8put" path="res://src/scenes/player/reticle.gdshader" id="1_jbrfv"]
+[ext_resource type="Script" uid="uid://dh0bi06ixtrov" path="res://src/scenes/ui/player_ui/player_ui.gd" id="1_w5xlc"]
+[ext_resource type="PackedScene" uid="uid://byff31anloyng" path="res://src/scenes/ui/player_ui/inventory/inventory.tscn" id="2_y6ggm"]
+[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data.gd" id="4_pohmq"]
+[ext_resource type="Texture2D" uid="uid://daklekxe4jsvh" path="res://assets/icons/debug/blue_item.png" id="5_0s6rk"]
+[ext_resource type="Texture2D" uid="uid://cfm8scwu8whpc" path="res://assets/icons/debug/green_item.png" id="6_tajlg"]
+[ext_resource type="Texture2D" uid="uid://b5e4f0pcwa4hl" path="res://assets/icons/debug/magenta_item.png" id="7_asnu3"]
+[ext_resource type="Texture2D" uid="uid://dhsj721gb8xxg" path="res://assets/icons/debug/red_item.png" id="8_asnu3"]
+[ext_resource type="Texture2D" uid="uid://bgsmt6tipdx13" path="res://assets/icons/debug/yellow_item.png" id="9_thr0w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7vxwc"]
+shader = ExtResource("1_jbrfv")
+
+[sub_resource type="Gradient" id="Gradient_w8ig4"]
+offsets = PackedFloat32Array(0.18644068, 0.24152543, 0.30932203, 0.37711865)
+colors = PackedColorArray(1, 1, 1, 0.3372549, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mc3vd"]
+gradient = SubResource("Gradient_w8ig4")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2991453, 0.41452992)
+
+[sub_resource type="Resource" id="Resource_thr0w"]
+script = ExtResource("4_pohmq")
+item_name = "Blue Item"
+texture = ExtResource("5_0s6rk")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+
+[sub_resource type="Resource" id="Resource_6fjdl"]
+script = ExtResource("4_pohmq")
+item_name = "Green Item"
+texture = ExtResource("6_tajlg")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+
+[sub_resource type="Resource" id="Resource_tk685"]
+script = ExtResource("4_pohmq")
+item_name = "Magenta Item"
+texture = ExtResource("7_asnu3")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+
+[sub_resource type="Resource" id="Resource_2h2tr"]
+script = ExtResource("4_pohmq")
+item_name = "Red Item"
+texture = ExtResource("8_asnu3")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+
+[sub_resource type="Resource" id="Resource_2rm45"]
+script = ExtResource("4_pohmq")
+item_name = "Yellow Item"
+texture = ExtResource("9_thr0w")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+
+[node name="PlayerUI" type="CanvasLayer" unique_id=1267816161]
+script = ExtResource("1_w5xlc")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1735482099]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HUD" type="Control" parent="MarginContainer" unique_id=1376609576]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HUD" unique_id=1636663799]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Reticle" type="TextureRect" parent="MarginContainer/HUD/CenterContainer" unique_id=1641562092]
+material = SubResource("ShaderMaterial_7vxwc")
+layout_mode = 2
+texture = SubResource("GradientTexture2D_mc3vd")
+
+[node name="Inventory" parent="MarginContainer" unique_id=1572195943 instance=ExtResource("2_y6ggm")]
+unique_name_in_owner = true
+layout_mode = 2
+inventory_items = Array[ExtResource("4_pohmq")]([SubResource("Resource_thr0w"), SubResource("Resource_6fjdl"), SubResource("Resource_tk685"), SubResource("Resource_2h2tr")])
+hot_bar_items = Array[ExtResource("4_pohmq")]([SubResource("Resource_2rm45")])
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Inventory" unique_id=987315588]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -133.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="MarginContainer/Inventory/VBoxContainer2" unique_id=1942739490]
+layout_mode = 2
+text = "Equipped
+item"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/Inventory/VBoxContainer2" unique_id=1357704724]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2

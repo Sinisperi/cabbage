@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cb5vv6xbyo5m7"]
+
+[ext_resource type="Texture2D" uid="uid://8sajjwuo0svm" path="res://icon.svg" id="1_q57pp"]
+[ext_resource type="Script" uid="uid://dfc5n1fx6iuv8" path="res://src/scenes/ui/player_ui/inventory/draggable_item.gd" id="2_83mrc"]
+
+[node name="DraggableItem" type="TextureRect" unique_id=1152516106 groups=["draggable_item"]]
+custom_minimum_size = Vector2(80, 80)
+offset_right = 80.0
+offset_bottom = 80.0
+mouse_filter = 2
+texture = ExtResource("1_q57pp")
+expand_mode = 1
+script = ExtResource("2_83mrc")

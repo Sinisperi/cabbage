@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://bs3374vl80v8o"]
+
+[ext_resource type="PackedScene" uid="uid://7x3a74iiui7w" path="res://src/scenes/player/player.tscn" id="1_m76yy"]
+[ext_resource type="Script" uid="uid://fs6theacviny" path="res://src/scenes/world/world.gd" id="1_q3of6"]
+[ext_resource type="Texture2D" uid="uid://d0o2is0vg17xp" path="res://assets/kenney_prototype_textures/dark/texture_04.png" id="2_iaymg"]
+[ext_resource type="Script" uid="uid://b2jm6ju4yu4wg" path="res://src/scenes/world/player_spawner.gd" id="3_cacf4"]
+[ext_resource type="Texture2D" uid="uid://81ejynb6jof5" path="res://assets/kenney_prototype_textures/orange/texture_05.png" id="3_m1gqc"]
+[ext_resource type="PackedScene" uid="uid://bxqj4mdvakxia" path="res://src/scenes/world/spawn_area/spawn_area.tscn" id="4_kccwn"]
+[ext_resource type="PackedScene" uid="uid://upma2w865lrs" path="res://src/scenes/ui/player_ui/player_ui.tscn" id="7_m1gqc"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e5uuo"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_nnsk1"]
+sky_material = SubResource("ProceduralSkyMaterial_e5uuo")
+
+[sub_resource type="Environment" id="Environment_rwgxs"]
+background_mode = 2
+sky = SubResource("Sky_nnsk1")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gd3mq"]
+albedo_texture = ExtResource("2_iaymg")
+uv1_triplanar = true
+uv2_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iwh12"]
+albedo_texture = ExtResource("3_m1gqc")
+uv1_triplanar = true
+
+[node name="World" type="Node3D" unique_id=311237112 node_paths=PackedStringArray("player_spawner", "player_spawn_area")]
+script = ExtResource("1_q3of6")
+player_spawner = NodePath("MultiplayerSpawner")
+player_spawn_area = NodePath("SpawnArea")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1932386333]
+environment = SubResource("Environment_rwgxs")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1430375179]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 19.355139, 0)
+shadow_enabled = true
+
+[node name="Ground" type="CSGBox3D" parent="." unique_id=479712357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0038228035, -0.023383617, -0.043051004)
+use_collision = true
+size = Vector3(30, 0.09, 30)
+material = SubResource("StandardMaterial3D_gd3mq")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1216317866]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5053394, 0.54044056, -5.532069)
+material = SubResource("StandardMaterial3D_iwh12")
+
+[node name="SpawnArea" parent="." unique_id=1103865526 instance=ExtResource("4_kccwn")]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=795910366]
+_spawnable_scenes = PackedStringArray("uid://7x3a74iiui7w")
+spawn_path = NodePath("../Players")
+script = ExtResource("3_cacf4")
+player_scene = ExtResource("1_m76yy")
+
+[node name="Players" type="Node3D" parent="." unique_id=233463965]
+
+[node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]

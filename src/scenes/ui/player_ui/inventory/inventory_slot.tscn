@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://cq8j4ayec7n5f"]
+
+[ext_resource type="Script" uid="uid://xis2jly422yp" path="res://src/scenes/ui/player_ui/inventory/inventory_slot.gd" id="1_4tnw6"]
+[ext_resource type="PackedScene" uid="uid://cb5vv6xbyo5m7" path="res://src/scenes/ui/player_ui/inventory/draggable_item.tscn" id="2_iuln7"]
+
+[node name="InventorySlot" type="ColorRect" unique_id=2123827407]
+custom_minimum_size = Vector2(86, 86)
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.096204914, 0.096204676, 0.09620475, 1)
+script = ExtResource("1_4tnw6")
+draggable_item_scene = ExtResource("2_iuln7")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1251468183]
+custom_minimum_size = Vector2(82, 82)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -43.0
+offset_right = 43.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2665752, 0.26657522, 0.26657513, 1)
+
+[node name="ItemDisplay" type="TextureRect" parent="." unique_id=1939250955]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
