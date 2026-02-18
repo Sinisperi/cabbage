@@ -1,6 +1,10 @@
 extends Node
 
-signal mouse_mode_changed(value: bool)
+var ui: UISignals = UISignals.new()
+var inventory: InventorySignals = InventorySignals.new()
 
+class UISignals:
+	signal mouse_mode_changed(value: bool)
 
-signal item_equipped(item_data: ItemData)
+class InventorySignals:
+	signal item_equipped(item_data: ItemData)

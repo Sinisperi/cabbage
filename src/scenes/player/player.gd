@@ -36,7 +36,7 @@ func _ready() -> void:
 	else:
 		camera_3d.make_current()
 		Globals.player = self
-		EventBus.mouse_mode_changed.connect(_on_mouse_mode_changed)
+		EventBus.ui.mouse_mode_changed.connect(_on_mouse_mode_changed)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:

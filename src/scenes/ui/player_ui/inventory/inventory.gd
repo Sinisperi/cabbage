@@ -44,7 +44,7 @@ func _ready() -> void:
 	
 	
 	_on_item_equipped(hot_bar_slots.get_selected_item())
-	EventBus.item_equipped.connect(_on_item_equipped)
+	EventBus.inventory.item_equipped.connect(_on_item_equipped)
 
 func _remove_item(from: Array[ItemData], index: int) -> void:
 	from[index] = null

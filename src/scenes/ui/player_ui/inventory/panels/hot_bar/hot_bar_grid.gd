@@ -53,7 +53,7 @@ func _set_slot_selected(index: int, is_selected: bool, animate: bool = true) -> 
 		
 		
 	if is_selected:
-		EventBus.item_equipped.emit(get_child(selected_item_index).slot_data)
+		EventBus.inventory.item_equipped.emit(get_child(selected_item_index).slot_data)
 
 
 func get_selected_item() -> ItemData:

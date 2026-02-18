@@ -41,7 +41,7 @@ func _handle_pick_item() -> void:
 	slot_data = null
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.item_equipped.emit(slot_data)
+		EventBus.inventory.item_equipped.emit(slot_data)
 	
 	
 func _handle_place_item(draggable_item: DraggableItem) -> void:
@@ -50,7 +50,7 @@ func _handle_place_item(draggable_item: DraggableItem) -> void:
 	item_placed.emit(slot_index, slot_data)
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.item_equipped.emit(slot_data)
+		EventBus.inventory.item_equipped.emit(slot_data)
 
 func _handle_swap_item(draggable_item: DraggableItem) -> void:
 	var temp: ItemData = slot_data.duplicate()
@@ -60,13 +60,13 @@ func _handle_swap_item(draggable_item: DraggableItem) -> void:
 	item_placed.emit(slot_index, slot_data)
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.item_equipped.emit(slot_data)
+		EventBus.inventory.item_equipped.emit(slot_data)
 
 func set_item(item_data: ItemData) -> void:
 	slot_data = item_data
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.item_equipped.emit(slot_data)
+		EventBus.inventory.item_equipped.emit(slot_data)
 		
 func update_item_display() -> void:
 	if slot_data:
