@@ -3,13 +3,13 @@ class_name Inventory extends Control
 @export_category("Inventory")
 @export var inventory_size: int = 18
 @export var inventory_items: Array[ItemData]
-@export var inventory_grid: SlotContainer
+@export var inventory_grid: SlotsPanel
 
 
 @export_category("Hot Bar")
 @export var hot_bar_size: int = 4
 @export var hot_bar_items: Array[ItemData]
-@export var hot_bar_slots: SlotContainer
+@export var hot_bar_slots: SlotsPanel
 
 @onready var inventory_container: HBoxContainer = $VBoxContainer/InventoryContainer
 
@@ -17,7 +17,7 @@ class_name Inventory extends Control
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_pressed():
-			var draggable_item = get_tree().get_first_node_in_group("draggable_item")
+			var draggable_item: DraggableItem = get_tree().get_first_node_in_group("draggable_item")
 			if draggable_item:
 				## TODO Spawn items on the ground ( throw them out with physics etc )
 				print("dropped ", draggable_item.data.item_name)
@@ -55,7 +55,7 @@ func _add_item(from: Array[ItemData], index: int, item_data: ItemData) -> void:
 	
 
 func _initialize_inventory(inventory: Array[ItemData], inv_size: int) -> Array[ItemData]:
-	var empty_slots = inv_size - inventory.size()
+	var empty_slots: int = inv_size - inventory.size()
 	var new_array: Array[ItemData] = []
 	new_array.resize(empty_slots)
 	new_array.fill(null)

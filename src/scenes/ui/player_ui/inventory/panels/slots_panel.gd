@@ -1,4 +1,4 @@
-class_name SlotContainer extends PanelContainer
+class_name SlotsPanel extends PanelContainer
 
 
 @export var inventory_grid: InventoryGrid

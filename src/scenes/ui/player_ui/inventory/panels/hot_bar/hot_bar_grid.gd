@@ -31,7 +31,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _change_selected_slot() -> void:
 	if abs(scroll_accumulator) >= SCROLL_THRESHOLD:
-		var amount = int(scroll_accumulator / SCROLL_THRESHOLD)
+		var amount: int = int(scroll_accumulator / SCROLL_THRESHOLD)
 		scroll_accumulator -= amount * SCROLL_THRESHOLD
 		
 		_set_slot_selected(selected_item_index, false)
@@ -44,9 +44,9 @@ func _set_slot_selected(index: int, is_selected: bool, animate: bool = true) -> 
 	slot.is_hot_bar_selected = is_selected
 	
 	
-	var target_position = (slot.global_position + (slot.size / 2.0)) - (item_selector.size / 2.0)
+	var target_position: Vector2 = (slot.global_position + (slot.size / 2.0)) - (item_selector.size / 2.0)
 	if animate:
-		var tween = create_tween().set_ease(Tween.EASE_IN)
+		var tween: Tween = create_tween().set_ease(Tween.EASE_IN)
 		tween.tween_property(item_selector, "global_position", target_position, 0.07).set_trans(Tween.TRANS_CUBIC)
 	else:
 		item_selector.global_position = target_position

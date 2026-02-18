@@ -21,7 +21,7 @@ func _ready() -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_pressed() && event.button_index == MOUSE_BUTTON_LEFT:
-			var draggable_item = get_tree().get_first_node_in_group("draggable_item")
+			var draggable_item: DraggableItem = get_tree().get_first_node_in_group("draggable_item")
 			if slot_data:
 				if !draggable_item:
 					_handle_pick_item()
@@ -53,7 +53,7 @@ func _handle_place_item(draggable_item: DraggableItem) -> void:
 		EventBus.item_equipped.emit(slot_data)
 
 func _handle_swap_item(draggable_item: DraggableItem) -> void:
-	var temp = slot_data.duplicate()
+	var temp: ItemData = slot_data.duplicate()
 	slot_data = draggable_item.data.duplicate()
 	draggable_item.data = temp
 	draggable_item.update()

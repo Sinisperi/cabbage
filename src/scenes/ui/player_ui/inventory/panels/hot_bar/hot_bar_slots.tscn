@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://btoek6whsxq18"]
 
-[ext_resource type="Script" uid="uid://dlj0ux1uauk8x" path="res://src/scenes/ui/player_ui/inventory/hot_bar_grid.gd" id="1_e0nvv"]
-[ext_resource type="Script" uid="uid://c0r1jsxjf5xei" path="res://src/scenes/ui/player_ui/inventory/slots_container.gd" id="1_ervq6"]
-[ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot.tscn" id="2_ervq6"]
+[ext_resource type="Script" uid="uid://dlj0ux1uauk8x" path="res://src/scenes/ui/player_ui/inventory/panels/hot_bar/hot_bar_grid.gd" id="1_e0nvv"]
+[ext_resource type="Script" uid="uid://c0r1jsxjf5xei" path="res://src/scenes/ui/player_ui/inventory/panels/slots_panel.gd" id="1_ervq6"]
+[ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot/inventory_slot.tscn" id="2_ervq6"]
 [ext_resource type="Texture2D" uid="uid://b7w4nibovho6d" path="res://assets/icons/debug/selected_item.png" id="3_pkvep"]
 
 [node name="HotBarSlots" type="PanelContainer" unique_id=1751841294 node_paths=PackedStringArray("inventory_grid")]

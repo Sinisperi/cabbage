@@ -9,8 +9,8 @@ func _ready() -> void:
 @rpc("any_peer", "call_local")
 func _request_player_spawn() -> void:
 	if multiplayer.is_server():
-		var player_id = multiplayer.get_remote_sender_id()
-		var data = {
+		var player_id: int = multiplayer.get_remote_sender_id()
+		var data: Dictionary = {
 			"player_id": player_id,
 			"location": player_spawn_area.get_spawn_point()
 		}

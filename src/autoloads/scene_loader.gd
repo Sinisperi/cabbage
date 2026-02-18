@@ -14,7 +14,7 @@ func _load_scene(scene_path: String, callback: Callable) -> void:
 	if !current_scene: return
 	
 	if current_scene.scene_file_path != scene_path:
-		var new_scene = ResourceLoader.load(scene_path).instantiate()
+		var new_scene: Node = ResourceLoader.load(scene_path).instantiate()
 		get_tree().root.remove_child(current_scene)
 		current_scene.call_deferred("queue_free")
 		get_tree().root.add_child(new_scene)

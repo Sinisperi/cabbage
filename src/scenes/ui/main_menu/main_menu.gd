@@ -20,7 +20,7 @@ func _on_play_online_button_pressed() -> void:
 	NetworkManager.join_game()
 	#SceneLoader.load_scene(SceneLoader.Scene.WORLD_SCENE)
 	
-func _on_peer_connected(id: int) -> void:
+func _on_peer_connected(_id: int) -> void:
 	SceneLoader.load_scene(
 		SceneLoader.Scene.WORLD_SCENE, 
 		func(world: World) -> void: world._request_player_spawn.rpc_id(1)

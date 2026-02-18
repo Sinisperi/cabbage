@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://14vjj0jwgt72"]
+
+[ext_resource type="Script" uid="uid://b25qwtaj4h5f2" path="res://src/scenes/ui/player_ui/inventory/inventory_grid/inventory_grid.gd" id="1_migqm"]
+[ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot/inventory_slot.tscn" id="2_migqm"]
+
+[node name="InventoryGrid" type="GridContainer" unique_id=430787042]
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 2
+script = ExtResource("1_migqm")
+inventory_slot_scene = ExtResource("2_migqm")

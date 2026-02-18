@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://byff31anloyng"]
 
 [ext_resource type="Script" uid="uid://b46dk2psqakst" path="res://src/scenes/ui/player_ui/inventory/inventory.gd" id="1_1p7c6"]
-[ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot.tscn" id="1_7ljad"]
-[ext_resource type="PackedScene" uid="uid://14vjj0jwgt72" path="res://src/scenes/ui/player_ui/inventory/inventory_grid.tscn" id="3_7oh8j"]
-[ext_resource type="PackedScene" uid="uid://ds0vtyffpuskc" path="res://src/scenes/ui/player_ui/inventory/inventory_slots.tscn" id="4_jnh7g"]
-[ext_resource type="PackedScene" uid="uid://btoek6whsxq18" path="res://src/scenes/ui/player_ui/inventory/hot_bar_slots.tscn" id="5_jnh7g"]
+[ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot/inventory_slot.tscn" id="1_7ljad"]
+[ext_resource type="PackedScene" uid="uid://14vjj0jwgt72" path="res://src/scenes/ui/player_ui/inventory/inventory_grid/inventory_grid.tscn" id="3_7oh8j"]
+[ext_resource type="PackedScene" uid="uid://ds0vtyffpuskc" path="res://src/scenes/ui/player_ui/inventory/panels/inventory/inventory_slots.tscn" id="4_jnh7g"]
+[ext_resource type="PackedScene" uid="uid://btoek6whsxq18" path="res://src/scenes/ui/player_ui/inventory/panels/hot_bar/hot_bar_slots.tscn" id="5_jnh7g"]
 
 [node name="Inventory" type="Control" unique_id=1572195943 node_paths=PackedStringArray("inventory_grid", "hot_bar_slots") groups=["inventory"]]
 layout_mode = 3
@@ -35,7 +35,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 
 [node name="InventoryContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1295570085]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 43
