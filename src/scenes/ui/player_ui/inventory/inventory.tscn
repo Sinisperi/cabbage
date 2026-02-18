@@ -4,10 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot.tscn" id="1_7ljad"]
 [ext_resource type="PackedScene" uid="uid://14vjj0jwgt72" path="res://src/scenes/ui/player_ui/inventory/inventory_grid.tscn" id="3_7oh8j"]
 [ext_resource type="Script" uid="uid://b25qwtaj4h5f2" path="res://src/scenes/ui/player_ui/inventory/inventory_grid.gd" id="4_qrlic"]
-[ext_resource type="Script" uid="uid://dlj0ux1uauk8x" path="res://src/scenes/ui/player_ui/inventory/hotbar_grid.gd" id="5_jnh7g"]
-[ext_resource type="Texture2D" uid="uid://b7w4nibovho6d" path="res://assets/icons/debug/selected_item.png" id="6_2o2pl"]
+[ext_resource type="PackedScene" uid="uid://btoek6whsxq18" path="res://src/scenes/ui/player_ui/inventory/hot_bar_slots.tscn" id="5_jnh7g"]
 
-[node name="Inventory" type="Control" unique_id=1572195943 node_paths=PackedStringArray("inventory_grid", "hot_bar_grid") groups=["inventory"]]
+[node name="Inventory" type="Control" unique_id=1572195943 node_paths=PackedStringArray("inventory_grid", "hot_bar_slots") groups=["inventory"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +17,7 @@ mouse_filter = 1
 script = ExtResource("1_1p7c6")
 inventory_size = 16
 inventory_grid = NodePath("VBoxContainer/InventoryContainer/InventorySlots/MarginContainer/InventoryGrid")
-hot_bar_grid = NodePath("VBoxContainer/HotbarSlots/MarginContainer/HotbarGrid")
+hot_bar_slots = NodePath("VBoxContainer/HotbarSlots")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=653070321]
 layout_mode = 1
@@ -177,46 +176,5 @@ layout_mode = 2
 [node name="InventorySlot8" parent="VBoxContainer/InventoryContainer/EquipmentSlots/MarginContainer/EquipmentGrid" unique_id=1083700707 instance=ExtResource("1_7ljad")]
 layout_mode = 2
 
-[node name="HotbarSlots" type="PanelContainer" parent="VBoxContainer" unique_id=774056571]
+[node name="HotbarSlots" parent="VBoxContainer" unique_id=1751841294 instance=ExtResource("5_jnh7g")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 10
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HotbarSlots" unique_id=86899209]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="HotbarGrid" type="GridContainer" parent="VBoxContainer/HotbarSlots/MarginContainer" unique_id=1192954422]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/h_separation = 6
-theme_override_constants/v_separation = 6
-columns = 4
-script = ExtResource("5_jnh7g")
-metadata/_custom_type_script = "uid://b25qwtaj4h5f2"
-
-[node name="InventorySlot" parent="VBoxContainer/HotbarSlots/MarginContainer/HotbarGrid" unique_id=500866155 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot2" parent="VBoxContainer/HotbarSlots/MarginContainer/HotbarGrid" unique_id=1837595567 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot3" parent="VBoxContainer/HotbarSlots/MarginContainer/HotbarGrid" unique_id=1730913026 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="InventorySlot4" parent="VBoxContainer/HotbarSlots/MarginContainer/HotbarGrid" unique_id=978432722 instance=ExtResource("1_7ljad")]
-layout_mode = 2
-
-[node name="ItemSelector" type="TextureRect" parent="VBoxContainer/HotbarSlots/MarginContainer" unique_id=1736576855]
-unique_name_in_owner = true
-modulate = Color(18.892157, 18.892157, 18.892157, 1)
-top_level = true
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-mouse_filter = 2
-texture = ExtResource("6_2o2pl")

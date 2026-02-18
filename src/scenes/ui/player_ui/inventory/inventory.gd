@@ -9,7 +9,7 @@ class_name Inventory extends Control
 @export_category("Hot Bar")
 @export var hot_bar_size: int = 4
 @export var hot_bar_items: Array[ItemData]
-@export var hot_bar_grid: HotBar
+@export var hot_bar_slots: HotBarSlots
 
 @onready var inventory_container: HBoxContainer = $VBoxContainer/InventoryContainer
 
@@ -29,21 +29,21 @@ func _ready() -> void:
 	inventory_grid.item_placed.connect(func(index: int, item_data: ItemData) -> void:
 		_add_item(inventory_items, index, item_data))
 	
-	hot_bar_grid.item_picked.connect(func(index: int) -> void: _remove_item(hot_bar_items, index))
-	hot_bar_grid.item_placed.connect(func(index: int, item_data: ItemData) -> void:
+	hot_bar_slots.item_picked.connect(func(index: int) -> void: _remove_item(hot_bar_items, index))
+	hot_bar_slots.item_placed.connect(func(index: int, item_data: ItemData) -> void:
 		_add_item(hot_bar_items, index, item_data))
 	
 	inventory_grid.init_grid()
-	hot_bar_grid.init_grid()
+	hot_bar_slots.init_grid()
 	
 	inventory_items = _initialize_inventory(inventory_items, inventory_size)
 	hot_bar_items = _initialize_inventory(hot_bar_items, hot_bar_size)
 
 	inventory_grid.place_items(inventory_items)
-	hot_bar_grid.place_items(hot_bar_items)
+	hot_bar_slots.place_items(hot_bar_items)
 	
 	
-	_on_item_equipped(hot_bar_grid.get_selected_item())
+	_on_item_equipped(hot_bar_slots.get_selected_item())
 	EventBus.item_equipped.connect(_on_item_equipped)
 
 func _remove_item(from: Array[ItemData], index: int) -> void:

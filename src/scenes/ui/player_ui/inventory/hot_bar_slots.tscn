@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://btoek6whsxq18"]
+
+[ext_resource type="Script" uid="uid://dlj0ux1uauk8x" path="res://src/scenes/ui/player_ui/inventory/hot_bar_grid.gd" id="1_e0nvv"]
+[ext_resource type="Script" uid="uid://c0r1jsxjf5xei" path="res://src/scenes/ui/player_ui/inventory/hot_bar_slots.gd" id="1_ervq6"]
+[ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot.tscn" id="2_ervq6"]
+[ext_resource type="Texture2D" uid="uid://b7w4nibovho6d" path="res://assets/icons/debug/selected_item.png" id="3_pkvep"]
+
+[node name="HotBarSlots" type="PanelContainer" unique_id=1751841294]
+size_flags_horizontal = 4
+size_flags_vertical = 10
+script = ExtResource("1_ervq6")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1345953720]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HotBarGrid" type="GridContainer" parent="MarginContainer" unique_id=935907682]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 4
+script = ExtResource("1_e0nvv")
+metadata/_custom_type_script = "uid://b25qwtaj4h5f2"
+
+[node name="InventorySlot" parent="MarginContainer/HotBarGrid" unique_id=2123827407 instance=ExtResource("2_ervq6")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="MarginContainer/HotBarGrid" unique_id=1157447190 instance=ExtResource("2_ervq6")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="MarginContainer/HotBarGrid" unique_id=874871968 instance=ExtResource("2_ervq6")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="MarginContainer/HotBarGrid" unique_id=1420702767 instance=ExtResource("2_ervq6")]
+layout_mode = 2
+
+[node name="ItemSelector" type="TextureRect" parent="MarginContainer" unique_id=848999304]
+unique_name_in_owner = true
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+top_level = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("3_pkvep")
