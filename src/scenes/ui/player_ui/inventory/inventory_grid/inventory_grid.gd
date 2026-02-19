@@ -11,10 +11,7 @@ enum InventoryType
 @export var inventory_slot_scene: PackedScene
 
 func _ready() -> void:
-	if inventory_type == InventoryType.MAIN:
-		EventBus.inventory.inventory_expantion_requested.connect(_expand)
-	elif inventory_type == InventoryType.HOT_BAR:
-		EventBus.inventory.hot_bar_expantion_requested.connect(_expand)
+	EventBus.inventory.expantion_requested.connect(_expand)
 
 
 func init_grid() -> void:
@@ -32,7 +29,9 @@ func place_items(items: Array[ItemData]) -> void:
 		slot.slot_index = i
 
 
-func _expand(amount: int) -> void:
+func _expand(amount: int, type: InventoryType) -> void:
+	if inventory_type != type: return
+	
 	@warning_ignore("integer_division")
 	var items_per_column: int = get_child_count() / columns
 	columns += amount

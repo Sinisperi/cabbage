@@ -39,8 +39,7 @@ func _on_gui_input(event: InputEvent) -> void:
 func _handle_pick_item() -> void:
 	
 	if is_equipment_slot:
-		# remove effect
-		pass
+		EventBus.inventory.equipment.item_removed.emit(slot_data)
 		
 	var new_draggable_item: DraggableItem = draggable_item_scene.instantiate()
 	new_draggable_item.data = slot_data
@@ -49,7 +48,7 @@ func _handle_pick_item() -> void:
 	slot_data = null
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.inventory.hot_bar_rh_item_equipped.emit(slot_data)
+		EventBus.inventory.hot_bar.rh_item_equipped.emit(slot_data)
 	
 func _handle_place_item(draggable_item: DraggableItem) -> void:
 	
@@ -59,6 +58,7 @@ func _handle_place_item(draggable_item: DraggableItem) -> void:
 		if draggable_item.data.equip_slot != slot_type:
 			return
 		print("is equipment slot")
+		EventBus.inventory.equipment.item_added.emit(draggable_item.data)
 		# apply effects
 		# draggable_item.data.apply_effect()
 	print("is not queiplmenlt lsolt")
@@ -67,7 +67,7 @@ func _handle_place_item(draggable_item: DraggableItem) -> void:
 	item_placed.emit(slot_index, slot_data)
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.inventory.hot_bar_rh_item_equipped.emit(slot_data)
+		EventBus.inventory.hot_bar.rh_item_equipped.emit(slot_data)
 
 func _handle_swap_item(draggable_item: DraggableItem) -> void:
 	
@@ -85,13 +85,13 @@ func _handle_swap_item(draggable_item: DraggableItem) -> void:
 	item_placed.emit(slot_index, slot_data)
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.inventory.hot_bar_rh_item_equipped.emit(slot_data)
+		EventBus.inventory.hot_bar.rh_item_equipped.emit(slot_data)
 
 func set_item(item_data: ItemData) -> void:
 	slot_data = item_data
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.inventory.hot_bar_rh_item_equipped.emit(slot_data)
+		EventBus.inventory.hot_bar.rh_item_equipped.emit(slot_data)
 		
 func update_item_display() -> void:
 	if slot_data:

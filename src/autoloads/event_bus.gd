@@ -3,10 +3,22 @@ extends Node
 var ui: UISignals = UISignals.new()
 var inventory: InventorySignals = InventorySignals.new()
 
+
 class UISignals:
 	signal mouse_mode_changed(value: bool)
 
+
 class InventorySignals:
-	signal hot_bar_rh_item_equipped(item_data: ItemData)
-	signal hot_bar_expantion_requested(columns_amount: int)
-	signal inventory_expantion_requested(columns_amount: int)
+	var equipment: EquipmentSignals = EquipmentSignals.new()
+	var hot_bar: HotBarSignals = HotBarSignals.new()
+	
+	
+	signal expantion_requested(columns_amount: int, type: InventoryGrid.InventoryType)
+
+
+	class EquipmentSignals:
+		signal item_added(item_data: EquipableItemData)
+		signal item_removed(item_data: EquipableItemData)
+	
+	class HotBarSignals:
+		signal rh_item_equipped(item_data: ItemData)
