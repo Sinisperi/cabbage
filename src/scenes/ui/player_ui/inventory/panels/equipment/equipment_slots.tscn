@@ -3,11 +3,21 @@
 [ext_resource type="Script" uid="uid://bvsdx72x0m2lf" path="res://src/scenes/ui/player_ui/inventory/panels/equipment/equipment_slots.gd" id="1_6qp5h"]
 [ext_resource type="PackedScene" uid="uid://b0l0fo8nvcqv0" path="res://src/scenes/ui/player_ui/inventory/panels/equipment/equipment_slot.tscn" id="2_6qp5h"]
 
-[node name="EquipmentSlots" type="PanelContainer" unique_id=2045629739]
+[node name="EquipmentSlots" type="PanelContainer" unique_id=2045629739 node_paths=PackedStringArray("equipment_slots")]
 offset_right = 194.0
 offset_bottom = 378.0
 size_flags_horizontal = 0
 script = ExtResource("1_6qp5h")
+equipment_slots = {
+0: NodePath("MarginContainer/EquipmentGrid/HelmetSlot"),
+1: NodePath("MarginContainer/EquipmentGrid/ChestSlot"),
+2: NodePath("MarginContainer/EquipmentGrid/PantsSlot"),
+3: NodePath("MarginContainer/EquipmentGrid/BootsSlot"),
+4: NodePath("MarginContainer/EquipmentGrid/BackpackSlot"),
+5: NodePath("MarginContainer/EquipmentGrid/TrinketSlot_01"),
+6: NodePath("MarginContainer/EquipmentGrid/TrinketSlot_02"),
+7: NodePath("MarginContainer/EquipmentGrid/TrinketSlot_03")
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1381253005]
 layout_mode = 2
@@ -23,34 +33,34 @@ theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 6
 columns = 2
 
-[node name="EquipmentSlot" parent="MarginContainer/EquipmentGrid" unique_id=1347340031 instance=ExtResource("2_6qp5h")]
+[node name="BackpackSlot" parent="MarginContainer/EquipmentGrid" unique_id=1347340031 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
 slot_type = 5
 
-[node name="EquipmentSlot2" parent="MarginContainer/EquipmentGrid" unique_id=1406651973 instance=ExtResource("2_6qp5h")]
+[node name="HelmetSlot" parent="MarginContainer/EquipmentGrid" unique_id=1406651973 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
 slot_type = 1
 
-[node name="EquipmentSlot3" parent="MarginContainer/EquipmentGrid" unique_id=1396095046 instance=ExtResource("2_6qp5h")]
+[node name="TrinketSlot_01" parent="MarginContainer/EquipmentGrid" unique_id=1396095046 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
 slot_type = 6
 
-[node name="EquipmentSlot4" parent="MarginContainer/EquipmentGrid" unique_id=941674778 instance=ExtResource("2_6qp5h")]
+[node name="ChestSlot" parent="MarginContainer/EquipmentGrid" unique_id=941674778 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
 slot_type = 2
 
-[node name="EquipmentSlot5" parent="MarginContainer/EquipmentGrid" unique_id=1979701541 instance=ExtResource("2_6qp5h")]
+[node name="TrinketSlot_02" parent="MarginContainer/EquipmentGrid" unique_id=1979701541 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
 slot_type = 6
 
-[node name="EquipmentSlot6" parent="MarginContainer/EquipmentGrid" unique_id=569300584 instance=ExtResource("2_6qp5h")]
+[node name="PantsSlot" parent="MarginContainer/EquipmentGrid" unique_id=569300584 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
 slot_type = 3
 
-[node name="EquipmentSlot7" parent="MarginContainer/EquipmentGrid" unique_id=884812890 instance=ExtResource("2_6qp5h")]
+[node name="TrinketSlot_03" parent="MarginContainer/EquipmentGrid" unique_id=884812890 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
-slot_type = 7
+slot_type = 6
 
-[node name="EquipmentSlot8" parent="MarginContainer/EquipmentGrid" unique_id=1194567389 instance=ExtResource("2_6qp5h")]
+[node name="BootsSlot" parent="MarginContainer/EquipmentGrid" unique_id=1194567389 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
 slot_type = 4

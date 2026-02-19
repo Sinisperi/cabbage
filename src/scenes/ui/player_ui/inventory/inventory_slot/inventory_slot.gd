@@ -55,7 +55,7 @@ func _handle_place_item(draggable_item: DraggableItem) -> void:
 	if is_equipment_slot:
 		if draggable_item.data is not EquipableItemData:
 			return
-		if draggable_item.data.equip_slot != slot_type:
+		if draggable_item.data.equipment_type != slot_type:
 			return
 		EventBus.inventory.equipment.item_added.emit(draggable_item.data)
 
@@ -71,7 +71,7 @@ func _handle_swap_item(draggable_item: DraggableItem) -> void:
 	if is_equipment_slot:
 		if draggable_item.data is not EquipableItemData:
 			return
-		if draggable_item.data.equip_slot != slot_type:
+		if draggable_item.data.equipment_type != slot_type:
 			return
 		EventBus.inventory.equipment.item_removed.emit(slot_data)
 		EventBus.inventory.equipment.item_added.emit(draggable_item.data)

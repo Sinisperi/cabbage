@@ -21,6 +21,7 @@ NetworkManager="*uid://bpl0rea8nxikt"
 SceneLoader="*uid://bw1msf143kyt1"
 Globals="*uid://chaky2yacebpa"
 EventBus="*uid://cwxpsa1loq3cr"
+PlayerManager="*uid://b524s1owf1nhm"
 
 [debug]
 

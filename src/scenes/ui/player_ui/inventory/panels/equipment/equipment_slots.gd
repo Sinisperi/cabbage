@@ -10,9 +10,9 @@ enum Slot
 	PANTS,
 	BOOTS,
 	BACKPACK,
-	POUCH_01,
-	POUCH_02,
-	TRINKET
+	TRINKET_01,
+	TRINKET_02,
+	TRINKET_03
 }
 @export var equipped_items: Dictionary[Slot, EquipableItemData] = {
 
@@ -21,9 +21,21 @@ enum Slot
 	Slot.PANTS: null,
 	Slot.BOOTS: null,
 	Slot.BACKPACK: null,
-	Slot.POUCH_01: null,
-	Slot.POUCH_02: null,
-	Slot.TRINKET: null,
+	Slot.TRINKET_01: null,
+	Slot.TRINKET_02: null,
+	Slot.TRINKET_03: null,
+}
+
+@export var equipment_slots: Dictionary[Slot, EquipmentSlot] = {
+
+	Slot.HELMET: null,
+	Slot.SHIRT: null,
+	Slot.PANTS: null,
+	Slot.BOOTS: null,
+	Slot.BACKPACK: null,
+	Slot.TRINKET_01: null,
+	Slot.TRINKET_02: null,
+	Slot.TRINKET_03: null,
 }
 
 func _ready() -> void:

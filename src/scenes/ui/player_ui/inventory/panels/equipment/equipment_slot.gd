@@ -24,7 +24,5 @@ func _set_slot_icon_from_type() -> void:
 			slot_icon.texture = load("res://assets/icons/inventory/boots_icon.png")
 		EquipableItemData.EquipmentType.BACKPACK:
 			slot_icon.texture = load("res://assets/icons/inventory/backpack_icon.png")
-		EquipableItemData.EquipmentType.POUCH:
-			slot_icon.texture = load("res://assets/icons/inventory/puch_icon.png")
 		EquipableItemData.EquipmentType.TRINKET:
 			slot_icon.texture = load("res://assets/icons/inventory/trinket_icon.png")

@@ -1,5 +1,7 @@
 class_name PlayerData extends Resource
 
+@export var username: String
+
 @export var walk_speed: float = 2.0
 @export var jog_speed: float = 3.0
 @export var sprint_speed: float = 5.0

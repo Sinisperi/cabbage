@@ -9,11 +9,10 @@ enum EquipmentType
 	PANTS,
 	BOOTS,
 	BACKPACK,
-	POUCH,
 	TRINKET
 }
 
-@export var equip_slot: EquipmentType
+@export var equipment_type: EquipmentType
 @export var stats: ItemStats
 
 

@@ -28,7 +28,6 @@ var current_time_scale: float = 1.0
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(name))
 
-
 func _ready() -> void:
 	if !is_multiplayer_authority():
 		set_physics_process(false)
