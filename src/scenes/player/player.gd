@@ -1,6 +1,6 @@
 class_name Player extends CharacterBody3D
 
-@export var stats: PlayerStats
+@export var stats: PlayerData
 
 @export var friction: float = 40.0
 @export var acceleration: float = 20.0

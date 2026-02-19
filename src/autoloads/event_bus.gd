@@ -7,6 +7,6 @@ class UISignals:
 	signal mouse_mode_changed(value: bool)
 
 class InventorySignals:
-	signal item_equipped(item_data: ItemData)
+	signal hot_bar_rh_item_equipped(item_data: ItemData)
 	signal hot_bar_expantion_requested(columns_amount: int)
 	signal inventory_expantion_requested(columns_amount: int)

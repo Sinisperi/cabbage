@@ -5,12 +5,16 @@ signal item_picked(index: int)
 signal item_placed(index: int, item_data: ItemData)
 
 @export var draggable_item_scene: PackedScene = null
+@export var slot_type: EquipableItemData.EquipmentType
+
 @onready var item_display: TextureRect = %ItemDisplay
 
 var slot_data: ItemData = null
 var slot_index: int = -1
 
 var is_hot_bar_selected: bool = false
+
+var is_equipment_slot: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,6 +38,10 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func _handle_pick_item() -> void:
 	
+	if is_equipment_slot:
+		# remove effect
+		pass
+		
 	var new_draggable_item: DraggableItem = draggable_item_scene.instantiate()
 	new_draggable_item.data = slot_data
 	item_picked.emit(slot_index)
@@ -41,18 +49,35 @@ func _handle_pick_item() -> void:
 	slot_data = null
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.inventory.item_equipped.emit(slot_data)
-	
+		EventBus.inventory.hot_bar_rh_item_equipped.emit(slot_data)
 	
 func _handle_place_item(draggable_item: DraggableItem) -> void:
+	
+	if is_equipment_slot:
+		if draggable_item.data is not EquipableItemData:
+			return
+		if draggable_item.data.equip_slot != slot_type:
+			return
+		print("is equipment slot")
+		# apply effects
+		# draggable_item.data.apply_effect()
+	print("is not queiplmenlt lsolt")
 	slot_data = draggable_item.data
 	draggable_item.queue_free()
 	item_placed.emit(slot_index, slot_data)
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.inventory.item_equipped.emit(slot_data)
+		EventBus.inventory.hot_bar_rh_item_equipped.emit(slot_data)
 
 func _handle_swap_item(draggable_item: DraggableItem) -> void:
+	
+	if is_equipment_slot:
+		if draggable_item.data is not EquipableItemData:
+			return
+		if draggable_item.data.equip_slot != slot_type:
+			return
+		# apply effects
+			
 	var temp: ItemData = slot_data.duplicate()
 	slot_data = draggable_item.data.duplicate()
 	draggable_item.data = temp
@@ -60,13 +85,13 @@ func _handle_swap_item(draggable_item: DraggableItem) -> void:
 	item_placed.emit(slot_index, slot_data)
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.inventory.item_equipped.emit(slot_data)
+		EventBus.inventory.hot_bar_rh_item_equipped.emit(slot_data)
 
 func set_item(item_data: ItemData) -> void:
 	slot_data = item_data
 	update_item_display()
 	if is_hot_bar_selected:
-		EventBus.inventory.item_equipped.emit(slot_data)
+		EventBus.inventory.hot_bar_rh_item_equipped.emit(slot_data)
 		
 func update_item_display() -> void:
 	if slot_data:

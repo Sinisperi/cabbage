@@ -22,31 +22,32 @@ columns = 2
 
 [node name="EquipmentSlot" parent="MarginContainer/EquipmentGrid" unique_id=1347340031 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
-slot_type = 4
+slot_type = 5
 
 [node name="EquipmentSlot2" parent="MarginContainer/EquipmentGrid" unique_id=1406651973 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
+slot_type = 1
 
 [node name="EquipmentSlot3" parent="MarginContainer/EquipmentGrid" unique_id=1396095046 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
-slot_type = 5
+slot_type = 6
 
 [node name="EquipmentSlot4" parent="MarginContainer/EquipmentGrid" unique_id=941674778 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
-slot_type = 1
+slot_type = 2
 
 [node name="EquipmentSlot5" parent="MarginContainer/EquipmentGrid" unique_id=1979701541 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
-slot_type = 5
+slot_type = 6
 
 [node name="EquipmentSlot6" parent="MarginContainer/EquipmentGrid" unique_id=569300584 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
-slot_type = 2
+slot_type = 3
 
 [node name="EquipmentSlot7" parent="MarginContainer/EquipmentGrid" unique_id=884812890 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
-slot_type = 6
+slot_type = 7
 
 [node name="EquipmentSlot8" parent="MarginContainer/EquipmentGrid" unique_id=1194567389 instance=ExtResource("2_6qp5h")]
 layout_mode = 2
-slot_type = 3
+slot_type = 4
