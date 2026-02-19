@@ -17,11 +17,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _is_flag_set(INVENTORY):
 			ui_state = ui_state & ~INVENTORY
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			EventBus.mouse_mode_changed.emit(true)
+			EventBus.ui.mouse_mode_changed.emit(true)
 		else:
 			ui_state |= INVENTORY
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			EventBus.mouse_mode_changed.emit(false)
+			EventBus.ui.mouse_mode_changed.emit(false)
 
 func _physics_process(_delta: float) -> void:
 	_show_ui()

@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://ds0vtyffpuskc"]
+
+[ext_resource type="Script" uid="uid://c0r1jsxjf5xei" path="res://src/scenes/ui/player_ui/inventory/panels/slots_panel.gd" id="1_3cqec"]
+[ext_resource type="Script" uid="uid://b25qwtaj4h5f2" path="res://src/scenes/ui/player_ui/inventory/inventory_grid/inventory_grid.gd" id="1_y6wcb"]
+[ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot/inventory_slot.tscn" id="2_3cqec"]
+
+[node name="InventorySlots" type="PanelContainer" unique_id=491254066 node_paths=PackedStringArray("inventory_grid")]
+size_flags_vertical = 4
+script = ExtResource("1_3cqec")
+inventory_grid = NodePath("MarginContainer/InventoryGrid")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=829596061]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="InventoryGrid" type="GridContainer" parent="MarginContainer" unique_id=468095518]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 4
+script = ExtResource("1_y6wcb")
+inventory_slot_scene = ExtResource("2_3cqec")
+
+[node name="InventorySlot" parent="MarginContainer/InventoryGrid" unique_id=2123827407 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="MarginContainer/InventoryGrid" unique_id=1326914436 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="MarginContainer/InventoryGrid" unique_id=757639362 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="MarginContainer/InventoryGrid" unique_id=266819867 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="MarginContainer/InventoryGrid" unique_id=318662989 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="MarginContainer/InventoryGrid" unique_id=74869422 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot7" parent="MarginContainer/InventoryGrid" unique_id=1583591762 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot8" parent="MarginContainer/InventoryGrid" unique_id=2002031136 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot9" parent="MarginContainer/InventoryGrid" unique_id=244368814 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot10" parent="MarginContainer/InventoryGrid" unique_id=220704758 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot11" parent="MarginContainer/InventoryGrid" unique_id=1362362358 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot12" parent="MarginContainer/InventoryGrid" unique_id=702619285 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot13" parent="MarginContainer/InventoryGrid" unique_id=256722364 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot14" parent="MarginContainer/InventoryGrid" unique_id=1588366268 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot15" parent="MarginContainer/InventoryGrid" unique_id=1208580144 instance=ExtResource("2_3cqec")]
+layout_mode = 2
+
+[node name="InventorySlot16" parent="MarginContainer/InventoryGrid" unique_id=1485278648 instance=ExtResource("2_3cqec")]
+layout_mode = 2

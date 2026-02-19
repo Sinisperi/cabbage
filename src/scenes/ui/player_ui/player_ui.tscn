@@ -3,12 +3,15 @@
 [ext_resource type="Shader" uid="uid://dp4dbag5r8put" path="res://src/scenes/player/reticle.gdshader" id="1_jbrfv"]
 [ext_resource type="Script" uid="uid://dh0bi06ixtrov" path="res://src/scenes/ui/player_ui/player_ui.gd" id="1_w5xlc"]
 [ext_resource type="PackedScene" uid="uid://byff31anloyng" path="res://src/scenes/ui/player_ui/inventory/inventory.tscn" id="2_y6ggm"]
-[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data.gd" id="4_pohmq"]
+[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="4_pohmq"]
 [ext_resource type="Texture2D" uid="uid://daklekxe4jsvh" path="res://assets/icons/debug/blue_item.png" id="5_0s6rk"]
 [ext_resource type="Texture2D" uid="uid://cfm8scwu8whpc" path="res://assets/icons/debug/green_item.png" id="6_tajlg"]
 [ext_resource type="Texture2D" uid="uid://b5e4f0pcwa4hl" path="res://assets/icons/debug/magenta_item.png" id="7_asnu3"]
+[ext_resource type="Script" uid="uid://bawfqhick31f7" path="res://src/scenes/ui/player_ui/inventory/item_data/equipable_item_data.gd" id="8_6fjdl"]
 [ext_resource type="Texture2D" uid="uid://dhsj721gb8xxg" path="res://assets/icons/debug/red_item.png" id="8_asnu3"]
 [ext_resource type="Texture2D" uid="uid://bgsmt6tipdx13" path="res://assets/icons/debug/yellow_item.png" id="9_thr0w"]
+[ext_resource type="Script" uid="uid://c1wgdpsvufb36" path="res://src/scenes/ui/player_ui/inventory/item_data/item_stats.gd" id="9_tk685"]
+[ext_resource type="Script" uid="uid://cm6pqexiv7jc4" path="res://src/scenes/ui/player_ui/inventory/item_data/trinket_data.gd" id="10_tk685"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7vxwc"]
 shader = ExtResource("1_jbrfv")
@@ -35,17 +38,29 @@ item_name = "Green Item"
 texture = ExtResource("6_tajlg")
 metadata/_custom_type_script = "uid://dudvpb3rg1snn"
 
-[sub_resource type="Resource" id="Resource_tk685"]
-script = ExtResource("4_pohmq")
+[sub_resource type="Resource" id="Resource_wvtar"]
+script = ExtResource("9_tk685")
+metadata/_custom_type_script = "uid://c1wgdpsvufb36"
+
+[sub_resource type="Resource" id="Resource_wq0uy"]
+script = ExtResource("8_6fjdl")
+equipment_type = 4
+stats = SubResource("Resource_wvtar")
 item_name = "Magenta Item"
 texture = ExtResource("7_asnu3")
-metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+metadata/_custom_type_script = "uid://bawfqhick31f7"
 
 [sub_resource type="Resource" id="Resource_2h2tr"]
-script = ExtResource("4_pohmq")
-item_name = "Red Item"
+script = ExtResource("9_tk685")
+metadata/_custom_type_script = "uid://c1wgdpsvufb36"
+
+[sub_resource type="Resource" id="Resource_jux1m"]
+script = ExtResource("10_tk685")
+equipment_type = 6
+stats = SubResource("Resource_2h2tr")
+item_name = "Red Square"
 texture = ExtResource("8_asnu3")
-metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+metadata/_custom_type_script = "uid://cm6pqexiv7jc4"
 
 [sub_resource type="Resource" id="Resource_2rm45"]
 script = ExtResource("4_pohmq")
@@ -89,7 +104,7 @@ texture = SubResource("GradientTexture2D_mc3vd")
 [node name="Inventory" parent="MarginContainer" unique_id=1572195943 instance=ExtResource("2_y6ggm")]
 unique_name_in_owner = true
 layout_mode = 2
-inventory_items = Array[ExtResource("4_pohmq")]([SubResource("Resource_thr0w"), SubResource("Resource_6fjdl"), SubResource("Resource_tk685"), SubResource("Resource_2h2tr")])
+inventory_items = Array[ExtResource("4_pohmq")]([SubResource("Resource_thr0w"), SubResource("Resource_6fjdl"), SubResource("Resource_wq0uy"), SubResource("Resource_jux1m")])
 hot_bar_items = Array[ExtResource("4_pohmq")]([SubResource("Resource_2rm45")])
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Inventory" unique_id=987315588]

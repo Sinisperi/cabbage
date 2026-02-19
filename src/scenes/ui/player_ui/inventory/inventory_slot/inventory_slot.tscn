@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cq8j4ayec7n5f"]
 
-[ext_resource type="Script" uid="uid://xis2jly422yp" path="res://src/scenes/ui/player_ui/inventory/inventory_slot.gd" id="1_4tnw6"]
-[ext_resource type="PackedScene" uid="uid://cb5vv6xbyo5m7" path="res://src/scenes/ui/player_ui/inventory/draggable_item.tscn" id="2_iuln7"]
+[ext_resource type="Script" uid="uid://xis2jly422yp" path="res://src/scenes/ui/player_ui/inventory/inventory_slot/inventory_slot.gd" id="1_4tnw6"]
+[ext_resource type="PackedScene" uid="uid://cb5vv6xbyo5m7" path="res://src/scenes/ui/player_ui/inventory/draggable_item/draggable_item.tscn" id="2_iuln7"]
 
 [node name="InventorySlot" type="ColorRect" unique_id=2123827407]
 custom_minimum_size = Vector2(86, 86)

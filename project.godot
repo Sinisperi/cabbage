@@ -21,6 +21,13 @@ NetworkManager="*uid://bpl0rea8nxikt"
 SceneLoader="*uid://bw1msf143kyt1"
 Globals="*uid://chaky2yacebpa"
 EventBus="*uid://cwxpsa1loq3cr"
+PlayerManager="*uid://b524s1owf1nhm"
+
+[debug]
+
+gdscript/warnings/unused_signal=0
+gdscript/warnings/untyped_declaration=1
+gdscript/warnings/missing_await=1
 
 [display]
 

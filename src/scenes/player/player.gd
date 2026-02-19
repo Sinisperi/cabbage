@@ -1,6 +1,6 @@
 class_name Player extends CharacterBody3D
 
-@export var stats: PlayerStats
+@export var stats: PlayerData
 
 @export var friction: float = 40.0
 @export var acceleration: float = 20.0
@@ -28,7 +28,6 @@ var current_time_scale: float = 1.0
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(name))
 
-
 func _ready() -> void:
 	if !is_multiplayer_authority():
 		set_physics_process(false)
@@ -36,7 +35,7 @@ func _ready() -> void:
 	else:
 		camera_3d.make_current()
 		Globals.player = self
-		EventBus.mouse_mode_changed.connect(_on_mouse_mode_changed)
+		EventBus.ui.mouse_mode_changed.connect(_on_mouse_mode_changed)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -59,7 +58,7 @@ func _handle_movement(delta: float) -> void:
 		velocity.y = stats.jump_velocity
 		
 	current_speed = stats.jog_speed if current_state == State.JOGGING else stats.walk_speed
-	var target_fov = default_fov * jog_fov_multiplier if current_state == State.JOGGING else default_fov
+	var target_fov: float = default_fov * jog_fov_multiplier if current_state == State.JOGGING else default_fov
 	camera_3d.fov = lerp(camera_3d.fov, target_fov, delta * 2.0)
 	if input_direction:
 		velocity = velocity.move_toward(global_transform.basis * Vector3(input_direction.x, 0.0, input_direction.y) * current_speed, delta * acceleration)
@@ -96,8 +95,8 @@ func _handle_state() -> void:
 
 
 func _handle_animation(delta: float) -> void:
-	var animation_direction = input_direction
-	var time_scale = 1.0
+	var animation_direction: Vector2 = input_direction
+	var time_scale: float = 1.0
 	if input_direction.y > 0.0:
 		time_scale = -1.0
 		animation_direction.x = -input_direction.x
