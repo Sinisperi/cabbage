@@ -14,7 +14,21 @@ enum Slot
 	POUCH_02,
 	TRINKET
 }
+@export var equipped_items: Dictionary[Slot, EquipableItemData] = {
 
+	Slot.HELMET: null,
+	Slot.SHIRT: null,
+	Slot.PANTS: null,
+	Slot.BOOTS: null,
+	Slot.BACKPACK: null,
+	Slot.POUCH_01: null,
+	Slot.POUCH_02: null,
+	Slot.TRINKET: null,
+}
 
-func init_equipment(equipment: Dictionary) -> void:
+func _ready() -> void:
+	pass
+
+func _on_item_equipped(item_data: EquipableItemData) -> void:
+	# item_data.stats += player.stats
 	pass

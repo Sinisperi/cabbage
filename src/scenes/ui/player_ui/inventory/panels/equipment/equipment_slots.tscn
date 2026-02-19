@@ -4,6 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://b0l0fo8nvcqv0" path="res://src/scenes/ui/player_ui/inventory/panels/equipment/equipment_slot.tscn" id="2_6qp5h"]
 
 [node name="EquipmentSlots" type="PanelContainer" unique_id=2045629739]
+offset_right = 194.0
+offset_bottom = 378.0
+size_flags_horizontal = 0
 script = ExtResource("1_6qp5h")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1381253005]

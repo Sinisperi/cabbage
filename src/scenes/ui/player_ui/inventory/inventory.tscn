@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b46dk2psqakst" path="res://src/scenes/ui/player_ui/inventory/inventory.gd" id="1_1p7c6"]
 [ext_resource type="PackedScene" uid="uid://cq8j4ayec7n5f" path="res://src/scenes/ui/player_ui/inventory/inventory_slot/inventory_slot.tscn" id="1_7ljad"]
-[ext_resource type="PackedScene" uid="uid://14vjj0jwgt72" path="res://src/scenes/ui/player_ui/inventory/inventory_grid/inventory_grid.tscn" id="3_7oh8j"]
 [ext_resource type="PackedScene" uid="uid://ds0vtyffpuskc" path="res://src/scenes/ui/player_ui/inventory/panels/inventory/inventory_slots.tscn" id="4_jnh7g"]
 [ext_resource type="PackedScene" uid="uid://bo3dwjipywpwi" path="res://src/scenes/ui/player_ui/inventory/panels/equipment/equipment_slots.tscn" id="5_2o2pl"]
 [ext_resource type="PackedScene" uid="uid://btoek6whsxq18" path="res://src/scenes/ui/player_ui/inventory/panels/hot_bar/hot_bar_slots.tscn" id="5_jnh7g"]
 
-[node name="Inventory" type="Control" unique_id=1572195943 node_paths=PackedStringArray("inventory_grid", "hot_bar_slots") groups=["inventory"]]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jnh7g"]
+
+[node name="Inventory" type="Control" unique_id=1572195943 node_paths=PackedStringArray("inventory_grid", "hot_bar_slots", "equipment_slots") groups=["inventory"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,6 +20,7 @@ script = ExtResource("1_1p7c6")
 inventory_size = 16
 inventory_grid = NodePath("VBoxContainer/InventoryContainer/InventorySlots")
 hot_bar_slots = NodePath("VBoxContainer/HotbarSlots")
+equipment_slots = NodePath("VBoxContainer/InventoryContainer/PanelContainer/EquipmentSlots")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=653070321]
 layout_mode = 1
@@ -37,10 +39,10 @@ size_flags_vertical = 8
 
 [node name="InventoryContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1295570085]
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_constants/separation = 43
 
 [node name="CraftingSlots" type="PanelContainer" parent="VBoxContainer/InventoryContainer" unique_id=1686360669]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/InventoryContainer/CraftingSlots" unique_id=810984413]
@@ -53,8 +55,11 @@ theme_override_constants/margin_bottom = 8
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/InventoryContainer/CraftingSlots/MarginContainer" unique_id=591996841]
 layout_mode = 2
 
-[node name="CraftingGrid" parent="VBoxContainer/InventoryContainer/CraftingSlots/MarginContainer/VBoxContainer" unique_id=430787042 instance=ExtResource("3_7oh8j")]
+[node name="CraftingGrid" type="GridContainer" parent="VBoxContainer/InventoryContainer/CraftingSlots/MarginContainer/VBoxContainer" unique_id=430787042]
 layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 2
 
 [node name="InventorySlot2" parent="VBoxContainer/InventoryContainer/CraftingSlots/MarginContainer/VBoxContainer/CraftingGrid" unique_id=2123827407 instance=ExtResource("1_7ljad")]
 layout_mode = 2
@@ -75,8 +80,14 @@ size_flags_horizontal = 4
 [node name="InventorySlots" parent="VBoxContainer/InventoryContainer" unique_id=491254066 instance=ExtResource("4_jnh7g")]
 layout_mode = 2
 
-[node name="EquipmentSlots" parent="VBoxContainer/InventoryContainer" unique_id=2045629739 instance=ExtResource("5_2o2pl")]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/InventoryContainer" unique_id=1076839028]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jnh7g")
+
+[node name="EquipmentSlots" parent="VBoxContainer/InventoryContainer/PanelContainer" unique_id=2045629739 instance=ExtResource("5_2o2pl")]
+layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="HotbarSlots" parent="VBoxContainer" unique_id=1751841294 instance=ExtResource("5_jnh7g")]
 layout_mode = 2

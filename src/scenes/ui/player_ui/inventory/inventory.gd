@@ -12,17 +12,7 @@ class_name Inventory extends Control
 @export var hot_bar_slots: SlotsPanel
 
 @export_category("Equipment")
-@export var equipped_items: Dictionary[EquipmentSlots.Slot, EquipableItemData] = {
 
-	EquipmentSlots.Slot.HELMET: null,
-	EquipmentSlots.Slot.SHIRT: null,
-	EquipmentSlots.Slot.PANTS: null,
-	EquipmentSlots.Slot.BOOTS: null,
-	EquipmentSlots.Slot.BACKPACK: null,
-	EquipmentSlots.Slot.POUCH_01: null,
-	EquipmentSlots.Slot.POUCH_02: null,
-	EquipmentSlots.Slot.TRINKET: null,
-}
 @export var equipment_slots: EquipmentSlots
 
 @onready var inventory_container: HBoxContainer = $VBoxContainer/InventoryContainer

@@ -57,11 +57,8 @@ func _handle_place_item(draggable_item: DraggableItem) -> void:
 			return
 		if draggable_item.data.equip_slot != slot_type:
 			return
-		print("is equipment slot")
 		EventBus.inventory.equipment.item_added.emit(draggable_item.data)
-		# apply effects
-		# draggable_item.data.apply_effect()
-	print("is not queiplmenlt lsolt")
+
 	slot_data = draggable_item.data
 	draggable_item.queue_free()
 	item_placed.emit(slot_index, slot_data)
@@ -76,7 +73,8 @@ func _handle_swap_item(draggable_item: DraggableItem) -> void:
 			return
 		if draggable_item.data.equip_slot != slot_type:
 			return
-		# apply effects
+		EventBus.inventory.equipment.item_removed.emit(slot_data)
+		EventBus.inventory.equipment.item_added.emit(draggable_item.data)
 			
 	var temp: ItemData = slot_data.duplicate()
 	slot_data = draggable_item.data.duplicate()
