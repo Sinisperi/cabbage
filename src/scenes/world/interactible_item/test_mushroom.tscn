@@ -10,7 +10,6 @@ albedo_color = Color(0.47354317, 0.26937336, 0, 1)
 radius = 0.25177884
 
 [node name="InteractibleItem" unique_id=1934783462 instance=ExtResource("1_s4xap")]
-collision_layer = 4
 script = ExtResource("2_vngyn")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." index="0" unique_id=902417986]

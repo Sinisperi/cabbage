@@ -6,20 +6,6 @@
 [ext_resource type="Script" uid="uid://c1wgdpsvufb36" path="res://src/scenes/ui/player_ui/inventory/item_data/item_stats.gd" id="3_ptxit"]
 [ext_resource type="Script" uid="uid://cm6pqexiv7jc4" path="res://src/scenes/ui/player_ui/inventory/item_data/trinket_data.gd" id="4_ptxit"]
 
-[sub_resource type="Resource" id="Resource_utxpx"]
-script = ExtResource("3_ptxit")
-metadata/_custom_type_script = "uid://c1wgdpsvufb36"
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_75nlp"]
-
-[sub_resource type="Resource" id="Resource_saqii"]
-script = ExtResource("2_jr0yk")
-equipment_type = 1
-stats = SubResource("Resource_utxpx")
-item_name = "Test Helmo"
-texture = SubResource("PlaceholderTexture2D_75nlp")
-metadata/_custom_type_script = "uid://bawfqhick31f7"
-
 [sub_resource type="Resource" id="Resource_75nlp"]
 script = ExtResource("3_ptxit")
 metadata/_custom_type_script = "uid://c1wgdpsvufb36"
@@ -42,27 +28,14 @@ item_name = "Cool Trinket"
 texture = SubResource("NoiseTexture2D_n7ug0")
 metadata/_custom_type_script = "uid://cm6pqexiv7jc4"
 
-[node name="EquipmentSlots" type="PanelContainer" unique_id=2045629739 node_paths=PackedStringArray("equipment_slots", "trinket_slots")]
+[node name="EquipmentSlots" type="PanelContainer" unique_id=2045629739 node_paths=PackedStringArray("trinket_slots")]
 offset_right = 194.0
 offset_bottom = 378.0
 size_flags_horizontal = 0
 script = ExtResource("1_6qp5h")
-equipped_items = Dictionary[int, ExtResource("2_jr0yk")]({
-0: SubResource("Resource_saqii"),
-1: null,
-2: null,
-3: null,
-4: null
-})
-equipment_slots = {
-0: NodePath("MarginContainer/EquipmentGrid/HelmetSlot"),
-1: NodePath("MarginContainer/EquipmentGrid/ChestSlot"),
-2: NodePath("MarginContainer/EquipmentGrid/PantsSlot"),
-3: NodePath("MarginContainer/EquipmentGrid/BootsSlot"),
-4: NodePath("MarginContainer/EquipmentGrid/BackpackSlot")
-}
+equipped_items = Dictionary[String, ExtResource("2_jr0yk")]({})
 trinket_slots = [NodePath("MarginContainer/EquipmentGrid/TrinketSlot_01"), NodePath("MarginContainer/EquipmentGrid/TrinketSlot_02"), NodePath("MarginContainer/EquipmentGrid/TrinketSlot_03")]
-trinket_items = Array[ExtResource("2_jr0yk")]([null, SubResource("Resource_865e5"), null])
+trinket_items = Array[ExtResource("4_ptxit")]([null, SubResource("Resource_865e5"), null])
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1381253005]
 layout_mode = 2
