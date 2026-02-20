@@ -47,9 +47,9 @@ size_flags_vertical = 4
 [node name="Label" type="Label" parent="CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=162623408]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Name"
+text = "Player Name"
 
-[node name="GameNameLineEdit" type="LineEdit" parent="CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1181649119]
+[node name="PlayerNameLineEdit" type="LineEdit" parent="CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1181649119]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

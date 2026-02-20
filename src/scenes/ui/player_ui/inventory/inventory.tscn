@@ -87,7 +87,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_jnh7g")
 
 [node name="EquipmentSlots" parent="VBoxContainer/InventoryContainer/PanelContainer" unique_id=2045629739 instance=ExtResource("5_2o2pl")]
 layout_mode = 2
-size_flags_horizontal = 0
 
 [node name="HotbarSlots" parent="VBoxContainer" unique_id=1751841294 instance=ExtResource("5_jnh7g")]
 layout_mode = 2

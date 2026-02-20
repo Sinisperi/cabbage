@@ -1,13 +1,20 @@
 extends Control
 @onready var load_game_button: Button = %LoadGameButton
 @onready var new_game_button: Button = %NewGameButton
-@onready var play_online_button: Button = %PlayOnlineButton
+@onready var join_game_button: Button = %JoinGameButton
 
 func _ready() -> void:
 	load_game_button.pressed.connect(_on_load_game_button_pressed)
 	new_game_button.pressed.connect(_on_new_game_button_pressed)
-	play_online_button.pressed.connect(_on_play_online_button_pressed)
+	join_game_button.pressed.connect(_on_play_online_button_pressed)
 	NetworkManager.peer_connected.connect(_on_peer_connected)
+
+
+## TODO Show a list of all saves, hosted games included.
+## Upon clicking on a hosted game, attempt to host the game,
+## otherwise, play offline.
+## Load not hosted games as usual
+
 func _on_load_game_button_pressed() -> void:
 	pass
 
@@ -20,6 +27,10 @@ func _on_play_online_button_pressed() -> void:
 	NetworkManager.join_game()
 	#SceneLoader.load_scene(SceneLoader.Scene.WORLD_SCENE)
 	
+	
+## TODO Instead of loading the world, check if player has a save here
+## if they do, load the world and spawn the player with data,
+## otherwise, switch to character creator
 func _on_peer_connected(_id: int) -> void:
 	SceneLoader.load_scene(
 		SceneLoader.Scene.WORLD_SCENE, 

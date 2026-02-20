@@ -17,8 +17,8 @@ class InventorySignals:
 
 
 	class EquipmentSignals:
-		signal item_added(item_data: EquipableItemData)
-		signal item_removed(item_data: EquipableItemData)
+		signal item_equipped(item_data: EquipableItemData)
+		signal item_unequipped(item_data: EquipableItemData)
 	
 	class HotBarSignals:
 		signal rh_item_equipped(item_data: ItemData)

@@ -1,7 +1,7 @@
 extends Control
 @onready var confirm_button: Button = %ConfirmButton
 @onready var online_checkbox: CheckBox = %OnlineCheckbox
-@onready var game_name_line_edit: LineEdit = %GameNameLineEdit
+@onready var player_name_line_edit: LineEdit = %PlayerNameLineEdit
 
 func _ready() -> void:
 	confirm_button.pressed.connect(_on_confirm_button_pressed)
@@ -13,5 +13,6 @@ func _on_confirm_button_pressed() -> void:
 		# in here somehow make a lobbby or something or send to a create lobby screen or pannel
 		# where there will be an option to create a lobby, set amount of players and the visibility
 		# and also get a code
-	SceneLoader.load_scene(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1))
+	var username: String = player_name_line_edit.text
+	SceneLoader.load_scene(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1, username))
 	

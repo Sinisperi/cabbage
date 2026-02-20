@@ -48,7 +48,16 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "New Game"
 
-[node name="PlayOnlineButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=799093449]
+[node name="HostGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1406390056]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Play Online"
+text = "Host Game"
+
+[node name="JoinGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=799093449]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Join Game"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1446550807]
+layout_mode = 2
+text = "Quit"

@@ -7,14 +7,15 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 @rpc("any_peer", "call_local")
-func _request_player_spawn() -> void:
+func _request_player_spawn(username: String = "NO USERNAME") -> void:
 	if multiplayer.is_server():
-		var player_id: int = multiplayer.get_remote_sender_id()
+		var peer_id: int = multiplayer.get_remote_sender_id()
 		var data: Dictionary = {
-			"player_id": player_id,
-			"location": player_spawn_area.get_spawn_point()
+			"peer_id": peer_id,
+			"location": player_spawn_area.get_spawn_point(),
+			"username": username
 		}
 		player_spawner.spawn(data)
 		
-		print("spawning player ", player_id)
+		print("spawning player ", peer_id)
 		
