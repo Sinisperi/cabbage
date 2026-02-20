@@ -14,7 +14,6 @@ func _spawn_function(data: Dictionary) -> Node:
 	else:
 		player.stats = PlayerData.new()
 		player.stats.username = data.username
-		player.stats.jog_speed = 5.0
 		PlayerManager.active_players[data.username] = player.stats
 		
 	PlayerManager.active_peers[data.peer_id] = data.username
