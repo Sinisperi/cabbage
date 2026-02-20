@@ -14,7 +14,7 @@ class InventorySignals:
 	
 	
 	signal expantion_requested(columns_amount: int, type: InventoryGrid.InventoryType)
-
+	signal item_pick_up_requested(item_data: ItemData)
 
 	class EquipmentSignals:
 		signal item_equipped(item_data: EquipableItemData)

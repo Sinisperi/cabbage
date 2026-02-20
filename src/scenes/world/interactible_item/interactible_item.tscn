@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c55jocqg2waon"]
+
+[ext_resource type="Script" uid="uid://bpaw1to4ngek0" path="res://src/scenes/world/interactible_item/interactible_item.gd" id="1_ews8d"]
+[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="2_jaeq7"]
+[ext_resource type="Texture2D" uid="uid://jqnfcsm1jjb4" path="res://assets/icons/debug/mushroom_icon.png" id="3_gqhmq"]
+
+[sub_resource type="Resource" id="Resource_f5y1v"]
+script = ExtResource("2_jaeq7")
+item_name = "Mushroom"
+texture = ExtResource("3_gqhmq")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+
+[node name="InteractibleItem" type="Area3D" unique_id=1934783462]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_ews8d")
+data = SubResource("Resource_f5y1v")

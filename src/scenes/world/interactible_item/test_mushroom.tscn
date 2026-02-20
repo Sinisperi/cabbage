@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://h7qw3eulkbcj"]
+
+[ext_resource type="PackedScene" uid="uid://c55jocqg2waon" path="res://src/scenes/world/interactible_item/interactible_item.tscn" id="1_s4xap"]
+[ext_resource type="Script" uid="uid://cvqd5jklm12kx" path="res://src/scenes/world/interactible_item/test_mushroom.gd" id="2_vngyn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vngyn"]
+albedo_color = Color(0.47354317, 0.26937336, 0, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_c8j3m"]
+radius = 0.25177884
+
+[node name="InteractibleItem" unique_id=1934783462 instance=ExtResource("1_s4xap")]
+collision_layer = 4
+script = ExtResource("2_vngyn")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." index="0" unique_id=902417986]
+radius = 0.03
+height = 0.095
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCylinder3D" index="0" unique_id=1826492637]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.052242555, 0)
+radius = 0.084
+height = 0.037
+material = SubResource("StandardMaterial3D_vngyn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" unique_id=68894366]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0016564578, 0)
+shape = SubResource("SphereShape3D_c8j3m")

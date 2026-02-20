@@ -41,3 +41,8 @@ func _expand(amount: int, type: InventoryType) -> void:
 		add_child(inventory_slot)
 		inventory_slot.item_picked.connect(func(index: int) -> void: item_picked.emit(index))
 		inventory_slot.item_placed.connect(func(index: int, item_data: ItemData) -> void: item_placed.emit(index, item_data))
+
+
+func place_item(item_data: ItemData, index: int) -> void:
+	get_child(index).set_item(item_data)
+	

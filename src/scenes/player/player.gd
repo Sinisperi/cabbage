@@ -32,12 +32,14 @@ func _ready() -> void:
 	if !is_multiplayer_authority():
 		set_physics_process(false)
 		set_process_input(false)
+		set_process_unhandled_input(false)
+		set_process_unhandled_key_input(false)
 	else:
 		camera_3d.make_current()
 		Globals.player = self
 		EventBus.ui.mouse_mode_changed.connect(_on_mouse_mode_changed)
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x * 0.001
 		camera_3d.rotation.x -= event.relative.y * 0.001
@@ -123,3 +125,5 @@ func _state_to_animation() -> String:
 func _on_mouse_mode_changed(value: bool) -> void:
 	if is_multiplayer_authority():
 		set_process_input(value)
+		set_process_unhandled_input(value)
+		set_process_unhandled_key_input(value)

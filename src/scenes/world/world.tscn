@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://81ejynb6jof5" path="res://assets/kenney_prototype_textures/orange/texture_05.png" id="3_m1gqc"]
 [ext_resource type="PackedScene" uid="uid://bxqj4mdvakxia" path="res://src/scenes/world/spawn_area/spawn_area.tscn" id="4_kccwn"]
 [ext_resource type="PackedScene" uid="uid://upma2w865lrs" path="res://src/scenes/ui/player_ui/player_ui.tscn" id="7_m1gqc"]
+[ext_resource type="PackedScene" uid="uid://h7qw3eulkbcj" path="res://src/scenes/world/interactible_item/test_mushroom.tscn" id="8_gd3mq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e5uuo"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -63,3 +64,45 @@ player_scene = ExtResource("1_m76yy")
 [node name="Players" type="Node3D" parent="." unique_id=233463965]
 
 [node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
+
+[node name="GatherableItems" type="Node3D" parent="." unique_id=758326054]
+
+[node name="InteractibleItem" parent="." unique_id=1934783462 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0359616, 0.06911634, -2.4980268)
+collision_layer = 5
+
+[node name="InteractibleItem2" parent="." unique_id=324447619 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2258858, 0.06911634, -2.2863731)
+collision_layer = 5
+
+[node name="InteractibleItem3" parent="." unique_id=1164537588 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36625433, 0.06911634, -2.6367157)
+collision_layer = 5
+
+[node name="InteractibleItem4" parent="." unique_id=1450168687 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2828612, 0.06911586, -3.3009706)
+collision_layer = 5
+
+[node name="InteractibleItem5" parent="." unique_id=35108460 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5628969, 0.06911634, -3.2613375)
+collision_layer = 5
+
+[node name="InteractibleItem6" parent="." unique_id=1176890907 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4280399, 0.075510904, -4.18178)
+collision_layer = 5
+
+[node name="InteractibleItem7" parent="." unique_id=1343475518 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13444918, 0.06911634, -3.3562288)
+collision_layer = 5
+
+[node name="InteractibleItem8" parent="." unique_id=286415228 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29935974, 0.06911634, -4.3703175)
+collision_layer = 5
+
+[node name="InteractibleItem9" parent="." unique_id=1261226871 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0125828, 0.06911634, -3.3668272)
+collision_layer = 5
+
+[node name="InteractibleItem10" parent="." unique_id=1820281097 instance=ExtResource("8_gd3mq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.7614174, 0.06911634, -3.0633912)
+collision_layer = 5

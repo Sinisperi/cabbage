@@ -22,3 +22,7 @@ func place_items(items: Array[ItemData]) -> void:
 
 func get_selected_item() -> ItemData:
 	return inventory_grid.get_selected_item()
+
+
+func add_item(item_data: ItemData, index: int) -> void:
+	inventory_grid.place_item(item_data, index)

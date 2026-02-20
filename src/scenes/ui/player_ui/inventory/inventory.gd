@@ -25,7 +25,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			var draggable_item: DraggableItem = get_tree().get_first_node_in_group("draggable_item")
 			if draggable_item:
 				## TODO Spawn items on the ground ( throw them out with physics etc )
-				print("dropped ", draggable_item.data.item_name)
+				printerr("NOT IMPLEMENTED: dropped ", draggable_item.data.item_name)
 				
 
 # Called when the node enters the scene tree for the first time.
@@ -53,6 +53,8 @@ func _ready() -> void:
 	
 	push_warning("Debug purposes")
 	EventBus.inventory.hot_bar.rh_item_equipped.connect(_on_item_equipped)
+	
+	EventBus.inventory.item_pick_up_requested.connect(_on_item_picked_up)
 
 func _remove_item(from: Array[ItemData], index: int) -> void:
 	from[index] = null
@@ -82,3 +84,21 @@ func _on_item_equipped(item_data: ItemData) -> void:
 	else:
 		$VBoxContainer2/Label.text = "Empty Hand"
 		$VBoxContainer2/TextureRect.texture = null
+
+
+func _on_item_picked_up(item_data: ItemData) -> void:
+	var item_index: int = -1
+	
+	for i in inventory_items.size():
+		if !inventory_items[i]:
+			inventory_items[i] = item_data
+			item_index = i
+			break
+			
+	if item_index < 0:
+		print("no space, later will check item type and try to 
+		add it to other slots maybe")
+		return
+		
+	inventory_grid.add_item(item_data, item_index)
+	
