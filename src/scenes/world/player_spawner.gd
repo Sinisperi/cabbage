@@ -10,14 +10,18 @@ func _spawn_function(data: Dictionary) -> Node:
 	## Load player data or create based on username???
 	
 	if PlayerManager.active_players.has(data.username):
-		player.stats = PlayerManager.active_players[data.username]
+		player.player_data = PlayerManager.active_players[data.username]
 	else:
-		player.stats = PlayerData.new()
-		player.stats.username = data.username
-		PlayerManager.active_players[data.username] = player.stats
+		player.player_data = PlayerData.new()
+		player.player_data.username = data.username
+		PlayerManager.active_players[data.username] = player.player_data
 		
 	PlayerManager.active_peers[data.peer_id] = data.username
 	
 	player.position = Vector3(data.location.x, player.position.y, data.location.y)
 	player.name = str(data.peer_id)
+	
+	Globals.inventory.inventory_grid.place_items_request.rpc(Inventory.InventoryType.ITEM)
+	Globals.inventory.hot_bar_slots.place_items_request.rpc(Inventory.InventoryType.HOT_BAR)
+	#hot_bar_slots.place_items_request.rpc(InventoryType.HOT_BAR)
 	return player

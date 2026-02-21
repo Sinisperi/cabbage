@@ -1,7 +1,7 @@
 class_name Inventory extends Control
 
 @export_category("Inventory")
-@export var inventory_size: int = 18
+@export var inventory_size: int = 16
 @export var inventory_items: Array[ItemData]
 @export var inventory_grid: SlotsPanel
 
@@ -17,7 +17,11 @@ class_name Inventory extends Control
 
 @onready var inventory_container: HBoxContainer = $VBoxContainer/InventoryContainer
 
-
+enum InventoryType
+{
+	ITEM,
+	HOT_BAR,
+}
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -30,23 +34,19 @@ func _unhandled_input(event: InputEvent) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	inventory_grid.item_picked.connect(func(index: int) -> void: _remove_item(inventory_items, index))
+	Globals.inventory = self
+	inventory_grid.item_picked.connect(func(index: int) -> void: _remove_item.rpc_id(1, InventoryType.ITEM, index))
 	inventory_grid.item_placed.connect(func(index: int, item_data: ItemData) -> void:
-		_add_item(inventory_items, index, item_data))
+		_add_item.rpc_id(1, InventoryType.ITEM, index, item_data.to_dict()))
 	
-	hot_bar_slots.item_picked.connect(func(index: int) -> void: _remove_item(hot_bar_items, index))
+	hot_bar_slots.item_picked.connect(func(index: int) -> void: _remove_item.rpc_id(1, InventoryType.HOT_BAR, index))
 	hot_bar_slots.item_placed.connect(func(index: int, item_data: ItemData) -> void:
-		_add_item(hot_bar_items, index, item_data))
+		_add_item.rpc_id(1, InventoryType.HOT_BAR, index, item_data.to_dict()))
 	
 	inventory_grid.init_grid()
 	hot_bar_slots.init_grid()
 	
-	inventory_items = _initialize_inventory(inventory_items, inventory_size)
-	hot_bar_items = _initialize_inventory(hot_bar_items, hot_bar_size)
 
-	inventory_grid.place_items(inventory_items)
-	hot_bar_slots.place_items(hot_bar_items)
-	
 	
 	_on_item_equipped(hot_bar_slots.get_selected_item())
 	
@@ -56,21 +56,56 @@ func _ready() -> void:
 	
 	EventBus.inventory.item_pick_up_requested.connect(_on_item_picked_up)
 
-func _remove_item(from: Array[ItemData], index: int) -> void:
-	from[index] = null
 
+@rpc("any_peer", "call_local")
+func _remove_item(inventory_type: InventoryType, index: int) -> void:
+	if multiplayer.is_server():
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		print(peer_id, " remove item peer id")
+		var player_id: String = PlayerManager.active_peers[peer_id if peer_id > 0 else 1]
+		var player_inventory: InventoryData = PlayerManager.active_players[player_id].inventory
+		var inventory_kind: Variant = null
+		match inventory_type:
+			InventoryType.ITEM:
+				inventory_kind = player_inventory.inventory_items
+			InventoryType.HOT_BAR:
+				inventory_kind = player_inventory.hot_bar_items
+		if !inventory_kind:
+			print(inventory_kind)
+			return
+		inventory_kind[index] = null
 
-func _add_item(from: Array[ItemData], index: int, item_data: ItemData) -> void:
-	from[index] = item_data
+@rpc("any_peer", "call_local")
+func _add_item(inventory_type: InventoryType, index: int, item_data: Variant) -> void:
+	if multiplayer.is_server():
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		print(peer_id, " remove item peer id")
+		var player_id: String = PlayerManager.active_peers[peer_id if peer_id > 0 else 1]
+		var player_inventory: InventoryData = PlayerManager.active_players[player_id].inventory
+		var inventory_kind: Variant = null
+		match inventory_type:
+			InventoryType.ITEM:
+				inventory_kind = player_inventory.inventory_items
+			InventoryType.HOT_BAR:
+				inventory_kind = player_inventory.hot_bar_items
+		if !inventory_kind:
+			print(" no fricking inveneoty", inventory_kind)
+			return
+		
+		if item_data != null:
+			inventory_kind[index] = load(item_data.path)
+		else:
+			inventory_kind[index] = null
+		print("peer_id ", peer_id, " ", " kind: ", inventory_kind, "\nactual ", player_inventory.inventory_items)
 	
 
-func _initialize_inventory(inventory: Array[ItemData], inv_size: int) -> Array[ItemData]:
-	var empty_slots: int = inv_size - inventory.size()
-	var new_array: Array[ItemData] = []
-	new_array.resize(empty_slots)
-	new_array.fill(null)
-	inventory += new_array
-	return inventory
+#func _initialize_inventory(inventory: Array[ItemData], inv_size: int) -> Array[ItemData]:
+	#var empty_slots: int = inv_size - inventory.size()
+	#var new_array: Array[ItemData] = []
+	#new_array.resize(empty_slots)
+	#new_array.fill(null)
+	#inventory += new_array
+	#return inventory
 
 
 func toggle_inventory(is_shown: bool) -> void:

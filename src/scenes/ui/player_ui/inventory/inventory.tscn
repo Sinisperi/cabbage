@@ -17,7 +17,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_1p7c6")
-inventory_size = 16
 inventory_grid = NodePath("VBoxContainer/InventoryContainer/InventorySlots")
 hot_bar_slots = NodePath("VBoxContainer/HotbarSlots")
 equipment_slots = NodePath("VBoxContainer/InventoryContainer/PanelContainer/EquipmentSlots")

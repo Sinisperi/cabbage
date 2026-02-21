@@ -20,13 +20,14 @@ func init_grid() -> void:
 		i.item_placed.connect(func(index: int, item_data: ItemData) -> void: item_placed.emit(index, item_data))
 
 
-func place_items(items: Array[ItemData]) -> void:
+func place_items(items: Array) -> void:
 	for i in items.size():
 		if i > get_child_count():
 			break
 		var slot: InventorySlot = get_child(i)
 		slot.set_item(items[i])
 		slot.slot_index = i
+	print("items is empty LUL")
 
 
 func _expand(amount: int, type: InventoryType) -> void:

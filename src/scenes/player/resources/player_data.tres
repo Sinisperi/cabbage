@@ -1,7 +1,9 @@
 [gd_resource type="Resource" script_class="PlayerData" format=3 uid="uid://cgk72lc0eagtd"]
 
 [ext_resource type="Script" uid="uid://lagpl0emh7ir" path="res://src/scenes/player/resources/player_data.gd" id="1_ltkn8"]
+[ext_resource type="Resource" uid="uid://bfgj6nt8dm0jo" path="res://src/scenes/player/resources/test_inventory.tres" id="1_up1oy"]
 
 [resource]
 script = ExtResource("1_ltkn8")
+inventory = ExtResource("1_up1oy")
 metadata/_custom_type_script = "uid://lagpl0emh7ir"

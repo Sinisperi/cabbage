@@ -14,5 +14,6 @@ func _on_confirm_button_pressed() -> void:
 		# where there will be an option to create a lobby, set amount of players and the visibility
 		# and also get a code
 	var username: String = player_name_line_edit.text
+	PlayerManager.add_player(1, username)
 	SceneLoader.load_scene(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1, username))
 	

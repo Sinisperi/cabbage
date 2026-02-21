@@ -15,9 +15,32 @@ func _ready() -> void:
 func init_grid() -> void:
 	inventory_grid.init_grid()
 
+@rpc("any_peer", "call_local")
+func place_items_request(inventory_type: Inventory.InventoryType) -> void:
+	if multiplayer.is_server():
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		var player_id: String = PlayerManager.active_peers[peer_id]
+		
+		var inv: Array = PlayerManager.active_players[player_id].inventory.inventory_items_to_obj()
+		if inventory_type == Inventory.InventoryType.HOT_BAR:
+			inv = PlayerManager.get_player_data(peer_id).inventory.hot_bar_items_to_obj()
+		if peer_id <= 1:
+			place_items(inv)
+		else:
+			place_items.rpc_id(peer_id, inv)
 
-func place_items(items: Array[ItemData]) -> void:
+@rpc("authority", "call_remote")
+func place_items(items_obj: Array) -> void:
+	print(items_obj)
+	var items: Array = []
+	for i: Variant in items_obj:
+		if i != null:
+			items.append(load(i.path))
+		else:
+			items.append(i)
+			
 	inventory_grid.place_items(items)
+	prints(multiplayer.get_remote_sender_id(), "placed items now", items)
 
 
 func get_selected_item() -> ItemData:

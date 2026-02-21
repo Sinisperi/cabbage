@@ -9,3 +9,9 @@ var uid: String:
 
 func is_same_type(item_data: ItemData) -> bool:
 	return item_data.uid == uid
+
+
+func to_dict() -> Dictionary:
+	return {
+		"path": resource_path
+	}

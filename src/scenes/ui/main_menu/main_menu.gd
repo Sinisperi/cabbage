@@ -25,14 +25,18 @@ func _on_new_game_button_pressed() -> void:
 func _on_play_online_button_pressed() -> void:
 	NetworkManager.enable_multiplayer(true)
 	NetworkManager.join_game()
-	#SceneLoader.load_scene(SceneLoader.Scene.WORLD_SCENE)
 	
 	
 ## TODO Instead of loading the world, check if player has a save here
 ## if they do, load the world and spawn the player with data,
 ## otherwise, switch to character creator
-func _on_peer_connected(_id: int) -> void:
+func _on_peer_connected(peer_id: int) -> void:
+	
+	call_deferred("_load_world")
+
+
+func _load_world() -> void:
 	SceneLoader.load_scene(
 		SceneLoader.Scene.WORLD_SCENE, 
-		func(world: World) -> void: world._request_player_spawn.rpc_id(1)
-		)
+		func(world: World) -> void: 
+			world._request_player_spawn.rpc_id(1))

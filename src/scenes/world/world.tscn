@@ -36,6 +36,8 @@ script = ExtResource("1_q3of6")
 player_spawner = NodePath("MultiplayerSpawner")
 player_spawn_area = NodePath("SpawnArea")
 
+[node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1932386333]
 environment = SubResource("Environment_rwgxs")
 
@@ -63,46 +65,44 @@ player_scene = ExtResource("1_m76yy")
 
 [node name="Players" type="Node3D" parent="." unique_id=233463965]
 
-[node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
-
 [node name="GatherableItems" type="Node3D" parent="." unique_id=758326054]
 
-[node name="InteractibleItem" parent="." unique_id=1934783462 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem" parent="GatherableItems" unique_id=1934783462 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0359616, 0.06911634, -2.4980268)
 collision_layer = 5
 
-[node name="InteractibleItem2" parent="." unique_id=324447619 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem2" parent="GatherableItems" unique_id=324447619 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2258858, 0.06911634, -2.2863731)
 collision_layer = 5
 
-[node name="InteractibleItem3" parent="." unique_id=1164537588 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem3" parent="GatherableItems" unique_id=1164537588 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36625433, 0.06911634, -2.6367157)
 collision_layer = 5
 
-[node name="InteractibleItem4" parent="." unique_id=1450168687 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem4" parent="GatherableItems" unique_id=1450168687 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2828612, 0.06911586, -3.3009706)
 collision_layer = 5
 
-[node name="InteractibleItem5" parent="." unique_id=35108460 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem5" parent="GatherableItems" unique_id=35108460 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5628969, 0.06911634, -3.2613375)
 collision_layer = 5
 
-[node name="InteractibleItem6" parent="." unique_id=1176890907 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem6" parent="GatherableItems" unique_id=1176890907 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4280399, 0.075510904, -4.18178)
 collision_layer = 5
 
-[node name="InteractibleItem7" parent="." unique_id=1343475518 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem7" parent="GatherableItems" unique_id=1343475518 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13444918, 0.06911634, -3.3562288)
 collision_layer = 5
 
-[node name="InteractibleItem8" parent="." unique_id=286415228 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem8" parent="GatherableItems" unique_id=286415228 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29935974, 0.06911634, -4.3703175)
 collision_layer = 5
 
-[node name="InteractibleItem9" parent="." unique_id=1261226871 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem9" parent="GatherableItems" unique_id=1261226871 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0125828, 0.06911634, -3.3668272)
 collision_layer = 5
 
-[node name="InteractibleItem10" parent="." unique_id=1820281097 instance=ExtResource("8_gd3mq")]
+[node name="InteractibleItem10" parent="GatherableItems" unique_id=1820281097 instance=ExtResource("8_gd3mq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.7614174, 0.06911634, -3.0633912)
 collision_layer = 5
