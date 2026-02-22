@@ -10,7 +10,7 @@ albedo_color = Color(0.47354317, 0.26937336, 0, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_c8j3m"]
 radius = 0.25177884
 
-[node name="InteractibleItem" unique_id=1934783462 instance=ExtResource("1_s4xap")]
+[node name="TestMushroom" unique_id=1934783462 instance=ExtResource("1_s4xap")]
 script = ExtResource("2_vngyn")
 data = ExtResource("3_c8j3m")
 

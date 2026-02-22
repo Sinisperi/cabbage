@@ -10,8 +10,16 @@ item_name = "Mushroom"
 texture = ExtResource("3_gqhmq")
 metadata/_custom_type_script = "uid://dudvpb3rg1snn"
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_m15rw"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="InteractibleItem" type="Area3D" unique_id=1934783462]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_ews8d")
 data = SubResource("Resource_f5y1v")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=970224030]
+replication_config = SubResource("SceneReplicationConfig_m15rw")

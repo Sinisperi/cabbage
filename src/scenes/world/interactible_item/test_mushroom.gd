@@ -6,5 +6,10 @@ func _ready() -> void:
 
 func being_interacted_with() -> bool:
 	EventBus.inventory.item_pick_up_requested.emit(data)
-	queue_free()
+	destroy_itself.rpc()
 	return true
+
+@rpc("any_peer", "call_local")
+func destroy_itself() -> void:
+	if multiplayer.is_server():
+		queue_free()
