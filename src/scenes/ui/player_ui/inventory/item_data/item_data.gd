@@ -13,5 +13,5 @@ func is_same_type(item_data: ItemData) -> bool:
 
 func to_dict() -> Dictionary:
 	return {
-		"path": resource_path
+		"uid": uid
 	}

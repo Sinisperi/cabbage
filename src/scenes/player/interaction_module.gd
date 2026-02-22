@@ -6,7 +6,6 @@ class_name InteractionModule extends Area3D
 var interactible_items_in_area: int:
 	set(value):
 		interactible_items_in_area = value
-		print(value)
 	get():
 		return interactible_items_in_area
 

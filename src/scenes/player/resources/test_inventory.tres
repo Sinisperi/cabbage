@@ -3,20 +3,12 @@
 [ext_resource type="Script" uid="uid://bawfqhick31f7" path="res://src/scenes/ui/player_ui/inventory/item_data/equipable_item_data.gd" id="1_m0t1f"]
 [ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="2_8hmsn"]
 [ext_resource type="Script" uid="uid://dfc66fh3fwwfh" path="res://src/scenes/player/resources/inventory_data.gd" id="3_gh64c"]
-[ext_resource type="Resource" uid="uid://bynudm8501svu" path="res://src/scenes/player/resources/test_item_01.tres" id="3_ryyv1"]
+[ext_resource type="Resource" uid="uid://bynudm8501svu" path="res://src/resources/items/test_items/test_item_01.tres" id="3_ryyv1"]
 [ext_resource type="Script" uid="uid://cm6pqexiv7jc4" path="res://src/scenes/ui/player_ui/inventory/item_data/trinket_data.gd" id="4_ryyv1"]
-[ext_resource type="Resource" uid="uid://bwdp8cihhct18" path="res://src/scenes/player/resources/test_item_02.tres" id="4_vc23m"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_8hmsn"]
-
-[sub_resource type="Resource" id="Resource_gh64c"]
-script = ExtResource("2_8hmsn")
-item_name = "aaaaaaaaaaaaaaaaaa"
-texture = SubResource("PlaceholderTexture2D_8hmsn")
-metadata/_custom_type_script = "uid://dudvpb3rg1snn"
+[ext_resource type="Resource" uid="uid://bwdp8cihhct18" path="res://src/resources/items/test_items/test_item_02.tres" id="4_vc23m"]
 
 [resource]
 script = ExtResource("3_gh64c")
 inventory_items = Array[ExtResource("2_8hmsn")]([ExtResource("3_ryyv1"), ExtResource("4_vc23m"), null, null, null, null, null, null, null, null, null, null, null, null, null, null])
-hot_bar_items = Array[ExtResource("2_8hmsn")]([SubResource("Resource_gh64c"), null, null, null])
+hot_bar_items = Array[ExtResource("2_8hmsn")]([ExtResource("3_ryyv1"), null, null, null])
 metadata/_custom_type_script = "uid://dfc66fh3fwwfh"

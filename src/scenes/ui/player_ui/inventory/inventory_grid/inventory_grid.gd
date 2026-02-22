@@ -27,8 +27,6 @@ func place_items(items: Array) -> void:
 		var slot: InventorySlot = get_child(i)
 		slot.set_item(items[i])
 		slot.slot_index = i
-	print("items is empty LUL")
-
 
 func _expand(amount: int, type: InventoryType) -> void:
 	if inventory_type != type: return

@@ -12,11 +12,13 @@ config_version=5
 
 config/name="cabbage"
 run/main_scene="uid://d0b3fdfc26ir6"
+run/print_header=false
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
+ItemDb="*uid://bos5fo6vt83gu"
 NetworkManager="*uid://bpl0rea8nxikt"
 SceneLoader="*uid://bw1msf143kyt1"
 Globals="*uid://chaky2yacebpa"
@@ -44,6 +46,7 @@ folder_colors={
 "res://assets/": "yellow",
 "res://src/": "blue",
 "res://src/autoloads/": "orange",
+"res://src/resources/": "pink",
 "res://src/scenes/": "purple",
 "res://src/scenes/player/": "red",
 "res://src/scenes/ui/": "teal",

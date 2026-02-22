@@ -11,7 +11,6 @@ func add_player(peer_id: int, username: String) -> void:
 		# TODO in future change username to some sort of uid
 		active_peers[peer_id] = username
 		active_players[username] = PlayerData.new()
-		print("peer_id", peer_id, "not working maybe")
 		return
 	print("gholy funckoing shit whyyyyy ", peer_id)
 

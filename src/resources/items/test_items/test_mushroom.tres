@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bne3olsqtxt8f"]
+
+[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="1_bob21"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qjtbd"]
+load_path = "res://.godot/imported/mushroom_icon.png-ccdff1bc2376ee6ee28f0869886dfd71.ctex"
+
+[resource]
+script = ExtResource("1_bob21")
+item_name = "Mushroom"
+texture = SubResource("CompressedTexture2D_qjtbd")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"

@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c55jocqg2waon" path="res://src/scenes/world/interactible_item/interactible_item.tscn" id="1_s4xap"]
 [ext_resource type="Script" uid="uid://cvqd5jklm12kx" path="res://src/scenes/world/interactible_item/test_mushroom.gd" id="2_vngyn"]
+[ext_resource type="Resource" uid="uid://bne3olsqtxt8f" path="res://src/resources/items/test_items/test_mushroom.tres" id="3_c8j3m"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vngyn"]
 albedo_color = Color(0.47354317, 0.26937336, 0, 1)
@@ -11,6 +12,7 @@ radius = 0.25177884
 
 [node name="InteractibleItem" unique_id=1934783462 instance=ExtResource("1_s4xap")]
 script = ExtResource("2_vngyn")
+data = ExtResource("3_c8j3m")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." index="0" unique_id=902417986]
 radius = 0.03

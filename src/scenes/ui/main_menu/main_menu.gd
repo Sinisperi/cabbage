@@ -30,7 +30,7 @@ func _on_play_online_button_pressed() -> void:
 ## TODO Instead of loading the world, check if player has a save here
 ## if they do, load the world and spawn the player with data,
 ## otherwise, switch to character creator
-func _on_peer_connected(peer_id: int) -> void:
+func _on_peer_connected(_peer_id: int) -> void:
 	
 	call_deferred("_load_world")
 
