@@ -11,7 +11,8 @@ func _ready() -> void:
 			var c = node_3d.get_child(-1)
 			#c.name = str(c.get_instance_id())+ str(node_3d.get_child_count())
 			#c.reparent(gatherable_items, true)
-			var mushroom = TEST_MUSHROOM.instantiate()
+			#var mushroom = TEST_MUSHROOM.instantiate()
+			var mushroom = load(c.scene_file_path).instantiate()
 			gatherable_items.add_child(mushroom)
 			mushroom.global_position = c.global_position
 			mushroom.basis = c.basis
