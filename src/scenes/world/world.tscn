@@ -37,8 +37,6 @@ script = ExtResource("1_q3of6")
 player_spawner = NodePath("MultiplayerSpawner")
 player_spawn_area = NodePath("SpawnArea")
 
-[node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1932386333]
 environment = SubResource("Environment_rwgxs")
 
@@ -63,6 +61,8 @@ _spawnable_scenes = PackedStringArray("uid://7x3a74iiui7w")
 spawn_path = NodePath("../Players")
 script = ExtResource("3_cacf4")
 player_scene = ExtResource("1_m76yy")
+
+[node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
 
 [node name="Players" type="Node3D" parent="." unique_id=233463965]
 

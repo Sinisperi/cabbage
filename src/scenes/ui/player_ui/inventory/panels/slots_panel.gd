@@ -9,11 +9,11 @@ signal item_placed(index: int, item_data: ItemData)
 func _ready() -> void:
 	inventory_grid.item_picked.connect(func(index: int) -> void: item_picked.emit(index))
 	inventory_grid.item_placed.connect(func(index: int, item_data: ItemData) -> void: item_placed.emit(index, item_data))
-	pass
 
 
 func init_grid() -> void:
 	inventory_grid.init_grid()
+
 
 @rpc("any_peer", "call_local")
 func place_items_request(inventory_type: Inventory.InventoryType) -> void:
@@ -38,7 +38,6 @@ func place_items(items_obj: Array) -> void:
 			items.append(ItemDb.get_item(i.uid))
 		else:
 			items.append(i)
-	print(items_obj)
 			
 	inventory_grid.place_items(items)
 
