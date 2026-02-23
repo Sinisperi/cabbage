@@ -96,14 +96,6 @@ func _add_item(inventory_type: InventoryType, index: int, item_data: Variant) ->
 		prints(peer_id, "item added")
 	
 
-#func _initialize_inventory(inventory: Array[ItemData], inv_size: int) -> Array[ItemData]:
-	#var empty_slots: int = inv_size - inventory.size()
-	#var new_array: Array[ItemData] = []
-	#new_array.resize(empty_slots)
-	#new_array.fill(null)
-	#inventory += new_array
-	#return inventory
-
 
 func toggle_inventory(is_shown: bool) -> void:
 	inventory_container.visible = is_shown

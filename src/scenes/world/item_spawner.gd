@@ -1,25 +1,27 @@
 extends MultiplayerSpawner
-@onready var node_3d: Node3D = $"../Node3D"
-@onready var gatherable_items: Node3D = $"../GatherableItems"
-const TEST_MUSHROOM = preload("uid://h7qw3eulkbcj")
+
+@onready var gatherable_items: Node3D = %GatherableItems
+@onready var editor_spawned_items: Node3D = %EditorSpawnedItems
+
+
 
 func _ready() -> void:
+	
+	## Goes through editor_spawned_items and replicates all the children it has
+	## into gatherable_items node that is being watched by ItemSpawner
+	## We are doing it so ItemSpawner realizes that it has to replicate items on the client
+	## and to make it so when host or some client picks up item and later another client joins, they will
+	## not see picked up item on the ground
+	
 	if multiplayer.is_server():
-		#await get_tree().create_timer(0.2).timeout
 		await get_tree().process_frame
-		while node_3d.get_child_count():
-			var c = node_3d.get_child(-1)
-			#c.name = str(c.get_instance_id())+ str(node_3d.get_child_count())
-			#c.reparent(gatherable_items, true)
-			#var mushroom = TEST_MUSHROOM.instantiate()
-			var mushroom = load(c.scene_file_path).instantiate()
-			gatherable_items.add_child(mushroom)
-			mushroom.global_position = c.global_position
-			mushroom.basis = c.basis
-			mushroom.name =  str(c.get_instance_id())+ str(node_3d.get_child_count())
-			node_3d.remove_child(c)
+		while editor_spawned_items.get_child_count():
+			var c: Node = editor_spawned_items.get_child(-1)
+			var new_item: Node = load(c.scene_file_path).instantiate()
+			gatherable_items.add_child(new_item)
+			new_item.global_position = c.global_position
+			new_item.basis = c.basis
+			new_item.name =  str(c.get_instance_id())+ str(editor_spawned_items.get_child_count())
+			editor_spawned_items.remove_child(c)
 			c.queue_free()
-	node_3d.queue_free()
-
-func _spawn_function(data: Variant) -> void:
-	pass
+	editor_spawned_items.queue_free()
