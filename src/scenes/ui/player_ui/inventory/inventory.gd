@@ -115,8 +115,8 @@ func _on_item_picked_up(item_data: Variant) -> void:
 	if multiplayer.is_server():
 		var item_index: int = -1
 		var item: ItemData = ItemDb.get_item(item_data.uid)
-		var peer_id = multiplayer.get_remote_sender_id()
-		var inventory_items = PlayerManager.get_player_data(1 if peer_id == 0 else peer_id).inventory.inventory_items
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		var inventory_items: Array = PlayerManager.get_player_data(1 if peer_id == 0 else peer_id).inventory.inventory_items
 		for i in inventory_items.size():
 			if !inventory_items[i]:
 				inventory_items[i] = item

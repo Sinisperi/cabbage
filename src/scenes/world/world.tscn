@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://upma2w865lrs" path="res://src/scenes/ui/player_ui/player_ui.tscn" id="7_m1gqc"]
 [ext_resource type="PackedScene" uid="uid://h7qw3eulkbcj" path="res://src/scenes/world/interactible_item/test_mushroom.tscn" id="8_gd3mq"]
 [ext_resource type="Script" uid="uid://buu65chivdnwc" path="res://src/scenes/world/item_spawner.gd" id="8_hrb3u"]
-[ext_resource type="Script" uid="uid://bk1serj83smcv" path="res://src/scenes/world/gatherable_items_container.gd" id="8_iwh12"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e5uuo"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -74,8 +73,6 @@ script = ExtResource("8_hrb3u")
 
 [node name="GatherableItems" type="Node3D" parent="." unique_id=758326054]
 unique_name_in_owner = true
-script = ExtResource("8_iwh12")
-mushroom_scene = ExtResource("8_gd3mq")
 
 [node name="EditorSpawnedItems" type="Node3D" parent="." unique_id=892226649]
 unique_name_in_owner = true

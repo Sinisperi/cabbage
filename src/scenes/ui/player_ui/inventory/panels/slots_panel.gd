@@ -48,5 +48,5 @@ func get_selected_item() -> ItemData:
 
 @rpc("authority", "call_remote")
 func add_item(item_data: Variant, index: int) -> void:
-	var item = ItemDb.get_item(item_data.uid)
+	var item: ItemData = ItemDb.get_item(item_data.uid)
 	inventory_grid.place_item(item, index)

@@ -3,6 +3,7 @@ extends Node
 var current_scene: Node = null
 
 class Scene:
+	## TODO not switch to it but just add it to main menu and show/hide it when needed
 	static var NEW_GAME_SCREEN: String = "uid://bla5i5xxak8jt"
 	static var WORLD_SCENE: String = "uid://bs3374vl80v8o"
 	

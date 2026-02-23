@@ -9,11 +9,13 @@ func _ready() -> void:
 func _on_confirm_button_pressed() -> void:
 	if online_checkbox.is_pressed():
 		NetworkManager.enable_multiplayer(true)
-		NetworkManager.host_game()
+		var status: Error = NetworkManager.host_game()
+		if status != OK:
+			print("Failed to host game with a status: ", status)
 		# in here somehow make a lobbby or something or send to a create lobby screen or pannel
 		# where there will be an option to create a lobby, set amount of players and the visibility
 		# and also get a code
-	var username: String = player_name_line_edit.text
-	PlayerManager.add_player(1, username)
+	var username: String = player_name_line_edit.text ## this is going to be a steam username at some point
+	#PlayerManager.add_player(1, username) ## This is when we are adding player to active_players
 	SceneLoader.load_scene(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1, username))
 	

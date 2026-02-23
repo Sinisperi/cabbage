@@ -6,9 +6,10 @@ var active_players: Dictionary[String, PlayerData] = {}
 var active_peers: Dictionary[int, String] = {}
 
 
+## TODO Load player save data in here
+
 func add_player(peer_id: int, username: String) -> void:
 	if !active_peers.has(peer_id):
-		# TODO in future change username to some sort of uid
 		active_peers[peer_id] = username
 		active_players[username] = PlayerData.new()
 		return

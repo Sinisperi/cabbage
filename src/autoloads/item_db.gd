@@ -6,6 +6,7 @@ const ITEMS_PATH = "res://src/resources/items/"
 func _ready() -> void:
 	_load_items(ITEMS_PATH)
 
+
 func _load_items(path: String) -> void:
 	var dir: DirAccess = DirAccess.open(path)
 	if dir:
