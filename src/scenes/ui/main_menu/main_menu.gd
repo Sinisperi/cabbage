@@ -4,6 +4,8 @@ extends Control
 @onready var join_game_button: Button = %JoinGameButton
 @onready var quit_button: Button = %QuitButton
 
+@onready var new_game_screen: Control = $NewGameScreen
+
 
 func _ready() -> void:
 	load_game_button.pressed.connect(_on_load_game_button_pressed)
@@ -25,7 +27,7 @@ func _on_load_game_button_pressed() -> void:
 
 ## Pessed by a host or a singleplayer
 func _on_new_game_button_pressed() -> void:
-	SceneLoader.load_scene(SceneLoader.Scene.NEW_GAME_SCREEN)
+	new_game_screen.visible = true
 
 ## Pressed by a client
 func _on_join_button_pressed() -> void:
