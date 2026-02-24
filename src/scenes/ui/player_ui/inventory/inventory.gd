@@ -1,8 +1,8 @@
 class_name Inventory extends Control
 
 @export_category("Inventory")
-@export var inventory_size: int = 18
-@export var inventory_items: Array[ItemData]
+@export var inventory_size: int = 16
+#@export var inventory_items: Array[ItemData]
 @export var inventory_grid: SlotsPanel
 
 
@@ -17,7 +17,11 @@ class_name Inventory extends Control
 
 @onready var inventory_container: HBoxContainer = $VBoxContainer/InventoryContainer
 
-
+enum InventoryType
+{
+	ITEM,
+	HOT_BAR,
+}
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -25,49 +29,72 @@ func _unhandled_input(event: InputEvent) -> void:
 			var draggable_item: DraggableItem = get_tree().get_first_node_in_group("draggable_item")
 			if draggable_item:
 				## TODO Spawn items on the ground ( throw them out with physics etc )
-				print("dropped ", draggable_item.data.item_name)
+				printerr("NOT IMPLEMENTED: dropped ", draggable_item.data.item_name)
 				
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	inventory_grid.item_picked.connect(func(index: int) -> void: _remove_item(inventory_items, index))
+	Globals.inventory = self
+	inventory_grid.item_picked.connect(func(index: int) -> void: _remove_item.rpc_id(1, InventoryType.ITEM, index))
 	inventory_grid.item_placed.connect(func(index: int, item_data: ItemData) -> void:
-		_add_item(inventory_items, index, item_data))
+		_add_item.rpc_id(1, InventoryType.ITEM, index, item_data.to_dict()); print(item_data.resource_path))
 	
-	hot_bar_slots.item_picked.connect(func(index: int) -> void: _remove_item(hot_bar_items, index))
+	hot_bar_slots.item_picked.connect(func(index: int) -> void: _remove_item.rpc_id(1, InventoryType.HOT_BAR, index))
 	hot_bar_slots.item_placed.connect(func(index: int, item_data: ItemData) -> void:
-		_add_item(hot_bar_items, index, item_data))
+		_add_item.rpc_id(1, InventoryType.HOT_BAR, index, item_data.to_dict()))
 	
 	inventory_grid.init_grid()
 	hot_bar_slots.init_grid()
 	
-	inventory_items = _initialize_inventory(inventory_items, inventory_size)
-	hot_bar_items = _initialize_inventory(hot_bar_items, hot_bar_size)
 
-	inventory_grid.place_items(inventory_items)
-	hot_bar_slots.place_items(hot_bar_items)
-	
 	
 	_on_item_equipped(hot_bar_slots.get_selected_item())
 	
 	
+	push_warning("Debug purposes")
 	EventBus.inventory.hot_bar.rh_item_equipped.connect(_on_item_equipped)
-
-func _remove_item(from: Array[ItemData], index: int) -> void:
-	from[index] = null
-
-
-func _add_item(from: Array[ItemData], index: int, item_data: ItemData) -> void:
-	from[index] = item_data
 	
+	EventBus.inventory.item_pick_up_requested.connect(func(item_data: ItemData) -> void: _on_item_picked_up.rpc_id(1, item_data.to_dict()))
 
-func _initialize_inventory(inventory: Array[ItemData], inv_size: int) -> Array[ItemData]:
-	var empty_slots: int = inv_size - inventory.size()
-	var new_array: Array[ItemData] = []
-	new_array.resize(empty_slots)
-	new_array.fill(null)
-	inventory += new_array
-	return inventory
+
+@rpc("any_peer", "call_local")
+func _remove_item(inventory_type: InventoryType, index: int) -> void:
+	if multiplayer.is_server():
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		var player_id: String = PlayerManager.active_peers[peer_id if peer_id > 0 else 1]
+		var player_inventory: InventoryData = PlayerManager.active_players[player_id].inventory
+		var inventory_kind: Variant = null
+		match inventory_type:
+			InventoryType.ITEM:
+				inventory_kind = player_inventory.inventory_items
+			InventoryType.HOT_BAR:
+				inventory_kind = player_inventory.hot_bar_items
+		if !inventory_kind:
+			return
+		inventory_kind[index] = null
+
+@rpc("any_peer", "call_local")
+func _add_item(inventory_type: InventoryType, index: int, item_data: Variant) -> void:
+	if multiplayer.is_server():
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		var player_id: String = PlayerManager.active_peers[peer_id if peer_id > 0 else 1]
+		var player_inventory: InventoryData = PlayerManager.active_players[player_id].inventory
+		var inventory_kind: Variant = null
+		match inventory_type:
+			InventoryType.ITEM:
+				inventory_kind = player_inventory.inventory_items
+			InventoryType.HOT_BAR:
+				inventory_kind = player_inventory.hot_bar_items
+		if !inventory_kind:
+			return
+		
+		if item_data != null:
+			print(item_data)
+			inventory_kind[index] = ItemDb.get_item(item_data.uid)
+		else:
+			inventory_kind[index] = null
+		prints(peer_id, "item added")
+	
 
 
 func toggle_inventory(is_shown: bool) -> void:
@@ -81,3 +108,27 @@ func _on_item_equipped(item_data: ItemData) -> void:
 	else:
 		$VBoxContainer2/Label.text = "Empty Hand"
 		$VBoxContainer2/TextureRect.texture = null
+
+
+@rpc("any_peer", "call_local")
+func _on_item_picked_up(item_data: Variant) -> void:
+	if multiplayer.is_server():
+		var item_index: int = -1
+		var item: ItemData = ItemDb.get_item(item_data.uid)
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		var inventory_items: Array = PlayerManager.get_player_data(1 if peer_id == 0 else peer_id).inventory.inventory_items
+		for i in inventory_items.size():
+			if !inventory_items[i]:
+				inventory_items[i] = item
+				item_index = i
+				break
+				
+		if item_index < 0:
+			print("no space, later will check item type and try to 
+			add it to other slots maybe")
+			return
+		if peer_id <= 1:
+			inventory_grid.add_item(item_data, item_index)
+			return
+		inventory_grid.add_item.rpc_id(peer_id, item_data, item_index)
+	

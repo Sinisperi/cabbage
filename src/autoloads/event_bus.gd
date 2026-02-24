@@ -14,11 +14,11 @@ class InventorySignals:
 	
 	
 	signal expantion_requested(columns_amount: int, type: InventoryGrid.InventoryType)
-
+	signal item_pick_up_requested(item_data: ItemData)
 
 	class EquipmentSignals:
-		signal item_added(item_data: EquipableItemData)
-		signal item_removed(item_data: EquipableItemData)
+		signal item_equipped(item_data: EquipableItemData)
+		signal item_unequipped(item_data: EquipableItemData)
 	
 	class HotBarSignals:
 		signal rh_item_equipped(item_data: ItemData)

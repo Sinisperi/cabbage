@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bynudm8501svu"]
+
+[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="1_x32ut"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_m0t1f"]
+
+[resource]
+script = ExtResource("1_x32ut")
+item_name = "somthing"
+texture = SubResource("PlaceholderTexture2D_m0t1f")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"

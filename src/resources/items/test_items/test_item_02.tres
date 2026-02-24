@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bwdp8cihhct18"]
+
+[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="1_x6bul"]
+[ext_resource type="Texture2D" uid="uid://c1oqo2f3ieji0" path="res://assets/icons/debug/stone_icon.png" id="2_0v5wf"]
+
+[resource]
+script = ExtResource("1_x6bul")
+item_name = "Test Item 02"
+texture = ExtResource("2_0v5wf")
+metadata/_custom_type_script = "uid://dudvpb3rg1snn"
