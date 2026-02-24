@@ -34,7 +34,6 @@ func _on_area_entered(area: Area3D) -> void:
 
 
 func _on_area_exited(area: Area3D) -> void:
-	print("area exited you fuck")
 	if area is InteractibleItem:
 		interactible_items_in_area -= 1
 		if interactible_items_in_area <= 0:

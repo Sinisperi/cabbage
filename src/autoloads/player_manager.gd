@@ -9,7 +9,7 @@ var active_peers: Dictionary[int, String] = {}
 ## TODO Load player save data in here
 
 func add_player(peer_id: int, username: String) -> void:
-	#print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 	if !active_peers.has(peer_id):
 		var new_player_data: PlayerData = PlayerData.new()
 		new_player_data.username = username
@@ -17,7 +17,7 @@ func add_player(peer_id: int, username: String) -> void:
 		active_players[username] = new_player_data
 		print("added new player ", peer_id, username)
 		return
-	print("gholy funckoing shit whyyyyy ", peer_id)
+	#print("gholy funckoing shit whyyyyy ", peer_id)
 
 func get_player_data(peer_id: int) -> PlayerData:
 	if active_peers.has(peer_id):

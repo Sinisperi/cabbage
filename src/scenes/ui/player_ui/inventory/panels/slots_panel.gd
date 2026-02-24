@@ -31,6 +31,7 @@ func place_items_request(inventory_type: Inventory.InventoryType) -> void:
 
 @rpc("authority", "call_remote")
 func place_items(items_obj: Array) -> void:
+	print("placed items", multiplayer.get_remote_sender_id(), items_obj)
 	var items: Array = []
 	for i: Variant in items_obj:
 		if i != null:

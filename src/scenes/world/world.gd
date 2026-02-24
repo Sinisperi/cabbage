@@ -12,6 +12,9 @@ func _request_player_spawn(username: String = "NO USERNAME") -> void:
 		var peer_id: int = multiplayer.get_remote_sender_id()
 		
 		PlayerManager.add_player(peer_id, username)
+		Globals.inventory.inventory_grid.place_items_request.rpc(Inventory.InventoryType.ITEM)
+		Globals.inventory.hot_bar_slots.place_items_request.rpc(Inventory.InventoryType.HOT_BAR)
+		Globals.inventory.equipment_slots.init_equipment_request.rpc()
 		
 		var data: Dictionary = {
 			"peer_id": peer_id,
