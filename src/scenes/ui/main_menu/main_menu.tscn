@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d0b3fdfc26ir6"]
 
 [ext_resource type="Script" uid="uid://bu1ssahl7fr64" path="res://src/scenes/ui/main_menu/main_menu.gd" id="1_gn1n2"]
+[ext_resource type="PackedScene" uid="uid://bla5i5xxak8jt" path="res://src/scenes/ui/new_game_screen/new_game_screen.tscn" id="2_ful4p"]
 
 [node name="MainMenu" type="Control" unique_id=1100850197]
 layout_mode = 3
@@ -48,16 +49,16 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "New Game"
 
-[node name="HostGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1406390056]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Host Game"
-
 [node name="JoinGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=799093449]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Join Game"
 
 [node name="QuitButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1446550807]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Quit"
+
+[node name="NewGameScreen" parent="." unique_id=1086454482 instance=ExtResource("2_ful4p")]
+visible = false
+layout_mode = 1

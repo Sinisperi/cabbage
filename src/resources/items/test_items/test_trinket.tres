@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TrinketData" format=3 uid="uid://d37rp4ut1yk52"]
+
+[ext_resource type="Script" uid="uid://cm6pqexiv7jc4" path="res://src/scenes/ui/player_ui/inventory/item_data/trinket_data.gd" id="1_puf35"]
+[ext_resource type="Script" uid="uid://c1wgdpsvufb36" path="res://src/scenes/ui/player_ui/inventory/item_data/item_stats.gd" id="2_jirkl"]
+
+[sub_resource type="Resource" id="Resource_yii46"]
+script = ExtResource("2_jirkl")
+metadata/_custom_type_script = "uid://c1wgdpsvufb36"
+
+[sub_resource type="Gradient" id="Gradient_cgrt2"]
+colors = PackedColorArray(0, 1, 0, 1, 1, 0, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bpj8x"]
+frequency = 0.001
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_02nk1"]
+noise = SubResource("FastNoiseLite_bpj8x")
+color_ramp = SubResource("Gradient_cgrt2")
+
+[resource]
+script = ExtResource("1_puf35")
+equipment_type = 6
+stats = SubResource("Resource_yii46")
+item_name = "Random Trinket"
+texture = SubResource("NoiseTexture2D_02nk1")
+metadata/_custom_type_script = "uid://cm6pqexiv7jc4"

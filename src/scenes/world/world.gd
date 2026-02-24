@@ -10,12 +10,16 @@ func _ready() -> void:
 func _request_player_spawn(username: String = "NO USERNAME") -> void:
 	if multiplayer.is_server():
 		var peer_id: int = multiplayer.get_remote_sender_id()
+		
+		PlayerManager.add_player(peer_id, username)
+		
 		var data: Dictionary = {
 			"peer_id": peer_id,
 			"location": player_spawn_area.get_spawn_point(),
 			"username": username
 		}
+		
 		player_spawner.spawn(data)
 		
-		print("spawning player ", peer_id)
+		prints("spawning player", username, peer_id)
 		
