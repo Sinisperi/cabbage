@@ -24,7 +24,6 @@ func place_items_request(inventory_type: Inventory.InventoryType) -> void:
 		var inv: Array = PlayerManager.active_players[player_id].inventory.inventory_items_to_obj()
 		if inventory_type == Inventory.InventoryType.HOT_BAR:
 			inv = PlayerManager.get_player_data(peer_id).inventory.hot_bar_items_to_obj()
-			#print(inv)
 		if peer_id <= 1:
 			place_items(inv)
 		else:
