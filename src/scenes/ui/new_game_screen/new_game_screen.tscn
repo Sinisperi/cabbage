@@ -11,57 +11,63 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_g6m57")
 
-[node name="CreateNewGamePanel" type="PanelContainer" parent="." unique_id=281980211]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1439406184]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -163.5
-offset_right = 200.0
-offset_bottom = 163.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CreateNewGamePanel" unique_id=1833444720]
+[node name="CreateNewGamePanel" type="PanelContainer" parent="PanelContainer" unique_id=281980211]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CreateNewGamePanel" unique_id=1833444720]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CreateNewGamePanel/VBoxContainer" unique_id=337363530]
+[node name="Label" type="Label" parent="PanelContainer/CreateNewGamePanel/VBoxContainer" unique_id=337363530]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 63
 text = "Create New Game"
 
-[node name="PanelContainer" type="PanelContainer" parent="CreateNewGamePanel/VBoxContainer" unique_id=242916266]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/CreateNewGamePanel/VBoxContainer" unique_id=242916266]
 custom_minimum_size = Vector2(400, 300)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CreateNewGamePanel/VBoxContainer/PanelContainer" unique_id=1789338263]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/CreateNewGamePanel/VBoxContainer/PanelContainer" unique_id=1789338263]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=162623408]
+[node name="Label" type="Label" parent="PanelContainer/CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=162623408]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Name"
+text = "Player Name"
 
-[node name="GameNameLineEdit" type="LineEdit" parent="CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1181649119]
+[node name="PlayerNameLineEdit" type="LineEdit" parent="PanelContainer/CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1181649119]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ConfirmButton" type="Button" parent="CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1029026667]
+[node name="ConfirmButton" type="Button" parent="PanelContainer/CreateNewGamePanel/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1029026667]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Confirm"
 
-[node name="OnlineCheckbox" type="CheckBox" parent="CreateNewGamePanel/VBoxContainer/PanelContainer" unique_id=185489426]
+[node name="OnlineCheckbox" type="CheckBox" parent="PanelContainer/CreateNewGamePanel/VBoxContainer/PanelContainer" unique_id=185489426]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "online"
+
+[node name="ToMainMenuButton" type="Button" parent="PanelContainer" unique_id=1545983297]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Go Back"
