@@ -85,15 +85,8 @@ custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_jnh7g")
 
-[node name="EquipmentSlots" parent="VBoxContainer/InventoryContainer/PanelContainer" unique_id=2045629739 node_paths=PackedStringArray("equipment_slots") instance=ExtResource("5_2o2pl")]
+[node name="EquipmentSlots" parent="VBoxContainer/InventoryContainer/PanelContainer" unique_id=2045629739 instance=ExtResource("5_2o2pl")]
 layout_mode = 2
-equipment_slots = {
-"BACKPACK_SLOT": null,
-"BOOTS_SLOT": null,
-"CHEST_SLOT": null,
-"HELMET_SLOT": null,
-"PANTS_SLOT": null
-}
 
 [node name="HotbarSlots" parent="VBoxContainer" unique_id=1751841294 instance=ExtResource("5_jnh7g")]
 layout_mode = 2

@@ -49,6 +49,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	Globals.world.get_loaded_chunks()
 	input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	_handle_state()
 	_handle_movement(delta)

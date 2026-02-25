@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://c7mu5d4hdcu4q"]
+
+[ext_resource type="Script" uid="uid://pe1va213tkhv" path="res://src/scenes/world/chunk/chunk.gd" id="1_lxayf"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hrb3u"]
+load_path = "res://.godot/imported/texture_04.png-731f6a4b209d05eff5a119bc0760cbe3.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4fx67"]
+resource_local_to_scene = true
+albedo_texture = SubResource("CompressedTexture2D_hrb3u")
+uv1_triplanar = true
+uv2_triplanar = true
+proximity_fade_distance = 0.33
+distance_fade_min_distance = 237.46
+distance_fade_max_distance = 158.4
+
+[node name="Chunk" type="Node3D" unique_id=535914108]
+script = ExtResource("1_lxayf")
+metadata/_edit_group_ = true
+
+[node name="Ground" type="CSGBox3D" parent="." unique_id=185385317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 16)
+use_collision = true
+size = Vector3(32, 0.09, 32)
+material = SubResource("StandardMaterial3D_4fx67")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=130558838]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1, 1, 4)
+pixel_size = 0.1269
+text = "asdfas"
+horizontal_alignment = 0
