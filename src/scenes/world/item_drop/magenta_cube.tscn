@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dqiye5esbw80b"]
+
+[ext_resource type="PackedScene" uid="uid://ipbw6w48cdfw" path="res://src/scenes/world/item_drop/item_drop.tscn" id="1_pg8fd"]
+[ext_resource type="Script" uid="uid://cvqd5jklm12kx" path="res://src/scenes/world/item_drop/item_drop.gd" id="2_j1uwy"]
+[ext_resource type="Resource" uid="uid://c6lsarr12tfio" path="res://src/resources/items/test_items/new_resource.tres" id="3_x172p"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_j1uwy"]
+radius = 0.29081404
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x172p"]
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_avxhh"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[node name="MagentaCube" unique_id=1591236586 instance=ExtResource("1_pg8fd")]
+data = ExtResource("3_x172p")
+
+[node name="InteractionArea" parent="." index="0" unique_id=1934783462]
+script = ExtResource("2_j1uwy")
+data = ExtResource("3_x172p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea" index="0" unique_id=1197659963]
+shape = SubResource("SphereShape3D_j1uwy")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." index="1" unique_id=1948586831]
+size = Vector3(0.2, 0.2, 0.2)
+material = SubResource("StandardMaterial3D_x172p")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." index="2" unique_id=815310700]
+shape = SubResource("BoxShape3D_avxhh")

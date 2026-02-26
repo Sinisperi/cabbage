@@ -25,7 +25,7 @@ size = Vector3(32, 0.09, 32)
 material = SubResource("StandardMaterial3D_4fx67")
 
 [node name="Label3D" type="Label3D" parent="." unique_id=130558838]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1, 1, 4)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.004737854, 0.09815174, 2.0144143)
 pixel_size = 0.1269
 text = "asdfas"
 horizontal_alignment = 0

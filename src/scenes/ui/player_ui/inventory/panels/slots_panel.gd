@@ -16,9 +16,8 @@ func init_grid() -> void:
 
 
 @rpc("any_peer", "call_local")
-func place_items_request(inventory_type: Inventory.InventoryType) -> void:
+func place_items_request(peer_id: int, inventory_type: Inventory.InventoryType) -> void:
 	if multiplayer.is_server():
-		var peer_id: int = multiplayer.get_remote_sender_id()
 		var player_id: String = PlayerManager.active_peers[peer_id]
 		
 		var inv: Array = PlayerManager.active_players[player_id].inventory.inventory_items_to_obj()

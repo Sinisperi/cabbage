@@ -40,15 +40,14 @@ func _on_item_unequipped(item_data: EquipableItemData) -> void:
 
 
 @rpc("any_peer", "call_local")
-func init_equipment_request() -> void:
+func init_equipment_request(peer_id: int) -> void:
 	if multiplayer.is_server():
-		var peer_id: int = multiplayer.get_remote_sender_id()
 		var equipment_items: Dictionary = PlayerManager.get_player_data(peer_id).inventory.equipment_items_to_obj()
 		var trinket_items: Array = PlayerManager.get_player_data(peer_id).inventory.trinket_items_to_obj()
-		
 		if peer_id <= 1:
 			_init_equipment(equipment_items, trinket_items)
 		else:
+			print(peer_id, "this is called asdfasdf;lkjasd;flkjasdf;lkj")
 			_init_equipment.rpc_id(peer_id, equipment_items, trinket_items)
 		
 		

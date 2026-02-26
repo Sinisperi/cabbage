@@ -1,7 +1,11 @@
 class_name Chunk extends Node3D
 
-var chunk_data: Dictionary = {
-	"entities": []
+@onready var chunk_data: Dictionary = {
+	"entities": [],
+	"position": {
+		"x": global_position.x,
+		"y": global_position.z
+	}
 }
 
 func display_name() -> void:

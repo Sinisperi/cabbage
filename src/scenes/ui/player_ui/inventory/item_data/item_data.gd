@@ -3,6 +3,10 @@ class_name ItemData extends Resource
 @export var item_name: String
 @export var texture: Texture2D
 
+# path to a scene for that item
+@export var mesh: Mesh
+@export var collision_shape: ConvexPolygonShape3D
+
 var uid: String:
 	get():
 		return item_name.to_lower().replace(" ", "_")

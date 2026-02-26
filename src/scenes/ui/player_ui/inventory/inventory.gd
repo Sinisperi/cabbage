@@ -1,8 +1,9 @@
 class_name Inventory extends Control
 
+const ITEM_DROP = preload("uid://ipbw6w48cdfw")
+
 @export_category("Inventory")
 @export var inventory_size: int = 16
-#@export var inventory_items: Array[ItemData]
 @export var inventory_grid: SlotsPanel
 
 
@@ -25,11 +26,11 @@ enum InventoryType
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_LEFT && event.is_pressed():
 			var draggable_item: DraggableItem = get_tree().get_first_node_in_group("draggable_item")
 			if draggable_item:
-				## TODO Spawn items on the ground ( throw them out with physics etc )
-				printerr("NOT IMPLEMENTED: dropped ", draggable_item.data.item_name)
+				_drop_item(draggable_item.data)
+				draggable_item.queue_free()
 				
 
 # Called when the node enters the scene tree for the first time.
@@ -56,6 +57,12 @@ func _ready() -> void:
 	
 	EventBus.inventory.item_pick_up_requested.connect(func(item_data: ItemData) -> void: _on_item_picked_up.rpc_id(1, item_data.to_dict()))
 
+
+
+func _drop_item(item_data: ItemData) -> void:
+	var item: Node = ITEM_DROP.instantiate()
+	item.data = item_data
+	EventBus.inventory.item_drop_requested.emit(item)
 
 @rpc("any_peer", "call_local")
 func _remove_item(inventory_type: InventoryType, index: int) -> void:
