@@ -12,11 +12,10 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [node name="ItemDrop" type="RigidBody3D" unique_id=1591236586]
-gravity_scale = 0.0
+process_mode = 4
 freeze = true
 continuous_cd = true
 script = ExtResource("1_fi5j5")
-interaction_area_shape = 1
 
 [node name="InteractionArea" parent="." unique_id=1934783462 instance=ExtResource("1_evntb")]
 unique_name_in_owner = true

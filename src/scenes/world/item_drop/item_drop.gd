@@ -4,7 +4,6 @@ class_name ItemDrop extends RigidBody3D
 @export var data: ItemData: set = _update_visuals_tool
 @export_category("Interaction")
 
-@export var interaction_area_shape: InteractionAreaShape
 
 
 @onready var interaction_area: InteractionArea = %InteractionArea
@@ -12,55 +11,27 @@ class_name ItemDrop extends RigidBody3D
 @onready var collision_shape_3d: CollisionShape3D = %CollisionShape3D
 @onready var interaction_area_collider: CollisionShape3D = %InteractionAreaCollider
 
-enum InteractionAreaShape
-{
-	SPHERE,
-	CAPSULE,
-	BOX
-}
+var physics_enabled: bool = false
+
 
 
 func _update_visuals_tool(item_data: ItemData) -> void:
-	if !is_inside_tree():
-		await self.ready
-	if item_data:
-		mesh_instance.set_deferred("mesh", item_data.mesh)
-		collision_shape_3d.set_deferred("shape", item_data.collision_shape)
-		#mesh_instance.mesh = item_data.mesh
-		#collision_shape_3d.shape = item_data.collision_shape
-		generate_interaction_area(item_data.mesh)
-	else:
-		mesh_instance.mesh = null
-		collision_shape_3d.shape = null
-		interaction_area_collider.shape = null
 	data = item_data
+	if Engine.is_editor_hint():
+		if !is_inside_tree():
+			await self.ready
+			await update_visuals()
+		
 	
-func generate_interaction_area(mesh: Mesh) -> void:
-	var aabb: AABB = mesh.get_aabb()
-	var longest_size: float = aabb.get_longest_axis_size()
-	var shortest_size: float = aabb.get_shortest_axis_size()
-	var new_collision_shape: Shape3D = null
-	match interaction_area_shape:
-		InteractionAreaShape.SPHERE:
-			new_collision_shape = SphereShape3D.new()
-			new_collision_shape.radius = longest_size / 2.0
-		InteractionAreaShape.CAPSULE:
-			new_collision_shape = CapsuleShape3D.new()
-			new_collision_shape.height = longest_size
-			new_collision_shape.radius = shortest_size
-		_:
-			new_collision_shape = BoxShape3D.new()
-			new_collision_shape.size = aabb.size
-			
-	interaction_area_collider.set_deferred("shape", new_collision_shape)
-	interaction_area_collider.set_deferred("position", aabb.get_center())
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	interaction_area.interacted_with.connect(_on_being_interacted_with)
-	await get_tree().process_frame
-	_update_visuals_tool(data)
+	if multiplayer.is_server():
+		await update_visuals()
+	if physics_enabled:
+		await enable_physics()
 
 func _on_being_interacted_with() -> bool:
 	EventBus.inventory.item_pick_up_requested.emit(data)
@@ -77,9 +48,9 @@ func generate_entity_data() -> Dictionary:
 	return {
 		"item_data": data.to_dict(),
 		"position": {
-			"x": global_position.x,
-			"y": global_position.y,
-			"z": global_position.z,
+			"x": position.x,
+			"y": position.y,
+			"z": position.z,
 		},
 		"rotation": {
 			"x": rotation.x,
@@ -88,3 +59,27 @@ func generate_entity_data() -> Dictionary:
 		}
 		
 	}
+
+
+
+func update_visuals() -> void:
+	process_mode = Node.PROCESS_MODE_DISABLED
+	if data:
+		mesh_instance.set_deferred("mesh", data.mesh)
+		#collision_shape_3d.shape = data.collision_shape
+		collision_shape_3d.set_deferred("shape", data.collision_shape)
+		interaction_area_collider.set_deferred("shape", data.interaction_area)
+		var aabb_center: Vector3 = data.mesh.get_aabb().get_center()
+		interaction_area_collider.set_deferred("position",aabb_center)
+	else:
+		mesh_instance.mesh = null
+		collision_shape_3d.shape = null
+		interaction_area_collider.shape = null
+	await get_tree().process_frame
+	process_mode = Node.PROCESS_MODE_INHERIT
+
+
+func enable_physics() -> void:
+	freeze = false
+	await get_tree().create_timer(2).timeout
+	freeze = true

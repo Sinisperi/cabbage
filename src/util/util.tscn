@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://dhinsys3svab6"]
 
 [ext_resource type="Script" uid="uid://nhoryaor3ttl" path="res://src/util/util.gd" id="1_fotat"]
+[ext_resource type="Resource" uid="uid://bne3olsqtxt8f" path="res://src/resources/items/test_items/test_mushroom.tres" id="2_4en30"]
 
 [node name="Util" type="Node" unique_id=493707801]
 script = ExtResource("1_fotat")
+item_to_process = ExtResource("2_4en30")

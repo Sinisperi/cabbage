@@ -6,7 +6,7 @@ class_name ItemData extends Resource
 # path to a scene for that item
 @export var mesh: Mesh
 @export var collision_shape: ConvexPolygonShape3D
-
+@export var interaction_area: Shape3D
 var uid: String:
 	get():
 		return item_name.to_lower().replace(" ", "_")

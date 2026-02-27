@@ -2,13 +2,13 @@ extends MultiplayerSpawner
 
 @onready var gatherable_items: Node3D = %GatherableItems
 @onready var editor_spawned_items: Node3D = %EditorSpawnedItems
+const ITEM_DROP = preload("uid://ipbw6w48cdfw")
 
 
 
 func _ready() -> void:
 	
-	EventBus.inventory.item_drop_requested.connect(_on_item_dropped)
-	await _init_editor_placed_items()
+	EventBus.inventory.item_drop_requested.connect(func (item: Node) -> void: _on_item_dropped.rpc_id(1, item.data.to_dict()))
 	
 		
 	## Goes through editor_spawned_items and replicates all the children it has
@@ -17,6 +17,9 @@ func _ready() -> void:
 	## and to make it so when host or some client picks up item and later another client joins, they will
 	## not see picked up item on the ground
 	
+	spawned.connect(_on_item_spawned)
+	spawn_function = _spawn_function
+	await _init_editor_placed_items()
 
 
 func _init_editor_placed_items() -> void:
@@ -24,32 +27,49 @@ func _init_editor_placed_items() -> void:
 		await get_tree().process_frame
 		while editor_spawned_items.get_child_count():
 			var c: Node = editor_spawned_items.get_child(-1)
-			var new_item: Node = load(c.scene_file_path).instantiate()
-			new_item.data = c.data
-			gatherable_items.add_child(new_item)
-			new_item.global_position = c.global_position
-			var chunk: Chunk = Globals.chunker.get_chunk_from_pos(new_item.global_position)
-			new_item.basis = c.basis
-			new_item.name = generate_unique_name(new_item)
 			
-			# this is done because new_item has @tool ffs
-			await get_tree().process_frame
 			
-			chunk.chunk_data.entities.append(new_item.generate_entity_data())
+			var data: Dictionary = {
+				"data": c.data.to_dict(),
+				"position": c.position,
+				"basis": c.basis,
+				"physics_enabled": false
+			}
 			
+			spawn(data)
 			editor_spawned_items.remove_child(c)
 			c.queue_free()
 			
 		
 	editor_spawned_items.queue_free()
 	
-	
-func _on_item_dropped(item: Node) -> void:	
-	item.name = generate_unique_name(item)
-	
-	gatherable_items.add_child(item, true)
-	var player_forward: Vector3 = -Globals.player.basis.z
-	item.global_position = Globals.player.global_position + (Vector3.UP * 2.0) + (1.5 * player_forward)
+@rpc("any_peer", "call_local")
+func _on_item_dropped(item: Variant) -> void:	
+
+	if multiplayer.is_server():
+		var player_forward: Vector3 = -Globals.player.basis.z
+		var data: Dictionary = {
+			"data": item,
+			"position": Globals.player.global_position + (Vector3.UP * 2.0) + (1.5 * player_forward),
+			"physics_enabled": true
+		}
+		spawn(data)
 
 func generate_unique_name(node: Node) -> String:
 	return str(node.get_instance_id())+ str(gatherable_items.get_child_count())
+
+
+func _on_item_spawned(item: Node) -> void:
+	item.update_visuals()
+
+func _spawn_function(data: Dictionary) -> Node:
+	var item: ItemDrop = ITEM_DROP.instantiate()
+	item.data = ItemDb.get_item(data.data.uid)
+	item.position = data.position
+	if data.has("basis"):
+		item.basis = data.basis
+	item.physics_enabled = data.physics_enabled
+	item.name = str(Time.get_unix_time_from_system())
+	var chunk: Chunk = Globals.chunker.get_chunk_from_pos(item.position)
+	chunk.chunk_data.entities.append(item.generate_entity_data())
+	return item
