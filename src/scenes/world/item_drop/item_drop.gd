@@ -11,7 +11,6 @@ class_name ItemDrop extends RigidBody3D
 @onready var collision_shape_3d: CollisionShape3D = %CollisionShape3D
 @onready var interaction_area_collider: CollisionShape3D = %InteractionAreaCollider
 
-var physics_enabled: bool = false
 
 
 
@@ -30,8 +29,7 @@ func _ready() -> void:
 	interaction_area.interacted_with.connect(_on_being_interacted_with)
 	if multiplayer.is_server():
 		await update_visuals()
-	if physics_enabled:
-		await enable_physics()
+	sleeping_state_changed.connect(_on_sleeping_state_changed)
 
 func _on_being_interacted_with() -> bool:
 	EventBus.inventory.item_pick_up_requested.emit(data)
@@ -66,7 +64,6 @@ func update_visuals() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
 	if data:
 		mesh_instance.set_deferred("mesh", data.mesh)
-		#collision_shape_3d.shape = data.collision_shape
 		collision_shape_3d.set_deferred("shape", data.collision_shape)
 		interaction_area_collider.set_deferred("shape", data.interaction_area)
 		var aabb_center: Vector3 = data.mesh.get_aabb().get_center()
@@ -76,10 +73,9 @@ func update_visuals() -> void:
 		collision_shape_3d.shape = null
 		interaction_area_collider.shape = null
 	await get_tree().process_frame
-	process_mode = Node.PROCESS_MODE_INHERIT
+	process_mode = Node.PROCESS_MODE_INHERIT	
 
 
-func enable_physics() -> void:
-	freeze = false
-	await get_tree().create_timer(2).timeout
-	freeze = true
+func _on_sleeping_state_changed() -> void:
+	if sleeping:
+		freeze = true

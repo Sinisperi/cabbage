@@ -13,7 +13,7 @@ properties/1/replication_mode = 1
 
 [node name="ItemDrop" type="RigidBody3D" unique_id=1591236586]
 process_mode = 4
-freeze = true
+freeze_mode = 1
 continuous_cd = true
 script = ExtResource("1_fi5j5")
 

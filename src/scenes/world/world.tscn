@@ -71,30 +71,37 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 
 [node name="ItemDrop" parent="EditorSpawnedItems" unique_id=1591236586 instance=ExtResource("8_4fx67")]
+process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 166, 0, 146)
 data = ExtResource("9_qfn71")
 
 [node name="ItemDrop2" parent="EditorSpawnedItems" unique_id=1235946703 instance=ExtResource("8_4fx67")]
+process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 169, 0, 149)
 data = ExtResource("9_qfn71")
 
 [node name="ItemDrop3" parent="EditorSpawnedItems" unique_id=1246005628 instance=ExtResource("8_4fx67")]
+process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 172, 0, 149)
 data = ExtResource("9_qfn71")
 
 [node name="ItemDrop4" parent="EditorSpawnedItems" unique_id=331931495 instance=ExtResource("8_4fx67")]
+process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170.8, 0, 149.9)
 data = ExtResource("9_qfn71")
 
 [node name="ItemDrop5" parent="EditorSpawnedItems" unique_id=331154440 instance=ExtResource("8_4fx67")]
+process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 174.1, 0, 148)
 data = ExtResource("9_qfn71")
 
 [node name="ItemDrop6" parent="EditorSpawnedItems" unique_id=543610759 instance=ExtResource("8_4fx67")]
+process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 0, 146.3)
 data = ExtResource("9_qfn71")
 
 [node name="ItemDrop7" parent="EditorSpawnedItems" unique_id=241037491 instance=ExtResource("8_4fx67")]
+process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 171.3, 0, 147.90001)
 data = ExtResource("9_qfn71")
 

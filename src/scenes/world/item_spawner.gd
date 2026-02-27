@@ -33,7 +33,6 @@ func _init_editor_placed_items() -> void:
 				"data": c.data.to_dict(),
 				"position": c.position,
 				"basis": c.basis,
-				"physics_enabled": false
 			}
 			
 			spawn(data)
@@ -51,12 +50,11 @@ func _on_item_dropped(item: Variant) -> void:
 		var data: Dictionary = {
 			"data": item,
 			"position": Globals.player.global_position + (Vector3.UP * 2.0) + (1.5 * player_forward),
-			"physics_enabled": true
 		}
 		spawn(data)
 
-func generate_unique_name(node: Node) -> String:
-	return str(node.get_instance_id())+ str(gatherable_items.get_child_count())
+#func generate_unique_name(node: Node) -> String:
+	#return str(node.get_instance_id())+ str(gatherable_items.get_child_count())
 
 
 func _on_item_spawned(item: Node) -> void:
@@ -68,7 +66,6 @@ func _spawn_function(data: Dictionary) -> Node:
 	item.position = data.position
 	if data.has("basis"):
 		item.basis = data.basis
-	item.physics_enabled = data.physics_enabled
 	item.name = str(Time.get_unix_time_from_system())
 	var chunk: Chunk = Globals.chunker.get_chunk_from_pos(item.position)
 	chunk.chunk_data.entities.append(item.generate_entity_data())

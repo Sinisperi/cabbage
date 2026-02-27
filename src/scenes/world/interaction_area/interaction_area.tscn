@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bpaw1to4ngek0" path="res://src/scenes/world/interaction_area/interaction_area.gd" id="1_ojfia"]
 
 [node name="InteractionArea" type="Area3D" unique_id=1934783462]
-process_mode = 3
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_ojfia")
