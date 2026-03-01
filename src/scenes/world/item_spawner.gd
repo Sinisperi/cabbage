@@ -2,7 +2,7 @@ extends MultiplayerSpawner
 
 @onready var gatherable_items: Node3D = %GatherableItems
 @onready var editor_spawned_items: Node3D = %EditorSpawnedItems
-const ITEM_DROP = preload("uid://ipbw6w48cdfw")
+const ITEM_DROP = preload("uid://28fbl1hsxhhp")
 
 
 
@@ -19,7 +19,7 @@ func _ready() -> void:
 	
 	spawned.connect(_on_item_spawned)
 	spawn_function = _spawn_function
-	await _init_editor_placed_items()
+	#await _init_editor_placed_items()
 
 
 func _init_editor_placed_items() -> void:
@@ -33,6 +33,7 @@ func _init_editor_placed_items() -> void:
 				"data": c.data.to_dict(),
 				"position": c.position,
 				"basis": c.basis,
+				"is_editor_placed": true
 			}
 			
 			spawn(data)
@@ -60,13 +61,15 @@ func _on_item_dropped(item: Variant) -> void:
 func _on_item_spawned(item: Node) -> void:
 	item.update_visuals()
 
+
 func _spawn_function(data: Dictionary) -> Node:
-	var item: ItemDrop = ITEM_DROP.instantiate()
+	var item: BaseItem = ITEM_DROP.instantiate()
 	item.data = ItemDb.get_item(data.data.uid)
 	item.position = data.position
 	if data.has("basis"):
 		item.basis = data.basis
 	item.name = str(Time.get_unix_time_from_system())
-	var chunk: Chunk = Globals.chunker.get_chunk_from_pos(item.position)
-	chunk.chunk_data.entities.append(item.generate_entity_data())
+	if !data.has("is_editor_placed"):
+		var chunk: Chunk = Globals.chunker.get_chunk_from_pos(item.position)
+		chunk.chunk_data.entities.append(item.generate_entity_data())
 	return item

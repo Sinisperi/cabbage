@@ -52,7 +52,7 @@ func _ready() -> void:
 	_on_item_equipped(hot_bar_slots.get_selected_item())
 	
 	
-	push_warning("Debug purposes")
+	print("Debug purposes Right Hand Item display")
 	EventBus.inventory.hot_bar.rh_item_equipped.connect(_on_item_equipped)
 	
 	EventBus.inventory.item_pick_up_requested.connect(func(item_data: ItemData) -> void: _on_item_picked_up.rpc_id(1, item_data.to_dict()))

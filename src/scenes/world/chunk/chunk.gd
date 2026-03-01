@@ -1,6 +1,7 @@
 class_name Chunk extends Node3D
 
 @onready var chunk_data: Dictionary = {
+	"removed_editor_entities": [],
 	"entities": [],
 	"position": {
 		"x": global_position.x,

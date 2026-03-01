@@ -1,5 +1,5 @@
 @tool
-class_name ItemDrop extends RigidBody3D
+class_name BaseItem extends RigidBody3D
 
 @export var data: ItemData: set = _update_visuals_tool
 @export_category("Interaction")
@@ -12,23 +12,25 @@ class_name ItemDrop extends RigidBody3D
 @onready var interaction_area_collider: CollisionShape3D = %InteractionAreaCollider
 
 
-
-
+func _enter_tree() -> void:
+	if Engine.is_editor_hint(): return
+	name = str(position.x) + "_" + str(position.z)
+	
 func _update_visuals_tool(item_data: ItemData) -> void:
 	data = item_data
 	if Engine.is_editor_hint():
 		if !is_inside_tree():
 			await self.ready
-			await update_visuals()
+		await update_visuals()
 		
 	
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	await update_visuals()
 	interaction_area.interacted_with.connect(_on_being_interacted_with)
-	if multiplayer.is_server():
-		await update_visuals()
+	#if multiplayer.is_server():
 	sleeping_state_changed.connect(_on_sleeping_state_changed)
 
 func _on_being_interacted_with() -> bool:
@@ -38,8 +40,8 @@ func _on_being_interacted_with() -> bool:
 
 @rpc("any_peer", "call_local")
 func destroy_itself() -> void:
-	if multiplayer.is_server():
-		queue_free()
+	#if multiplayer.is_server():
+	queue_free()
 
 
 func generate_entity_data() -> Dictionary:
@@ -73,7 +75,7 @@ func update_visuals() -> void:
 		collision_shape_3d.shape = null
 		interaction_area_collider.shape = null
 	await get_tree().process_frame
-	process_mode = Node.PROCESS_MODE_INHERIT	
+	process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func _on_sleeping_state_changed() -> void:

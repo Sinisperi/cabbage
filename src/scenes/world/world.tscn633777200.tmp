@@ -74,33 +74,7 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 
 [node name="BaseItem" parent="EditorSpawnedItems" unique_id=1186449444 instance=ExtResource("8_ma7xk")]
-process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5625677, 9.536743e-07, 8.736958)
-data = ExtResource("9_qfn71")
-
-[node name="BaseItem2" parent="EditorSpawnedItems" unique_id=738525502 instance=ExtResource("8_ma7xk")]
-process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.66312, 9.536743e-07, 10.024423)
-data = ExtResource("9_qfn71")
-
-[node name="BaseItem3" parent="EditorSpawnedItems" unique_id=583359099 instance=ExtResource("8_ma7xk")]
-process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3389916, 9.536743e-07, 9.878256)
-data = ExtResource("9_qfn71")
-
-[node name="BaseItem4" parent="EditorSpawnedItems" unique_id=871782644 instance=ExtResource("8_ma7xk")]
-process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.779759, 9.536743e-07, 10.687706)
-data = ExtResource("9_qfn71")
-
-[node name="BaseItem5" parent="EditorSpawnedItems" unique_id=1277914019 instance=ExtResource("8_ma7xk")]
-process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.39627, 9.536743e-07, 8.088017)
-data = ExtResource("9_qfn71")
-
-[node name="BaseItem6" parent="EditorSpawnedItems" unique_id=169927771 instance=ExtResource("8_ma7xk")]
-process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1962166, 9.536743e-07, 7.2810965)
 data = ExtResource("9_qfn71")
 
 [node name="Chunker" type="Node3D" parent="." unique_id=589012604]

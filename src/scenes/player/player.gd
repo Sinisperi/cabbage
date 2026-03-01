@@ -46,6 +46,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x * 0.001
 		camera_3d.rotation.x -= event.relative.y * 0.001
+	if event is InputEventKey:
+		if event.keycode == KEY_F1 && event.is_pressed():
+			$DebugCamera.current = !$DebugCamera.current
 
 
 func _physics_process(delta: float) -> void:

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://28fbl1hsxhhp"]
+
+[ext_resource type="Script" uid="uid://l6nnpxqgdlt8" path="res://src/scenes/world/item/item_drop/item_drop.gd" id="1_fi5j5"]
+[ext_resource type="PackedScene" uid="uid://diqi0pyya3sb6" path="res://src/scenes/world/item/base_item.tscn" id="1_foflh"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_foflh"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = false
+properties/0/replication_mode = 0
+properties/1/path = NodePath(".:data")
+properties/1/spawn = false
+properties/1/replication_mode = 0
+
+[node name="ItemDrop" unique_id=1186449444 instance=ExtResource("1_foflh")]
+script = ExtResource("1_fi5j5")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." index="3" unique_id=585170523]
+replication_config = SubResource("SceneReplicationConfig_foflh")
