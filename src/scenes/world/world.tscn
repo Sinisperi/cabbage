@@ -6,11 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://81ejynb6jof5" path="res://assets/kenney_prototype_textures/orange/texture_05.png" id="3_m1gqc"]
 [ext_resource type="PackedScene" uid="uid://bxqj4mdvakxia" path="res://src/scenes/world/spawn_area/spawn_area.tscn" id="4_kccwn"]
 [ext_resource type="PackedScene" uid="uid://upma2w865lrs" path="res://src/scenes/ui/player_ui/player_ui.tscn" id="7_m1gqc"]
+[ext_resource type="PackedScene" uid="uid://diqi0pyya3sb6" path="res://src/scenes/world/item/item_drop.tscn" id="8_br3r2"]
 [ext_resource type="Script" uid="uid://buu65chivdnwc" path="res://src/scenes/world/item_spawner.gd" id="8_hrb3u"]
-[ext_resource type="PackedScene" uid="uid://diqi0pyya3sb6" path="res://src/scenes/world/item/base_item.tscn" id="8_ma7xk"]
 [ext_resource type="PackedScene" uid="uid://c7mu5d4hdcu4q" path="res://src/scenes/world/chunk/chunk.tscn" id="9_4fx67"]
 [ext_resource type="Script" uid="uid://xbelfs5x7w73" path="res://src/scenes/world/chunker.gd" id="9_hrb3u"]
 [ext_resource type="Resource" uid="uid://bne3olsqtxt8f" path="res://src/resources/items/test_items/test_mushroom.tres" id="9_qfn71"]
+[ext_resource type="Resource" uid="uid://c6lsarr12tfio" path="res://src/resources/items/test_items/weird_tool.tres" id="10_br3r2"]
 [ext_resource type="PackedScene" uid="uid://c3exkwk03sbl7" path="res://assets/models/test/region_0_0.glb" id="12_ma7xk"]
 [ext_resource type="PackedScene" uid="uid://dor7sg2qj4yb2" path="res://assets/models/test/region_0_-1.glb" id="13_br3r2"]
 [ext_resource type="PackedScene" uid="uid://cu4mmvhxovlu3" path="res://assets/models/test/region_-1_0.glb" id="14_tthay"]
@@ -63,7 +64,7 @@ player_scene = ExtResource("1_m76yy")
 [node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
 
 [node name="ItemSpawner" type="MultiplayerSpawner" parent="." unique_id=1456447614]
-_spawnable_scenes = PackedStringArray("uid://28fbl1hsxhhp")
+_spawnable_scenes = PackedStringArray("<null>")
 spawn_path = NodePath("../GatherableItems")
 script = ExtResource("8_hrb3u")
 
@@ -73,35 +74,25 @@ unique_name_in_owner = true
 [node name="EditorSpawnedItems" type="Node3D" parent="." unique_id=892226649]
 unique_name_in_owner = true
 
-[node name="BaseItem" parent="EditorSpawnedItems" unique_id=1186449444 instance=ExtResource("8_ma7xk")]
+[node name="ItemDrop" parent="EditorSpawnedItems" unique_id=1186449444 instance=ExtResource("8_br3r2")]
 process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5625677, 9.536743e-07, 8.736958)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.142925, 0, 5.2798853)
 data = ExtResource("9_qfn71")
 
-[node name="BaseItem2" parent="EditorSpawnedItems" unique_id=738525502 instance=ExtResource("8_ma7xk")]
+[node name="ItemDrop2" parent="EditorSpawnedItems" unique_id=826145360 instance=ExtResource("8_br3r2")]
 process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.66312, 9.536743e-07, 10.024423)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.547004, 0, 5.8344893)
 data = ExtResource("9_qfn71")
 
-[node name="BaseItem3" parent="EditorSpawnedItems" unique_id=583359099 instance=ExtResource("8_ma7xk")]
+[node name="ItemDrop3" parent="EditorSpawnedItems" unique_id=976288868 instance=ExtResource("8_br3r2")]
 process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3389916, 9.536743e-07, 9.878256)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.551164, 0, 6.173306)
 data = ExtResource("9_qfn71")
 
-[node name="BaseItem4" parent="EditorSpawnedItems" unique_id=871782644 instance=ExtResource("8_ma7xk")]
+[node name="ItemDrop4" parent="EditorSpawnedItems" unique_id=529423224 instance=ExtResource("8_br3r2")]
 process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.779759, 9.536743e-07, 10.687706)
-data = ExtResource("9_qfn71")
-
-[node name="BaseItem5" parent="EditorSpawnedItems" unique_id=1277914019 instance=ExtResource("8_ma7xk")]
-process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.39627, 9.536743e-07, 8.088017)
-data = ExtResource("9_qfn71")
-
-[node name="BaseItem6" parent="EditorSpawnedItems" unique_id=169927771 instance=ExtResource("8_ma7xk")]
-process_mode = 0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1962166, 9.536743e-07, 7.2810965)
-data = ExtResource("9_qfn71")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.4422793, 0, 6.47727)
+data = ExtResource("10_br3r2")
 
 [node name="Chunker" type="Node3D" parent="." unique_id=589012604]
 unique_name_in_owner = true

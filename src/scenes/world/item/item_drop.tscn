@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://diqi0pyya3sb6"]
 
-[ext_resource type="Script" uid="uid://cvqd5jklm12kx" path="res://src/scenes/world/item/base_item.gd" id="1_a7vix"]
-[ext_resource type="PackedScene" uid="uid://c55jocqg2waon" path="res://src/scenes/world/interaction_area/interaction_area.tscn" id="2_1uh7h"]
+[ext_resource type="Script" uid="uid://cvqd5jklm12kx" path="res://src/scenes/world/item/item_drop.gd" id="1_t2m1g"]
+[ext_resource type="PackedScene" uid="uid://c55jocqg2waon" path="res://src/scenes/world/interaction_area/interaction_area.tscn" id="2_olnao"]
 
-[node name="BaseItem" type="RigidBody3D" unique_id=1186449444]
+[node name="ItemDrop" type="RigidBody3D" unique_id=1186449444]
 process_mode = 4
 freeze_mode = 1
 continuous_cd = true
-script = ExtResource("1_a7vix")
+script = ExtResource("1_t2m1g")
 
-[node name="InteractionArea" parent="." unique_id=1934783462 instance=ExtResource("2_1uh7h")]
+[node name="InteractionArea" parent="." unique_id=1934783462 instance=ExtResource("2_olnao")]
 unique_name_in_owner = true
 
 [node name="InteractionAreaCollider" type="CollisionShape3D" parent="InteractionArea" unique_id=1325916634]

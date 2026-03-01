@@ -1,10 +1,10 @@
 @tool
-class_name BaseItem extends RigidBody3D
+class_name ItemDrop extends RigidBody3D
 
 @export var data: ItemData: set = _update_visuals_tool
 @export_category("Interaction")
 
-
+@export var is_editor_placed: bool = false
 
 @onready var interaction_area: InteractionArea = %InteractionArea
 @onready var mesh_instance: MeshInstance3D = %MeshInstance3D
@@ -40,8 +40,11 @@ func _on_being_interacted_with() -> bool:
 
 @rpc("any_peer", "call_local")
 func destroy_itself() -> void:
-	#if multiplayer.is_server():
-	queue_free()
+	if owner:
+		queue_free()
+	else:
+		if multiplayer.is_server():
+			queue_free()
 
 
 func generate_entity_data() -> Dictionary:

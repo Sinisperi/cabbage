@@ -1,6 +1,6 @@
 class_name Inventory extends Control
 
-const ITEM_DROP = preload("uid://ipbw6w48cdfw")
+const ITEM_DROP = preload("uid://diqi0pyya3sb6")
 
 @export_category("Inventory")
 @export var inventory_size: int = 16

@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://c5crksf05o6rl" path="res://src/resources/items/test_items/test_helmet.tres" id="2_vc23m"]
 [ext_resource type="Script" uid="uid://dfc66fh3fwwfh" path="res://src/scenes/player/resources/inventory_data.gd" id="3_gh64c"]
 [ext_resource type="Resource" uid="uid://bynudm8501svu" path="res://src/resources/items/test_items/test_item_01.tres" id="3_ryyv1"]
-[ext_resource type="Resource" uid="uid://c6lsarr12tfio" path="res://src/resources/items/test_items/new_resource.tres" id="4_3lynd"]
+[ext_resource type="Resource" uid="uid://c6lsarr12tfio" path="res://src/resources/items/test_items/weird_tool.tres" id="4_3lynd"]
 [ext_resource type="Script" uid="uid://cm6pqexiv7jc4" path="res://src/scenes/ui/player_ui/inventory/item_data/trinket_data.gd" id="4_ryyv1"]
 [ext_resource type="Resource" uid="uid://bwdp8cihhct18" path="res://src/resources/items/test_items/test_item_02.tres" id="4_vc23m"]
 [ext_resource type="Resource" uid="uid://d37rp4ut1yk52" path="res://src/resources/items/test_items/test_trinket.tres" id="8_vc23m"]

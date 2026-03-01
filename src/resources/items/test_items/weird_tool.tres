@@ -1,16 +1,21 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c6lsarr12tfio"]
 
-[ext_resource type="ArrayMesh" uid="uid://b2rp6vun0qbge" path="res://assets/models/test/weird_shaped_tool.tres" id="1_k10aa"]
-[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="2_5uw1v"]
-[ext_resource type="Texture2D" uid="uid://b5e4f0pcwa4hl" path="res://assets/icons/debug/magenta_item.png" id="3_xvk6s"]
+[ext_resource type="ArrayMesh" uid="uid://b2rp6vun0qbge" path="res://assets/models/test/weird_shaped_tool.tres" id="1_mt768"]
+[ext_resource type="Script" uid="uid://dudvpb3rg1snn" path="res://src/scenes/ui/player_ui/inventory/item_data/item_data.gd" id="2_rpcg0"]
+[ext_resource type="Texture2D" uid="uid://b5e4f0pcwa4hl" path="res://assets/icons/debug/magenta_item.png" id="3_rabff"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_k10aa"]
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_kk82i"]
 points = PackedVector3Array(-0.22481951, 0.54951763, -0.01668632, -0.004225269, 0.45420057, -0.17769037, -0.016681, 0.0017460539, -0.01668632, -0.22481951, 0.54951763, 0.016638264, -0.22481951, 0.5907531, -0.01668632, 0.004181251, 0.45420057, -0.17769037, -0.004225269, 0.4644207, -0.17055191, 0.22481951, 0.5907531, -0.12733243, 0.016636997, 0.0017460539, -0.01668632, -0.016681, 0.0017460539, 0.016638264, -0.00409323, 0.31310573, 0.18333186, -0.22481951, 0.5907531, 0.016638264, -0.016681, 0.6777663, -0.01668632, 0.22481951, 0.54951763, -0.12733243, 0.14867666, 0.72006637, -0.015590817, 0.22481951, 0.5907531, -0.09400785, 0.016636997, 0.0017460539, 0.016638264, 0.0040492117, 0.31310573, 0.18333186, -0.00409323, 0.32517117, 0.18333186, -0.016681, 0.6777663, 0.016638264, 0.13269985, 0.72680885, -0.0037169456, 0.22481951, 0.54951763, -0.09400785, 0.14867666, 0.72006637, -0.0048831254, 0.0040492117, 0.32517117, 0.18333186, 0.13269985, 0.72680885, 0.0069907457)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mt768"]
+radius = 0.36102226
+height = 0.7250628
+
 [resource]
-script = ExtResource("2_5uw1v")
-item_name = "The Cube"
-texture = ExtResource("3_xvk6s")
-mesh = ExtResource("1_k10aa")
-collision_shape = SubResource("ConvexPolygonShape3D_k10aa")
+script = ExtResource("2_rpcg0")
+item_name = "Weird Tool"
+texture = ExtResource("3_rabff")
+mesh = ExtResource("1_mt768")
+collision_shape = SubResource("ConvexPolygonShape3D_kk82i")
+interaction_area = SubResource("CapsuleShape3D_mt768")
 metadata/_custom_type_script = "uid://dudvpb3rg1snn"

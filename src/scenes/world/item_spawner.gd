@@ -2,7 +2,7 @@ extends MultiplayerSpawner
 
 @onready var gatherable_items: Node3D = %GatherableItems
 @onready var editor_spawned_items: Node3D = %EditorSpawnedItems
-const ITEM_DROP = preload("uid://28fbl1hsxhhp")
+const ITEM_DROP = preload("uid://diqi0pyya3sb6")
 
 
 
@@ -63,7 +63,7 @@ func _on_item_spawned(item: Node) -> void:
 
 
 func _spawn_function(data: Dictionary) -> Node:
-	var item: BaseItem = ITEM_DROP.instantiate()
+	var item: ItemDrop = ITEM_DROP.instantiate()
 	item.data = ItemDb.get_item(data.data.uid)
 	item.position = data.position
 	if data.has("basis"):
