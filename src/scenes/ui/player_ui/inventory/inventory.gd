@@ -29,7 +29,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.is_pressed():
 			var draggable_item: DraggableItem = get_tree().get_first_node_in_group("draggable_item")
 			if draggable_item:
-				_drop_item(draggable_item.data)
+				var player_forward: Vector3 = -Globals.player.basis.z
+				var drop_position: Vector3 = Globals.player.global_position + (Vector3.UP * 2.0) + (1.5 * player_forward)
+				_drop_item(draggable_item.data, drop_position)
 				draggable_item.queue_free()
 				
 
@@ -59,9 +61,10 @@ func _ready() -> void:
 
 
 
-func _drop_item(item_data: ItemData) -> void:
+func _drop_item(item_data: ItemData, drop_position: Vector3) -> void:
 	var item: Node = ITEM_DROP.instantiate()
 	item.data = item_data
+	item.position = drop_position
 	EventBus.inventory.item_drop_requested.emit(item)
 
 @rpc("any_peer", "call_local")

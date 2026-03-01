@@ -50,9 +50,10 @@ material = SubResource("StandardMaterial3D_iwh12")
 
 [node name="SpawnArea" parent="." unique_id=1103865526 instance=ExtResource("4_kccwn")]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.14275, 0, 0.03552246)
 metadata/_edit_group_ = true
 
-[node name="Players" type="Node3D" parent="SpawnArea" unique_id=233463965]
+[node name="Players" type="Node" parent="SpawnArea" unique_id=1680782546]
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=795910366]
 unique_name_in_owner = true
@@ -68,7 +69,7 @@ _spawnable_scenes = PackedStringArray("<null>")
 spawn_path = NodePath("../GatherableItems")
 script = ExtResource("8_hrb3u")
 
-[node name="GatherableItems" type="Node3D" parent="." unique_id=758326054]
+[node name="GatherableItems" type="Node" parent="." unique_id=814483426]
 unique_name_in_owner = true
 
 [node name="EditorSpawnedItems" type="Node3D" parent="." unique_id=892226649]
@@ -94,9 +95,10 @@ process_mode = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.4422793, 0, 6.47727)
 data = ExtResource("10_br3r2")
 
-[node name="Chunker" type="Node3D" parent="." unique_id=589012604]
+[node name="Chunker" type="Node3D" parent="." unique_id=589012604 node_paths=PackedStringArray("regions_container")]
 unique_name_in_owner = true
 script = ExtResource("9_hrb3u")
+regions_container = NodePath("../Regions")
 
 [node name="Chunk" parent="Chunker" unique_id=535914108 instance=ExtResource("9_4fx67")]
 
@@ -866,6 +868,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 896, 0, 960)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 960, 0, 960)
 
 [node name="Regions" type="Node3D" parent="." unique_id=1320110328]
+unique_name_in_owner = true
 
 [node name="region_0_0" parent="Regions" unique_id=617801244 instance=ExtResource("12_ma7xk")]
 
