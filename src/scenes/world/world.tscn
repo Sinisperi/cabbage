@@ -65,7 +65,7 @@ player_scene = ExtResource("1_m76yy")
 [node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
 
 [node name="ItemSpawner" type="MultiplayerSpawner" parent="." unique_id=1456447614]
-_spawnable_scenes = PackedStringArray("<null>")
+_spawnable_scenes = PackedStringArray("uid://diqi0pyya3sb6")
 spawn_path = NodePath("../GatherableItems")
 script = ExtResource("8_hrb3u")
 
