@@ -10,7 +10,7 @@ const CHUNK_LIFE_TIME: float = 15.0
 @export var chunk_unload_distance: int = 2
 @export var region_unload_margin_chunks: int = 1
 
-var loaded_chunk_ids: Dictionary[Vector2i, bool] = {}
+var chunks_in_area_ids: Dictionary[Vector2i, bool] = {}
 var loaded_region_ids: Dictionary[Vector2i, bool] = {}
 var loaded_chunks: Dictionary = {}
 var chunk_cache: Dictionary = {}
@@ -67,37 +67,20 @@ func get_loaded_chunks(delta: float) -> void:
 	if origin_chunk == current_chunk: return
 	current_chunk = origin_chunk
 	
-	var active_chunk_ids: Dictionary[Vector2i, bool] = {}
+	var new_chunks_in_area: Dictionary[Vector2i, bool] = {}
 	var active_region_ids: Dictionary[Vector2i, bool] = {}
 	
 	
 	## WHAT WE SEE LOCALLY
-	for x in range(-chunk_unload_distance, chunk_unload_distance + 1):
-		for y in range(-chunk_unload_distance, chunk_unload_distance + 1):
-			var chunk_coord: Vector2i = origin_chunk + Vector2i(x, y)
-			
-			if !world_area.has_point(chunk_coord):
-				continue
-				
-			var distance: int = int(origin_chunk.distance_to(chunk_coord))
-			var region_coord: Vector2i = get_region_from_coords(chunk_coord)
-			
-			if distance <= chunk_render_distance:
-				active_chunk_ids[chunk_coord] = true
-				active_region_ids[region_coord] = true
-				
-			# only if it is already loaded
-			elif distance <= chunk_unload_distance && loaded_chunk_ids.has(chunk_coord):
-				active_chunk_ids[chunk_coord] = true
-				if loaded_region_ids.has(region_coord):
-					active_region_ids[region_coord] = true
+	get_chunks_in_area(new_chunks_in_area, active_region_ids, origin_chunk)
+
 				
 			
 				
 	## ATTEMPT TO UNLOAD CHUNK TO CACHE WHEN PLAYER EXITS
-	for i: Vector2i in loaded_chunk_ids.keys():
-		if !active_chunk_ids.has(i):
-			loaded_chunk_ids.erase(i)
+	for i: Vector2i in chunks_in_area_ids.keys():
+		if !new_chunks_in_area.has(i):
+			chunks_in_area_ids.erase(i)
 			if !loaded_chunks.has(i):
 				printerr("Trying to move chunk to cache ", i, " but it's not loaded")
 				continue
@@ -109,12 +92,12 @@ func get_loaded_chunks(delta: float) -> void:
 				_handle_player_exit(i)
 	
 	## LOAD CHUNK FROM DISK OR CACHE
-	for i: Vector2i in active_chunk_ids.keys():
-		if !loaded_chunk_ids.has(i):
+	for i: Vector2i in new_chunks_in_area.keys():
+		if !chunks_in_area_ids.has(i):
 			## Chunk was loaded by other client
 			if loaded_chunks.has(i):
 				loaded_chunks[i].player_count += 1
-				highlight_chunk(i, "LOADED")
+				highlight_chunk(i, "LOADED", true)
 			else:
 				if chunk_cache.has(i):
 					load_chunk_from_cache(i)
@@ -131,15 +114,35 @@ func get_loaded_chunks(delta: float) -> void:
 	update_regions(active_region_ids)
 	
 	loaded_region_ids = active_region_ids
-	loaded_chunk_ids = active_chunk_ids
+	chunks_in_area_ids = new_chunks_in_area
 	print("====================================================================")
 	
-	
+
+func get_chunks_in_area(new_chunks_in_area: Dictionary, active_region_ids: Dictionary, origin_chunk: Vector2i) -> void:
+	for x in range(-chunk_unload_distance, chunk_unload_distance + 1):
+		for y in range(-chunk_unload_distance, chunk_unload_distance + 1):
+			var chunk_coord: Vector2i = origin_chunk + Vector2i(x, y)
+			
+			if !world_area.has_point(chunk_coord):
+				continue
+				
+			var distance: int = int(origin_chunk.distance_to(chunk_coord))
+			var region_coord: Vector2i = get_region_from_coords(chunk_coord)
+			
+			if distance <= chunk_render_distance:
+				new_chunks_in_area[chunk_coord] = true
+				active_region_ids[region_coord] = true
+				
+			# only if it is already loaded
+			elif distance <= chunk_unload_distance && chunks_in_area_ids.has(chunk_coord):
+				new_chunks_in_area[chunk_coord] = true
+				if loaded_region_ids.has(region_coord):
+					active_region_ids[region_coord] = true
 
 func _handle_player_exit(chunk: Vector2i) -> void:
 	if !loaded_chunks.has(chunk): return
 	loaded_chunks[chunk].player_count -= 1
-	highlight_chunk(chunk, "LOADED")
+	highlight_chunk(chunk, "LOADED", loaded_chunks[chunk].player_count)
 	if loaded_chunks[chunk].player_count <= 0:
 		move_chunk_to_cache(chunk)
 
@@ -155,7 +158,7 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 			loaded_chunks[chunk] = load_chunk_data(chunk)
 			
 	loaded_chunks[chunk].player_count += 1
-	highlight_chunk(chunk, "LOADED")
+	highlight_chunk(chunk, "LOADED", peer_id > 1)
 	if peer_id > 1:
 		print(" sending chunk data to peer ", peer_id)
 		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk], chunk)
@@ -164,6 +167,7 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 
 func move_chunk_to_cache(chunk: Vector2i) -> void:
 	chunk_cache[chunk] = loaded_chunks[chunk]
+	chunk_cache[chunk].player_count = 0
 	loaded_chunks.erase(chunk)
 	highlight_chunk(chunk, "CACHED")
 	
@@ -252,26 +256,29 @@ func remove_editor_entity_from_chunk(item_id: String, pos: Vector3) -> void:
 
 
 func update_chunk_visuals(chunk: Vector2i) -> void:
-	pass
-	#for i: String in loaded_chunks[chunk].chunk_data.removed_editor_entities:
-		#var item: Node = editor_spawned_items.get_node("./" + i)
-		#editor_spawned_items.remove_child(item)
+	for i: String in loaded_chunks[chunk].chunk_data.removed_editor_entities:
+		var item: Node = editor_spawned_items.get_node("./" + i)
+		editor_spawned_items.remove_child(item)
 
 
-func highlight_chunk(pos: Vector2i, tag: String) -> void:
+func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> void:
 	var region_position: Vector2i = get_region_from_coords(pos)
 	var region_name: String = "region_" + str(region_position.x) + "_" + str(region_position.y)
 	var region_node: Node = regions_container.get_node("./" + region_name)
 	var chunk_node: MeshInstance3D = region_node.get_node("./" + "Chunk_" + str(pos.x) + "_" + str(pos.y))
 	var mat: StandardMaterial3D = chunk_node.get_active_material(0)
+	var label: Label3D
 	if chunk_node.has_node("./PlayerCount"):
-		chunk_node.remove_child(chunk_node.get_node("./PlayerCount"))
-	var label: Label3D = Label3D.new()
-	chunk_node.add_child(label)
+		label = chunk_node.get_node("./PlayerCount")
+	else:
+		label = Label3D.new()
+		chunk_node.add_child(label)
+		
 	label.rotation_degrees.x = -90.0
 	label.pixel_size = 0.5
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	label.position.z += 7.0
+	label.position.z = 7.0
+	label.position.y = 1.0
 	label.text = "0"
 	label.name = "PlayerCount"
 	
@@ -279,7 +286,10 @@ func highlight_chunk(pos: Vector2i, tag: String) -> void:
 		var new_mat: StandardMaterial3D = mat.duplicate()
 		match tag:
 			"LOADED":
-				new_mat.albedo_color = Color.SEA_GREEN
+				if is_client:
+					new_mat.albedo_color = Color.DARK_BLUE
+				else:
+					new_mat.albedo_color = Color.SEA_GREEN
 				label.text = str(loaded_chunks[pos].player_count)
 			"CACHED":
 				new_mat.albedo_color = Color.ORANGE

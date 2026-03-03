@@ -51,4 +51,4 @@ func _load_world() -> void:
 	SceneLoader.load_scene(
 		SceneLoader.Scene.WORLD_SCENE, 
 		func(world: World) -> void: 
-			world._request_player_spawn.rpc_id(1))
+			world._request_player_spawn.rpc_id(1, str(Time.get_datetime_string_from_system())))
