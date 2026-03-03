@@ -42,6 +42,7 @@ func _on_being_interacted_with() -> bool:
 func destroy_itself() -> void:
 	if owner:
 		queue_free()
+		Globals.chunker.remove_editor_entity_from_chunk(name, position)
 	else:
 		if multiplayer.is_server():
 			queue_free()
