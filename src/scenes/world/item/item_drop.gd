@@ -4,13 +4,11 @@ class_name ItemDrop extends RigidBody3D
 @export var data: ItemData: set = _update_visuals_tool
 @export_category("Interaction")
 
-@export var is_editor_placed: bool = false
 
 @onready var interaction_area: InteractionArea = %InteractionArea
 @onready var mesh_instance: MeshInstance3D = %MeshInstance3D
 @onready var collision_shape_3d: CollisionShape3D = %CollisionShape3D
 @onready var interaction_area_collider: CollisionShape3D = %InteractionAreaCollider
-
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
@@ -42,14 +40,16 @@ func _on_being_interacted_with() -> bool:
 func destroy_itself() -> void:
 	if owner:
 		queue_free()
-		Globals.chunker.remove_editor_entity_from_chunk(name, position)
+		Globals.chunker.remove_editor_entity_from_chunk(generate_entity_data())
 	else:
 		if multiplayer.is_server():
+			Globals.chunker.remove_entity_from_chunk(generate_entity_data())
 			queue_free()
 
 
 func generate_entity_data() -> Dictionary:
 	return {
+		"item_id": name,
 		"item_data": data.to_dict(),
 		"position": {
 			"x": position.x,
@@ -83,5 +83,8 @@ func update_visuals() -> void:
 
 
 func _on_sleeping_state_changed() -> void:
+
 	if sleeping:
-		freeze = true
+		if !owner:
+			Globals.chunker.add_entity_to_chunk(generate_entity_data())
+			print("sleeping ", sleeping)

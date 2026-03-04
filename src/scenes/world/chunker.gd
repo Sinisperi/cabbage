@@ -1,5 +1,5 @@
 class_name Chunker extends Node3D
-
+@onready var peer_id: int = multiplayer.get_unique_id()
 const CHUNK_SIZE: int = 64
 const REGION_SIZE: int = 16
 const TOTAL_REGIONS: int = 2
@@ -105,6 +105,7 @@ func get_loaded_chunks(delta: float) -> void:
 					highlight_chunk(i, "LOADED")
 					## Event though we just loaded chunk from cache on the client,
 					## we still send chunk data request to the server to resync
+					## TODO check for stale chunk and if it is stale, then request data
 					if !multiplayer.is_server():
 						request_chunk_data.rpc_id(1, i.x, i.y)
 				else:
@@ -249,11 +250,13 @@ func remove_entity_from_chunk(entity_data: Dictionary) -> void:
 		not loaded!")
 	loaded_chunks[chunk].chunk_data.entities.erase(entity_data)
 	loaded_chunks[chunk].is_dirty = true
+	print("removed entithy", entity_data)
 
 
-func remove_editor_entity_from_chunk(item_id: String, pos: Vector3) -> void:
+func remove_editor_entity_from_chunk(entity_data: Dictionary) -> void:
+	var pos: Vector3 = Vector3(entity_data.position.x, entity_data.position.y, entity_data.position.z)
 	var chunk: Vector2i = get_chunk_coord_from_pos(pos)
-	loaded_chunks[chunk].chunk_data.removed_editor_entities.push_back(item_id)
+	loaded_chunks[chunk].chunk_data.removed_editor_entities.push_back(entity_data.item_id)
 	loaded_chunks[chunk].is_dirty = true
 
 
@@ -264,7 +267,7 @@ func update_chunk_visuals(chunk: Vector2i) -> void:
 
 
 func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> void:
-	return
+	#return
 	var region_position: Vector2i = get_region_from_coords(pos)
 	var region_name: String = "region_" + str(region_position.x) + "_" + str(region_position.y)
 	var region_node: Node = regions_container.get_node("./" + region_name)
@@ -281,7 +284,8 @@ func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> voi
 	label.pixel_size = 0.5
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	label.position.z = 7.0
-	label.position.y = 1.0
+	#label.position.x = 32.0
+	label.position.y = 0.05
 	label.text = "0"
 	label.name = "PlayerCount"
 	
@@ -293,10 +297,12 @@ func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> voi
 					new_mat.albedo_color = Color.DARK_BLUE
 				else:
 					new_mat.albedo_color = Color.SEA_GREEN
-				label.text = str(loaded_chunks[pos].player_count)
+				label.text = str(pos)
+				#label.text = str(loaded_chunks[pos].player_count)
 			"CACHED":
 				new_mat.albedo_color = Color.ORANGE
-				label.text = str(chunk_cache[pos].player_count)
+				label.text = str(pos)
+				#label.text = str(chunk_cache[pos].player_count)
 			"UNLOADED":
 				new_mat.albedo_color = Color.WHITE
 			_:

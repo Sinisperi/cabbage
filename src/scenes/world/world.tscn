@@ -878,3 +878,8 @@ unique_name_in_owner = true
 [node name="region_-1_0" parent="Regions" unique_id=236191481 instance=ExtResource("15_gu5fw")]
 
 [node name="region_-1_-1" parent="Regions" unique_id=1127243979 instance=ExtResource("16_77q8y")]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="." unique_id=1689724786]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2621307, 0, 8.376505)
+use_collision = true
+radius = 1.351

@@ -75,3 +75,8 @@ horizontal_alignment = 1
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/Inventory/VBoxContainer2" unique_id=1357704724]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
+
+[node name="PeerId" type="Label" parent="MarginContainer" unique_id=517876644]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0

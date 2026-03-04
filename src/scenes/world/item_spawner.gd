@@ -12,11 +12,12 @@ func _ready() -> void:
 	spawned.connect(_on_item_spawned)
 	spawn_function = _spawn_function
 
+
 @rpc("any_peer", "call_local")
 func _on_item_dropped(item: Variant) -> void:	
 
 	if multiplayer.is_server():
-		Globals.chunker.add_entity_to_chunk(item)
+		#Globals.chunker.add_entity_to_chunk(item)
 		spawn(item)
 
 

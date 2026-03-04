@@ -11,6 +11,8 @@ enum {
 
 var ui_state: int = HUD
 
+func _ready() -> void:
+	$MarginContainer/PeerId.text = str(multiplayer.get_unique_id())
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_inventory"):
