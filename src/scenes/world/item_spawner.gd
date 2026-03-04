@@ -31,5 +31,5 @@ func _spawn_function(data: Dictionary) -> Node:
 	item.data = ItemDb.get_item(data.item_data.uid)
 	item.position = Vector3(data.position.x, data.position.y, data.position.z)
 	item.rotation = Vector3(data.rotation.x, data.rotation.y, data.rotation.z)
-	item.name = str(Time.get_unix_time_from_system())
+	item.name = UUID.gen()
 	return item

@@ -10,9 +10,10 @@ class_name ItemDrop extends RigidBody3D
 @onready var collision_shape_3d: CollisionShape3D = %CollisionShape3D
 @onready var interaction_area_collider: CollisionShape3D = %InteractionAreaCollider
 
+var is_registered_in_chunk: bool = false
+
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
-	name = str(position.x) + "_" + str(position.z)
 	
 func _update_visuals_tool(item_data: ItemData) -> void:
 	data = item_data
@@ -65,7 +66,6 @@ func generate_entity_data() -> Dictionary:
 	}
 
 
-
 func update_visuals() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
 	if data:
@@ -83,8 +83,15 @@ func update_visuals() -> void:
 
 
 func _on_sleeping_state_changed() -> void:
-
-	if sleeping:
-		if !owner:
-			Globals.chunker.add_entity_to_chunk(generate_entity_data())
-			print("sleeping ", sleeping)
+	if !is_registered_in_chunk:
+		is_registered_in_chunk = true
+		if sleeping:
+			if !owner:
+				# this is happening every time multiplayer spawner spawns this shit
+				# easy fix
+				## Adding regular and replicated data only on the server
+				if multiplayer.is_server():
+					Globals.chunker.add_entity_to_chunk(generate_entity_data())
+				#collision_layer = 8
+				print("sleeping ", sleeping, " collision_layer ", collision_layer)
+				freeze = true
