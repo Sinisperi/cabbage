@@ -109,7 +109,6 @@ func get_loaded_chunks(delta: float) -> void:
 						request_chunk_data.rpc_id(1, i.x, i.y)
 				else:
 					request_chunk_data.rpc_id(1, i.x, i.y)
-			update_chunk_visuals(i)
 			
 	update_regions(active_region_ids)
 	
@@ -162,6 +161,7 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 	if peer_id > 1:
 		print(" sending chunk data to peer ", peer_id)
 		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk], chunk)
+	
 		
 		
 
@@ -206,6 +206,7 @@ func send_chunk_data_to_peer(chunk_data: Dictionary, chunk: Vector2i) -> void:
 		"chunk_data": chunk_data.chunk_data
 	}
 	highlight_chunk(chunk, "LOADED")
+	update_chunk_visuals(chunk)
 	
 
 
@@ -218,6 +219,7 @@ func update_chunk_cache(delta: float) -> void:
 					ChunkLoader.save_chunk(i, chunk_cache[i].chunk_data)
 			chunk_cache.erase(i)
 			highlight_chunk(i, "UNLOADED")
+
 
 @rpc("any_peer", "call_local", "reliable")
 func send_player_exit_request(chunk: Vector2i) -> void:
@@ -262,6 +264,7 @@ func update_chunk_visuals(chunk: Vector2i) -> void:
 
 
 func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> void:
+	return
 	var region_position: Vector2i = get_region_from_coords(pos)
 	var region_name: String = "region_" + str(region_position.x) + "_" + str(region_position.y)
 	var region_node: Node = regions_container.get_node("./" + region_name)

@@ -12,10 +12,10 @@
 [ext_resource type="Script" uid="uid://xbelfs5x7w73" path="res://src/scenes/world/chunker.gd" id="9_hrb3u"]
 [ext_resource type="Resource" uid="uid://bne3olsqtxt8f" path="res://src/resources/items/test_items/test_mushroom.tres" id="9_qfn71"]
 [ext_resource type="Resource" uid="uid://c6lsarr12tfio" path="res://src/resources/items/test_items/weird_tool.tres" id="10_br3r2"]
-[ext_resource type="PackedScene" uid="uid://c3exkwk03sbl7" path="res://assets/models/test/region_0_0.glb" id="12_ma7xk"]
-[ext_resource type="PackedScene" uid="uid://dor7sg2qj4yb2" path="res://assets/models/test/region_0_-1.glb" id="13_br3r2"]
-[ext_resource type="PackedScene" uid="uid://cu4mmvhxovlu3" path="res://assets/models/test/region_-1_0.glb" id="14_tthay"]
-[ext_resource type="PackedScene" uid="uid://4d6uxa6eu5da" path="res://assets/models/test/region_-1_-1.glb" id="15_gu5fw"]
+[ext_resource type="PackedScene" uid="uid://cbhuk0nrjipgu" path="res://src/scenes/world/regions/region_0_0.tscn" id="13_br3r2"]
+[ext_resource type="PackedScene" uid="uid://c3352vimi4dnh" path="res://src/scenes/world/regions/region_0_-1.tscn" id="14_tthay"]
+[ext_resource type="PackedScene" uid="uid://c262qiejasah" path="res://src/scenes/world/regions/region_-1_0.tscn" id="15_gu5fw"]
+[ext_resource type="PackedScene" uid="uid://k17a7pt2fsea" path="res://src/scenes/world/regions/region_-1_-1.tscn" id="16_77q8y"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e5uuo"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -97,6 +97,7 @@ data = ExtResource("10_br3r2")
 
 [node name="Chunker" type="Node3D" parent="." unique_id=589012604 node_paths=PackedStringArray("regions_container")]
 unique_name_in_owner = true
+visible = false
 script = ExtResource("9_hrb3u")
 regions_container = NodePath("../Regions")
 
@@ -870,10 +871,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 960, 0, 960)
 [node name="Regions" type="Node3D" parent="." unique_id=1320110328]
 unique_name_in_owner = true
 
-[node name="region_0_0" parent="Regions" unique_id=617801244 instance=ExtResource("12_ma7xk")]
+[node name="region_0_0" parent="Regions" unique_id=617801244 instance=ExtResource("13_br3r2")]
 
-[node name="region_0_-1" parent="Regions" unique_id=142055737 instance=ExtResource("13_br3r2")]
+[node name="region_0_-1" parent="Regions" unique_id=142055737 instance=ExtResource("14_tthay")]
 
-[node name="region_-1_0" parent="Regions" unique_id=236191481 instance=ExtResource("14_tthay")]
+[node name="region_-1_0" parent="Regions" unique_id=236191481 instance=ExtResource("15_gu5fw")]
 
-[node name="region_-1_-1" parent="Regions" unique_id=1127243979 instance=ExtResource("15_gu5fw")]
+[node name="region_-1_-1" parent="Regions" unique_id=1127243979 instance=ExtResource("16_77q8y")]

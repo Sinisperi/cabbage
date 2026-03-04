@@ -1,5 +1,5 @@
 [gd_scene format=3 uid="uid://cbhuk0nrjipgu"]
 
-[ext_resource type="PackedScene" uid="uid://c3dd0omk243ni" path="res://assets/models/test/world.glb" id="1_wic2y"]
+[ext_resource type="PackedScene" uid="uid://c3exkwk03sbl7" path="res://assets/models/test/region_0_0.glb" id="1_wic2y"]
 
-[node name="Region_0_0" unique_id=1455741058 instance=ExtResource("1_wic2y")]
+[node name="region_0_0" unique_id=617801244 instance=ExtResource("1_wic2y")]

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://c3352vimi4dnh"]
+
+[ext_resource type="PackedScene" uid="uid://dor7sg2qj4yb2" path="res://assets/models/test/region_0_-1.glb" id="1_vli8s"]
+
+[node name="region_0_-1" unique_id=142055737 instance=ExtResource("1_vli8s")]
