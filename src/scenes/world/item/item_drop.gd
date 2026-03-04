@@ -87,11 +87,12 @@ func _on_sleeping_state_changed() -> void:
 		is_registered_in_chunk = true
 		if sleeping:
 			if !owner:
-				# this is happening every time multiplayer spawner spawns this shit
-				# easy fix
 				## Adding regular and replicated data only on the server
+				## on the client it doesn't matter that chunk data is outdated
+				## because while client is in the chunk it will request things from the host for 
+				## picking up stuff
+				## when client leaves, host saves the chunk data that host has, when client reenters
+				## it requests and gets new chunk data and spawns accordingly
 				if multiplayer.is_server():
 					Globals.chunker.add_entity_to_chunk(generate_entity_data())
-				#collision_layer = 8
-				print("sleeping ", sleeping, " collision_layer ", collision_layer)
 				freeze = true

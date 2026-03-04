@@ -262,8 +262,9 @@ func remove_editor_entity_from_chunk(entity_data: Dictionary) -> void:
 
 func update_chunk_visuals(chunk: Vector2i) -> void:
 	for i: String in loaded_chunks[chunk].chunk_data.removed_editor_entities:
-		var item: Node = editor_spawned_items.get_node("./" + i)
-		editor_spawned_items.remove_child(item)
+		if editor_spawned_items.has_node("./" + i):
+			var item: Node = editor_spawned_items.get_node("./" + i)
+			editor_spawned_items.remove_child(item)
 
 
 func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> void:
