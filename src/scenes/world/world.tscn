@@ -37,6 +37,8 @@ uv1_triplanar = true
 [node name="World" type="Node3D" unique_id=311237112]
 script = ExtResource("1_q3of6")
 
+[node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1932386333]
 environment = SubResource("Environment_rwgxs")
 
@@ -61,8 +63,6 @@ _spawnable_scenes = PackedStringArray("uid://7x3a74iiui7w")
 spawn_path = NodePath("../SpawnArea/Players")
 script = ExtResource("3_cacf4")
 player_scene = ExtResource("1_m76yy")
-
-[node name="PlayerUI" parent="." unique_id=1267816161 instance=ExtResource("7_m1gqc")]
 
 [node name="ItemSpawner" type="MultiplayerSpawner" parent="." unique_id=1456447614]
 _spawnable_scenes = PackedStringArray("uid://diqi0pyya3sb6")

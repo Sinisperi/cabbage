@@ -1,5 +1,4 @@
 class_name Chunker extends Node3D
-@onready var peer_id: int = multiplayer.get_unique_id()
 const CHUNK_SIZE: int = 64
 const REGION_SIZE: int = 16
 const TOTAL_REGIONS: int = 2
@@ -237,7 +236,7 @@ func add_entity_to_chunk(entity_data: Dictionary) -> void:
 	if !loaded_chunks.has(chunk):
 		printerr("Somehow trying to drop stuff at the chunk ", chunk, " which is
 		not loaded!")
-	loaded_chunks[chunk].chunk_data.entities.push_back(entity_data)
+	loaded_chunks[chunk].chunk_data.entities[entity_data.item_id] = entity_data
 	loaded_chunks[chunk].is_dirty = true
 	print("dropping ", entity_data)
 
@@ -248,7 +247,7 @@ func remove_entity_from_chunk(entity_data: Dictionary) -> void:
 	if !loaded_chunks.has(chunk):
 		printerr("Somehow trying to pick up stuff at the chunk ", chunk, " which is
 		not loaded!")
-	loaded_chunks[chunk].chunk_data.entities.erase(entity_data)
+	loaded_chunks[chunk].chunk_data.entities.erase(entity_data.item_id)
 	loaded_chunks[chunk].is_dirty = true
 	print("removed entithy", entity_data)
 

@@ -24,6 +24,7 @@ func _on_item_dropped(item: Variant) -> void:
 
 func _on_item_spawned(item: Node) -> void:
 	item.update_visuals()
+	
 
 
 func _spawn_function(data: Dictionary) -> Node:

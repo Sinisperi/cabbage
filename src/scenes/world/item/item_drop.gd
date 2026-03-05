@@ -47,7 +47,6 @@ func destroy_itself() -> void:
 			Globals.chunker.remove_entity_from_chunk(generate_entity_data())
 			queue_free()
 
-
 func generate_entity_data() -> Dictionary:
 	return {
 		"item_id": name,
