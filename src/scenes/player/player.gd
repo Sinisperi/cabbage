@@ -129,8 +129,8 @@ func _state_to_animation() -> String:
 			return ""
 
 
-func _on_mouse_mode_changed(value: bool) -> void:
+func _on_mouse_mode_changed(mode: int) -> void:
 	if is_multiplayer_authority():
-		set_process_input(value)
-		set_process_unhandled_input(value)
-		set_process_unhandled_key_input(value)
+		set_process_input(mode)
+		set_process_unhandled_input(mode)
+		set_process_unhandled_key_input(mode)

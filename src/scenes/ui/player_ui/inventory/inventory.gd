@@ -109,7 +109,8 @@ func _add_item(inventory_type: InventoryType, index: int, item_data: Variant) ->
 
 func toggle_inventory(is_shown: bool) -> void:
 	inventory_container.visible = is_shown
-
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if is_shown else Input.MOUSE_MODE_CAPTURED
+	EventBus.ui.mouse_mode_changed.emit(Input.mouse_mode)
 
 func _on_item_equipped(item_data: ItemData) -> void:
 	if item_data:

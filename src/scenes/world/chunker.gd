@@ -312,3 +312,7 @@ func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> voi
 				
 		chunk_node.set_surface_override_material(0, new_mat)
 			
+
+
+func get_current_region() -> Vector2i:
+	return get_region_from_coords(current_chunk)

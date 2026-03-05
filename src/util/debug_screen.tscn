@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://cqi5fp2vl82fd"]
+
+[ext_resource type="Script" uid="uid://diai2wt3jxqth" path="res://src/util/debug_screen.gd" id="1_si5g8"]
+
+[sub_resource type="Theme" id="Theme_si5g8"]
+default_font_size = 24
+Label/constants/outline_size = 6
+
+[node name="DebugScreen" type="Control" unique_id=283264237]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_si5g8")
+script = ExtResource("1_si5g8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1671653418]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 77.0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer" unique_id=1461229307]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer4" unique_id=824771330]
+layout_mode = 2
+text = "fps:"
+
+[node name="Fps" type="Label" parent="VBoxContainer/HBoxContainer4" unique_id=864577612]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=250397071]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1316205016]
+layout_mode = 2
+text = "peer_id:"
+
+[node name="PeerId" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=768719302]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=1602612995]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=704417155]
+layout_mode = 2
+text = "Coords:"
+
+[node name="Coords" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=787626032]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer" unique_id=905256324]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3" unique_id=523907882]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/HBoxContainer2" unique_id=1761265674]
+layout_mode = 2
+text = "Chunk:"
+
+[node name="Chunk" type="Label" parent="VBoxContainer/HBoxContainer3/HBoxContainer2" unique_id=1262246330]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3" unique_id=529073380]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/HBoxContainer" unique_id=1150390412]
+layout_mode = 2
+text = "Region:"
+
+[node name="Region" type="Label" parent="VBoxContainer/HBoxContainer3/HBoxContainer" unique_id=1584306519]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=139210229]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer" unique_id=1183776591]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1801498947]
+layout_mode = 2
+text = "Loaded regions"
+
+[node name="LoadedRegions" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=725997302]
+unique_name_in_owner = true
+layout_mode = 2

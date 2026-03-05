@@ -3,6 +3,7 @@
 [ext_resource type="Shader" uid="uid://dp4dbag5r8put" path="res://src/scenes/player/reticle.gdshader" id="1_jbrfv"]
 [ext_resource type="Script" uid="uid://dh0bi06ixtrov" path="res://src/scenes/ui/player_ui/player_ui.gd" id="1_w5xlc"]
 [ext_resource type="PackedScene" uid="uid://byff31anloyng" path="res://src/scenes/ui/player_ui/inventory/inventory.tscn" id="2_y6ggm"]
+[ext_resource type="PackedScene" uid="uid://cqi5fp2vl82fd" path="res://src/util/debug_screen.tscn" id="4_y5fg5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7vxwc"]
 shader = ExtResource("1_jbrfv")
@@ -80,3 +81,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+
+[node name="DebugScreen" parent="." unique_id=283264237 instance=ExtResource("4_y5fg5")]
+unique_name_in_owner = true

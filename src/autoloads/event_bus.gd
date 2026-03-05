@@ -5,7 +5,8 @@ var inventory: InventorySignals = InventorySignals.new()
 
 
 class UISignals:
-	signal mouse_mode_changed(value: bool)
+	## Useful for disabling movement on the player while menus are open
+	signal mouse_mode_changed(mode: int)
 
 
 class InventorySignals:
