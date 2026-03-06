@@ -49,6 +49,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.keycode == KEY_F1 && event.is_pressed():
 			$DebugCamera.current = !$DebugCamera.current
+		if event.keycode == KEY_F4 && event.is_pressed():
+			PlayerManager.save_player_data(multiplayer.get_unique_id())
 
 
 func _physics_process(delta: float) -> void:

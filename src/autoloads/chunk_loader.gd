@@ -39,7 +39,7 @@ func save_chunk(chunk_coords: Vector2i, chunk_data: Dictionary) -> void:
 func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 	var region_file_path: String = get_region_file_path(chunk_coords)
 	var chunk_index: int = get_chunk_index(chunk_coords)
-	print("Loading chunk ", chunk_coords, " in ", region_file_path, " at index", chunk_index)
+	#print("Loading chunk ", chunk_coords, " in ", region_file_path, " at index", chunk_index)
 	#var dir: DirAccess = DirAccess.open(REGION_ROOT_DIR)
 	#if dir:
 	var file: FileAccess = FileAccess.open(region_file_path, FileAccess.READ)

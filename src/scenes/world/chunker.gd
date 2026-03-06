@@ -159,7 +159,7 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 	loaded_chunks[chunk].player_count += 1
 	highlight_chunk(chunk, "LOADED", peer_id > 1)
 	if peer_id > 1:
-		print(" sending chunk data to peer ", peer_id)
+		#print(" sending chunk data to peer ", peer_id)
 		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk], chunk)
 	
 		
@@ -249,7 +249,7 @@ func remove_entity_from_chunk(entity_data: Dictionary) -> void:
 		not loaded!")
 	loaded_chunks[chunk].chunk_data.entities.erase(entity_data.item_id)
 	loaded_chunks[chunk].is_dirty = true
-	print("removed entithy", entity_data)
+	print("removed entity", entity_data)
 
 
 func remove_editor_entity_from_chunk(entity_data: Dictionary) -> void:

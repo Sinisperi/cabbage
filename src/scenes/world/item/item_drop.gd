@@ -68,6 +68,9 @@ func generate_entity_data() -> Dictionary:
 func update_visuals() -> void:
 	process_mode = Node.PROCESS_MODE_DISABLED
 	if data:
+		if !data.mesh: 
+			print_rich("[color=yellow]Item [color=blue]", data.item_name, "[/color] [color=yellow]does not have a mesh![/color]")
+			return
 		mesh_instance.set_deferred("mesh", data.mesh)
 		collision_shape_3d.set_deferred("shape", data.collision_shape)
 		interaction_area_collider.set_deferred("shape", data.interaction_area)

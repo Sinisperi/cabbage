@@ -23,14 +23,17 @@ func _ready() -> void:
 func _request_player_spawn(username: String = "NO USERNAME") -> void:
 	if multiplayer.is_server():
 		var peer_id: int = multiplayer.get_remote_sender_id()
-		
-		PlayerManager.add_player(peer_id, username)
+		PlayerManager.register_player(peer_id, username)
+		var save_data: Dictionary = PlayerManager.load_player_data(peer_id)
+		PlayerManager.set_player_data_for_peer(peer_id, save_data.player_data)
+		#PlayerManager.add_player(peer_id, username)
 		Globals.inventory.inventory_grid.place_items_request.rpc(peer_id, Inventory.InventoryType.ITEM)
 		Globals.inventory.hot_bar_slots.place_items_request.rpc(peer_id, Inventory.InventoryType.HOT_BAR)
 		Globals.inventory.equipment_slots.init_equipment_request.rpc(peer_id)
 		var data: Dictionary = {
 			"peer_id": peer_id,
-			"username": username
+			"username": username,
+			"save_data": save_data
 		}
 		
 		player_spawner.spawn(data)

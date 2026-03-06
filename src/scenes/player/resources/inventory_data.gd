@@ -42,7 +42,19 @@ const BACKPACK_SLOT = "BACKPACK_SLOT"
 
 @export var trinket_items: Array[TrinketData] = [null, null, null]
 
-func to_obj(array: Array) -> Array:
+func _init(data: Dictionary = {}) -> void:
+	if data.is_empty(): return
+	for i in range(data.inventory_items.size()):
+		if data.inventory_items[i]:
+			inventory_items[i] = ItemDb.get_item(data.inventory_items[i].uid)
+	for i in range(data.hot_bar_items.size()):
+		if data.hot_bar_items[i]:
+			hot_bar_items[i] = ItemDb.get_item(data.hot_bar_items[i].uid)
+	for i in data.equipment_items:
+		if data.equipment_items[i]:
+			equipment_items[i] = ItemDb.get_item(data.equipment_items[i].uid)
+
+func _array_to_obj(array: Array) -> Array:
 	var res: Array = []
 	for i: ItemData in array:
 		if i != null:
@@ -52,13 +64,13 @@ func to_obj(array: Array) -> Array:
 	return res
 
 func inventory_items_to_obj() -> Array:
-	return to_obj(inventory_items)
+	return _array_to_obj(inventory_items)
 
 func hot_bar_items_to_obj() -> Array:
-	return to_obj(hot_bar_items)
+	return _array_to_obj(hot_bar_items)
 
 func trinket_items_to_obj() -> Array:
-	return to_obj(trinket_items)
+	return _array_to_obj(trinket_items)
 
 func equipment_items_to_obj() -> Dictionary:
 	var res: = {}
@@ -68,3 +80,11 @@ func equipment_items_to_obj() -> Dictionary:
 		else:
 			res[key] = null
 	return res
+
+func to_obj() -> Dictionary:
+	return {
+		"inventory_items": inventory_items_to_obj(),
+		"hot_bar_items": hot_bar_items_to_obj(),
+		"trinket_items": trinket_items_to_obj(),
+		"equipment_items": equipment_items_to_obj()
+	}
