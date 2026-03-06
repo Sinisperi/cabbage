@@ -39,7 +39,7 @@ func _on_gui_input(event: InputEvent) -> void:
 func _handle_pick_item() -> void:
 	
 	if is_equipment_slot:
-		EventBus.inventory.equipment.item_unequipped.emit(slot_data)
+		EventBus.inventory.equipment.item_unequipped.emit(slot_data, slot_index)
 		
 	var new_draggable_item: DraggableItem = draggable_item_scene.instantiate()
 	new_draggable_item.data = slot_data
@@ -57,7 +57,7 @@ func _handle_place_item(draggable_item: DraggableItem) -> void:
 			return
 		if draggable_item.data.equipment_type != slot_type:
 			return
-		EventBus.inventory.equipment.item_equipped.emit(draggable_item.data)
+		EventBus.inventory.equipment.item_equipped.emit(draggable_item.data, slot_index)
 
 	slot_data = draggable_item.data
 	draggable_item.queue_free()

@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://dfc66fh3fwwfh" path="res://src/scenes/player/resources/inventory_data.gd" id="3_gh64c"]
 [ext_resource type="Resource" uid="uid://bynudm8501svu" path="res://src/resources/items/test_items/test_item_01.tres" id="3_ryyv1"]
 [ext_resource type="Resource" uid="uid://c6lsarr12tfio" path="res://src/resources/items/test_items/weird_tool.tres" id="4_3lynd"]
-[ext_resource type="Script" uid="uid://cm6pqexiv7jc4" path="res://src/scenes/ui/player_ui/inventory/item_data/trinket_data.gd" id="4_ryyv1"]
 [ext_resource type="Resource" uid="uid://bwdp8cihhct18" path="res://src/resources/items/test_items/test_item_02.tres" id="4_vc23m"]
 [ext_resource type="Resource" uid="uid://d37rp4ut1yk52" path="res://src/resources/items/test_items/test_trinket.tres" id="8_vc23m"]
 
@@ -14,12 +13,5 @@
 script = ExtResource("3_gh64c")
 inventory_items = Array[ExtResource("2_8hmsn")]([ExtResource("3_ryyv1"), ExtResource("4_vc23m"), null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 hot_bar_items = Array[ExtResource("2_8hmsn")]([null, null, null, ExtResource("4_3lynd")])
-equipment_items = Dictionary[String, ExtResource("1_m0t1f")]({
-"BACKPACK_SLOT": null,
-"BOOTS_SLOT": null,
-"CHEST_SLOT": null,
-"HELMET_SLOT": ExtResource("2_vc23m"),
-"PANTS_SLOT": null
-})
-trinket_items = Array[ExtResource("4_ryyv1")]([ExtResource("8_vc23m"), null, null])
+equipment_items = Array[ExtResource("1_m0t1f")]([null, ExtResource("2_vc23m"), null, null, null, null, ExtResource("8_vc23m"), null])
 metadata/_custom_type_script = "uid://dfc66fh3fwwfh"

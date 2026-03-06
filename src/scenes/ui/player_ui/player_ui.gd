@@ -20,6 +20,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		prints(String.num_int64(ui_state, 2), _is_flag_set(INVENTORY))
 	if event.is_action_pressed("toggle_debug_screen"):
 		ui_state ^= DEBUG_SCREEN
+	if event is InputEventKey:
+		if event.keycode == KEY_F4 && event.is_pressed():
+			PlayerManager.save_player_data(multiplayer.get_unique_id())
 			
 
 func _physics_process(_delta: float) -> void:

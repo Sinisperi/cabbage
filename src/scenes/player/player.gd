@@ -49,8 +49,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.keycode == KEY_F1 && event.is_pressed():
 			$DebugCamera.current = !$DebugCamera.current
-		if event.keycode == KEY_F4 && event.is_pressed():
-			PlayerManager.save_player_data(multiplayer.get_unique_id())
+			
+			## HAHAHAHAHA CANNOT SAVE WHILE IN INVENTORY BECAUSE PROCESS_INPUT IS FALSE LUL LUL LUL
+
 
 
 func _physics_process(delta: float) -> void:

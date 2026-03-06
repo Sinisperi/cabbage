@@ -19,8 +19,8 @@ class InventorySignals:
 	signal item_drop_requested(item: Node)
 
 	class EquipmentSignals:
-		signal item_equipped(item_data: EquipableItemData)
-		signal item_unequipped(item_data: EquipableItemData)
+		signal item_equipped(item_data: EquipableItemData, index: int)
+		signal item_unequipped(item_data: EquipableItemData, index: int)
 	
 	class HotBarSignals:
 		signal rh_item_equipped(item_data: ItemData)

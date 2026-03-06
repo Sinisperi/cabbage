@@ -18,3 +18,7 @@ enum EquipmentType
 
 func apply_stats() -> void:
 	pass
+func to_dict() -> Dictionary:
+	return {
+		"uid": uid,
+	}
