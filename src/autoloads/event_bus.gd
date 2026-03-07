@@ -2,7 +2,7 @@ extends Node
 
 var ui: UISignals = UISignals.new()
 var inventory: InventorySignals = InventorySignals.new()
-
+var world: WorldSignals = WorldSignals.new()
 
 class UISignals:
 	## Useful for disabling movement on the player while menus are open
@@ -24,3 +24,7 @@ class InventorySignals:
 	
 	class HotBarSignals:
 		signal rh_item_equipped(item_data: ItemData)
+
+class WorldSignals:
+	signal item_spawn_requested(item_data: Variant)
+	signal player_spawned_item_despawn_requested(item_id: String)

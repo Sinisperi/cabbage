@@ -16,6 +16,7 @@ var chunk_cache: Dictionary = {}
 var world_area: Rect2 = Rect2(Vector2i(-16, -16), Vector2i(32, 32))
 
 @onready var editor_spawned_items: Node3D = %EditorSpawnedItems
+@onready var item_spawner: MultiplayerSpawner = %ItemSpawner
 
 
 @export var regions_container: Node3D
@@ -109,6 +110,11 @@ func get_loaded_chunks(delta: float) -> void:
 						request_chunk_data.rpc_id(1, i.x, i.y)
 				else:
 					request_chunk_data.rpc_id(1, i.x, i.y)
+				
+					#if multiplayer.is_server():
+						#spawn_player_spawned_items(i)
+						#despawn_editor_spawned_items(i)
+				
 			
 	update_regions(active_region_ids)
 	
@@ -117,26 +123,7 @@ func get_loaded_chunks(delta: float) -> void:
 	print("====================================================================")
 	
 
-func get_chunks_in_area(new_chunks_in_area: Dictionary, active_region_ids: Dictionary, origin_chunk: Vector2i) -> void:
-	for x in range(-chunk_unload_distance, chunk_unload_distance + 1):
-		for y in range(-chunk_unload_distance, chunk_unload_distance + 1):
-			var chunk_coord: Vector2i = origin_chunk + Vector2i(x, y)
-			
-			if !world_area.has_point(chunk_coord):
-				continue
-				
-			var distance: int = int(origin_chunk.distance_to(chunk_coord))
-			var region_coord: Vector2i = get_region_from_coords(chunk_coord)
-			
-			if distance <= chunk_render_distance:
-				new_chunks_in_area[chunk_coord] = true
-				active_region_ids[region_coord] = true
-				
-			# only if it is already loaded
-			elif distance <= chunk_unload_distance && chunks_in_area_ids.has(chunk_coord):
-				new_chunks_in_area[chunk_coord] = true
-				if loaded_region_ids.has(region_coord):
-					active_region_ids[region_coord] = true
+
 
 func _handle_player_exit(chunk: Vector2i) -> void:
 	if !loaded_chunks.has(chunk): return
@@ -155,15 +142,45 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 			print("loaded chunk ", chunk, " from cache and sent to peer ", peer_id)
 		else:
 			loaded_chunks[chunk] = load_chunk_data(chunk)
-			
+			spawn_player_spawned_items(chunk)
+		despawn_editor_spawned_items(chunk)
+	
 	loaded_chunks[chunk].player_count += 1
 	highlight_chunk(chunk, "LOADED", peer_id > 1)
 	if peer_id > 1:
-		#print(" sending chunk data to peer ", peer_id)
+		## TODO send only removed editor spawned items
 		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk], chunk)
-	
 		
-		
+
+@rpc("any_peer", "call_remote")
+func send_chunk_data_to_peer(chunk_data: Dictionary, chunk: Vector2i) -> void:
+	loaded_chunks[chunk] = {
+		"player_count": 1,
+		"life_time": CHUNK_LIFE_TIME,
+		"is_dirty": false,
+		"chunk_data": chunk_data.chunk_data
+	}
+	highlight_chunk(chunk, "LOADED")
+	despawn_editor_spawned_items(chunk)
+
+
+func despawn_editor_spawned_items(chunk: Vector2i) -> void:
+	for i: String in loaded_chunks[chunk].chunk_data.removed_editor_entities:
+		if editor_spawned_items.has_node("./" + i):
+			print(" has node trying to remove")
+			var item: Node = editor_spawned_items.get_node("./" + i)
+			editor_spawned_items.remove_child(item)
+
+
+func spawn_player_spawned_items(chunk: Vector2i) -> void:
+	for i: Variant in loaded_chunks[chunk].chunk_data.entities:
+		#print("spawning ", i)
+		EventBus.world.item_spawn_requested.emit(loaded_chunks[chunk].chunk_data.entities[i])
+
+func despawn_player_spawned_items(items: Dictionary) -> void:
+	for i: Variant in items:
+		EventBus.world.player_spawned_item_despawn_requested.emit(i)
+
 
 func move_chunk_to_cache(chunk: Vector2i) -> void:
 	chunk_cache[chunk] = loaded_chunks[chunk]
@@ -196,18 +213,27 @@ func update_regions(active_region_ids: Dictionary) -> void:
 			print("loaded region ", i)
 
 			
+func get_chunks_in_area(new_chunks_in_area: Dictionary, active_region_ids: Dictionary, origin_chunk: Vector2i) -> void:
+	for x in range(-chunk_unload_distance, chunk_unload_distance + 1):
+		for y in range(-chunk_unload_distance, chunk_unload_distance + 1):
+			var chunk_coord: Vector2i = origin_chunk + Vector2i(x, y)
+			
+			if !world_area.has_point(chunk_coord):
+				continue
+				
+			var distance: int = int(origin_chunk.distance_to(chunk_coord))
+			var region_coord: Vector2i = get_region_from_coords(chunk_coord)
+			
+			if distance <= chunk_render_distance:
+				new_chunks_in_area[chunk_coord] = true
+				active_region_ids[region_coord] = true
+				
+			# only if it is already loaded
+			elif distance <= chunk_unload_distance && chunks_in_area_ids.has(chunk_coord):
+				new_chunks_in_area[chunk_coord] = true
+				if loaded_region_ids.has(region_coord):
+					active_region_ids[region_coord] = true
 
-@rpc("any_peer", "call_remote")
-func send_chunk_data_to_peer(chunk_data: Dictionary, chunk: Vector2i) -> void:
-	loaded_chunks[chunk] = {
-		"player_count": 1,
-		"life_time": CHUNK_LIFE_TIME,
-		"is_dirty": false,
-		"chunk_data": chunk_data.chunk_data
-	}
-	highlight_chunk(chunk, "LOADED")
-	update_chunk_visuals(chunk)
-	
 
 
 func update_chunk_cache(delta: float) -> void:
@@ -217,6 +243,8 @@ func update_chunk_cache(delta: float) -> void:
 			if chunk_cache[i].is_dirty:
 				if multiplayer.is_server():
 					ChunkLoader.save_chunk(i, chunk_cache[i].chunk_data)
+			if multiplayer.is_server():
+				despawn_player_spawned_items(chunk_cache[i].chunk_data.entities)
 			chunk_cache.erase(i)
 			highlight_chunk(i, "UNLOADED")
 
@@ -259,11 +287,6 @@ func remove_editor_entity_from_chunk(entity_data: Dictionary) -> void:
 	loaded_chunks[chunk].is_dirty = true
 
 
-func update_chunk_visuals(chunk: Vector2i) -> void:
-	for i: String in loaded_chunks[chunk].chunk_data.removed_editor_entities:
-		if editor_spawned_items.has_node("./" + i):
-			var item: Node = editor_spawned_items.get_node("./" + i)
-			editor_spawned_items.remove_child(item)
 
 
 func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> void:

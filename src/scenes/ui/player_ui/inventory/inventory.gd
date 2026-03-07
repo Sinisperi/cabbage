@@ -71,7 +71,6 @@ func _drop_item(item_data: ItemData, drop_position: Vector3) -> void:
 func _remove_item(inventory_type: InventoryType, index: int) -> void:
 	if multiplayer.is_server():
 		var peer_id: int = multiplayer.get_remote_sender_id()
-		var player_id: String = PlayerManager.active_peers[peer_id if peer_id > 0 else 1]
 		var player_inventory: InventoryData = PlayerManager.get_player_data(peer_id).inventory
 		var inventory_kind: Variant = null
 		match inventory_type:
