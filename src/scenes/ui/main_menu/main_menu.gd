@@ -1,6 +1,6 @@
 extends Control
 
-const LOBBY_AVATAR = preload("uid://b655wwfepeesc") 
+@export var LOBBY_AVATAR: PackedScene
 
 @onready var quit_button: Button = %QuitButton
 @onready var new_game_button: Button = %StartNewGameButton
