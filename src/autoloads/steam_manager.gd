@@ -44,6 +44,7 @@ func _on_steam_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, res
 		if host_id != user_id:
 			peer.create_client(host_id)
 			multiplayer.set_multiplayer_peer(peer)
+			print(Steam.getPersonaName(), " joined")
 
 
 func create_friends_popup() -> void:

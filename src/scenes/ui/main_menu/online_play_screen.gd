@@ -161,7 +161,7 @@ func _on_host_invite_code_copy_button_pressed() -> void:
 	DisplayServer.clipboard_set(host_invite_code_input.text)
 	create_toast_popup("Coppied the invite code to clipboard!")
 	var data: String = Steam.getLobbyData(int(host_invite_code_input.text), "is_joinable")
-	print(data, " is joinable ")
+
 
 func _on_join_button_pressed() -> void:
 	if !SteamManager.is_steam_enabled:
