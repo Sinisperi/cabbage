@@ -41,11 +41,12 @@ func _on_steam_lobby_created(response: int, lobby_id: int) -> void:
 func _on_steam_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		var host_id: int = Steam.getLobbyOwner(lobby_id)
+		print("host is ", host_id)
 		var user_id: int = Steam.getSteamID()
 		if host_id != user_id:
 			peer.create_client(host_id)
 			multiplayer.set_multiplayer_peer(peer)
-		print(Steam.getPersonaName(), " joined")
+			print(Steam.getPersonaName(), " joined")
 
 
 func create_friends_popup() -> void:
