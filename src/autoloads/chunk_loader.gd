@@ -34,7 +34,12 @@ func save_chunk(chunk_coords: Vector2i, chunk_data: Dictionary) -> void:
 	
 	print("Saving chunk ", chunk_coords, " in ", region_file_path, " at index", chunk_index)
 
-	
+
+## TODO pack everything into bytes instead of dealing with dicts
+#func pack_chunk_data(chunk_data: Dictionary) -> PackedByteArray:
+	#var buffer: StreamPeerBuffer = StreamPeerBuffer.new()
+	#
+	#pass
 
 func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 	var region_file_path: String = get_region_file_path(chunk_coords)
@@ -56,6 +61,43 @@ func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 		return chunk_data
 
 	return get_default_chunk_data()
+
+
+func defragment_region_files() -> void:
+	var files: Array = DirAccess.get_files_at(REGION_ROOT_DIR)
+	for i in files:
+		_defragment_region_file(i)
+	print(files)
+
+func _defragment_region_file(file_name: String) -> void:
+	var file_path: String = REGION_ROOT_DIR + file_name
+	var temp_file: FileAccess = FileAccess.open(file_path + ".tmp", FileAccess.WRITE_READ)
+	var region_file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
+	
+	for i in range(CHUNKS_PER_REGION):
+		temp_file.store_64(0)
+	
+	for i in range(CHUNKS_PER_REGION):
+		region_file.seek(i * 8)
+		var chunk_address: int = region_file.get_64()
+		
+		if chunk_address == 0:
+			continue
+			
+		region_file.seek(chunk_address)
+		var chunk_data: Variant = region_file.get_var()
+		temp_file.seek_end()
+		var new_chunk_address: int = temp_file.get_position()
+		temp_file.store_var(chunk_data)
+		temp_file.seek(i * 8)
+		temp_file.store_64(new_chunk_address)
+
+	region_file.close()
+	temp_file.close()
+	DirAccess.remove_absolute(file_path)
+	DirAccess.rename_absolute(file_path + ".tmp", file_path)
+		
+		
 
 func get_chunk_index(chunk_coords: Vector2i) -> int:
 	var column: int = posmod(chunk_coords.x, CHUNK_COLUMNS)

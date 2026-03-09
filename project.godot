@@ -25,6 +25,7 @@ Globals="*uid://chaky2yacebpa"
 EventBus="*uid://cwxpsa1loq3cr"
 PlayerManager="*uid://b524s1owf1nhm"
 ChunkLoader="*uid://2bsbyph848il"
+SteamManager="*uid://nor3tigrxybo"
 
 [debug]
 
@@ -62,6 +63,10 @@ folder_colors={
 
 inventory=""
 draggable_item=""
+
+[gui]
+
+theme/custom_font="uid://bri68ubqchcfv"
 
 [input]
 
@@ -115,3 +120,10 @@ toggle_debug_screen={
 [physics]
 
 3d/physics_engine="Jolt Physics"
+
+[steam]
+
+initialization/app_id=0
+initialization/initialize_on_startup=false
+initialization/embed_callbacks=false
+multiplayer_peer/max_channels=4

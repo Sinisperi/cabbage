@@ -1,7 +1,21 @@
 [gd_scene format=3 uid="uid://d0b3fdfc26ir6"]
 
 [ext_resource type="Script" uid="uid://bu1ssahl7fr64" path="res://src/scenes/ui/main_menu/main_menu.gd" id="1_gn1n2"]
+[ext_resource type="Texture2D" uid="uid://cf5426gsf6k1b" path="res://assets/ui/temp_main_menu_background.jpg" id="2_5j0pi"]
 [ext_resource type="PackedScene" uid="uid://bla5i5xxak8jt" path="res://src/scenes/ui/new_game_screen/new_game_screen.tscn" id="2_ful4p"]
+[ext_resource type="Shader" uid="uid://bpxqt3su54fc7" path="res://src/scenes/ui/main_menu/blur.gdshader" id="3_bl02k"]
+[ext_resource type="PackedScene" uid="uid://cd2v4n2663vdo" path="res://src/scenes/ui/main_menu/online_play_screen.tscn" id="5_myjjp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_atkhn"]
+shader = ExtResource("3_bl02k")
+shader_parameter/samples = 9
+shader_parameter/lod = 1
+shader_parameter/tint_color = Color(0.5775778, 0.7432059, 0.1897483, 0)
+
+[sub_resource type="Gradient" id="Gradient_5ihrt"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gljos"]
+gradient = SubResource("Gradient_5ihrt")
 
 [node name="MainMenu" type="Control" unique_id=1100850197]
 layout_mode = 3
@@ -12,53 +26,123 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gn1n2")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2099029911]
-custom_minimum_size = Vector2(400, 200)
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1425220333]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5j0pi")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1292414038]
+material = SubResource("ShaderMaterial_atkhn")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_gljos")
+
+[node name="TitleMenu" type="Control" parent="." unique_id=731834095]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=1297389824]
+[node name="MarginContainer" type="MarginContainer" parent="TitleMenu" unique_id=1797979397]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 150
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleMenu/MarginContainer" unique_id=2099029911]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 210
+
+[node name="Label" type="Label" parent="TitleMenu/MarginContainer/VBoxContainer" unique_id=1297389824]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 80
-text = "Main Menu"
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 184
+text = "Game Title"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1013404501]
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleMenu/MarginContainer/VBoxContainer" unique_id=1013404501]
 custom_minimum_size = Vector2(164.445, 0)
 layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 10
+size_flags_horizontal = 0
+theme_override_constants/separation = 18
 
-[node name="LoadGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1338017537]
+[node name="StartNewGameButton" type="Button" parent="TitleMenu/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1338017537]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-text = "Load Game"
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "Start New Game"
+flat = true
+alignment = 0
 
-[node name="NewGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1701401782]
+[node name="ContinueButton" type="Button" parent="TitleMenu/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1701401782]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-text = "New Game"
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "Continue"
+flat = true
+alignment = 0
 
-[node name="JoinGameButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=799093449]
+[node name="OnlinePlayButton" type="Button" parent="TitleMenu/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1266392504]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-text = "Join Game"
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "Online Play"
+flat = true
+alignment = 0
 
-[node name="QuitButton" type="Button" parent="VBoxContainer/VBoxContainer" unique_id=1446550807]
+[node name="OptionsButton" type="Button" parent="TitleMenu/MarginContainer/VBoxContainer/VBoxContainer" unique_id=799093449]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "Options"
+flat = true
+alignment = 0
+
+[node name="QuitButton" type="Button" parent="TitleMenu/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1446550807]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
 text = "Quit"
+flat = true
+alignment = 0
 
 [node name="NewGameScreen" parent="." unique_id=1086454482 instance=ExtResource("2_ful4p")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="OnlinePlayScreen" parent="." unique_id=1324643061 instance=ExtResource("5_myjjp")]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1

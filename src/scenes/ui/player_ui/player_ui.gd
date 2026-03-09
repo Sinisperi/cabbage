@@ -23,6 +23,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.keycode == KEY_F4 && event.is_pressed():
 			PlayerManager.save_player_data(multiplayer.get_unique_id())
+		if event.keycode == KEY_F7 && event.is_pressed():
+			ChunkLoader.defragment_region_files()
 			
 
 func _physics_process(_delta: float) -> void:

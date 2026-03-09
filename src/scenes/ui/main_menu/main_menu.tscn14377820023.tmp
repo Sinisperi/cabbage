@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://d0b3fdfc26ir6"]
+
+[ext_resource type="Script" uid="uid://bu1ssahl7fr64" path="res://src/scenes/ui/main_menu/main_menu.gd" id="1_gn1n2"]
+[ext_resource type="PackedScene" uid="uid://bla5i5xxak8jt" path="res://src/scenes/ui/new_game_screen/new_game_screen.tscn" id="2_ful4p"]
+
+[node name="MainMenu" type="Control" unique_id=1100850197]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gn1n2")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1797979397]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_top = 120
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 120
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2099029911]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 210
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1297389824]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 184
+text = "Main Menu"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1013404501]
+custom_minimum_size = Vector2(164.445, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 18
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1817689291]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="SinglePlayerButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1338017537]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "Single Player"
+alignment = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=643570135]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NewGameButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=2071507194]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "New Game"
+
+[node name="LoadGameButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1344493387]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Load Game"
+
+[node name="MultiPlayerButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1701401782]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "Multiplayer"
+alignment = 0
+
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=799093449]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "Options"
+alignment = 0
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1446550807]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "Quit"
+alignment = 0
+
+[node name="NewGameScreen" parent="." unique_id=1086454482 instance=ExtResource("2_ful4p")]
+visible = false
+layout_mode = 1

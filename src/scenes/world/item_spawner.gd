@@ -25,7 +25,6 @@ func _on_item_dropped(item: Variant) -> void:
 @rpc("any_peer", "call_local")
 func _on_item_spawn_requested(item_data: Variant) -> void:
 	if multiplayer.is_server():
-		print(" trying to spawn AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", item_data)
 		item_data["registered_in_chunk"] = true
 		spawn(item_data)
 

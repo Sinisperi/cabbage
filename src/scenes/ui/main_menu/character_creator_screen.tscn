@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://ccodm1qwcmie4"]
+
+[ext_resource type="Script" uid="uid://5aigw0xq7rd0" path="res://src/scenes/ui/main_menu/character_creator_screen.gd" id="1_i8n3u"]
+
+[node name="CharacterCreatorScreen" type="Control" unique_id=68073134]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i8n3u")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=370611869]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=214298879]
+layout_mode = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=804232985]
+layout_mode = 2
+theme_override_constants/separation = 83
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=919424205]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 64
+text = "Create a Character"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=532701913]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_constants/separation = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1966365308]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" unique_id=2141730841]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Character Name"
+
+[node name="CharacterNameLineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" unique_id=1971266823]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CharacterNameErrorLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" unique_id=1768831549]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=red]Character name has to be at least 2 letters long for this to work.[/color]"
+fit_content = true
+
+[node name="OnlineCheckbox" type="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1840048550]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "online"
+
+[node name="GoBackButton" type="Button" parent="PanelContainer/MarginContainer" unique_id=961995565]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 36
+text = "Go Back"
+flat = true
+
+[node name="StartGameButton" type="Button" parent="PanelContainer/MarginContainer" unique_id=1699175534]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 36
+text = "Start Game"
+flat = true
