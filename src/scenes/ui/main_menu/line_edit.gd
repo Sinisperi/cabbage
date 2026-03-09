@@ -12,7 +12,7 @@ func _on_button_pressed() -> void:
 func send_print(message: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	var username: String
-	if sender_id > 1:
+	if sender_id != multiplayer.get_unique_id():
 		var steam_id: int = SteamManager.peer.get_steam_id_for_peer_id(sender_id)
 		username = Steam.getFriendPersonaName(steam_id)
 	else:
