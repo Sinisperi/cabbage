@@ -26,9 +26,7 @@ extends Control
 @onready var host_invite_code_input: LineEdit = %HostInviteCodeInput
 @onready var host_invite_code_copy_button: TextureButton = %HostInviteCodeCopyButton
 
-@onready var toast_popup: PanelContainer = %ToastPopup
-@onready var toast_text_label: Label = %ToastTextLabel
-@onready var toast_title: Label = %ToastTitle
+
 
 
 @onready var client_join_code_input: LineEdit = %ClientJoinCodeInput
@@ -133,33 +131,13 @@ func _on_send_invite_button_pressed() -> void:
 	SteamManager.create_friends_popup()
 
 
-func create_toast_popup(text: String, is_error: bool = false, title: String = "") -> void:
-	if tween:
-		toast_popup.position.y = size.y
-		tween.kill()
-	if is_error:
-		%ToastTitle.text = title if title.length() else "Oh no!"
-		%ToastTitle.modulate = Color.RED
-		toast_text_label.text = text
-		toast_popup.size.y = 0.0
-		tween = create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-	else:
-		%ToastTitle.text = title if title.length() else "Oh yeah!"
-		%ToastTitle.modulate = Color.SEA_GREEN
-		toast_text_label.text = text
-		toast_popup.size.y = 0.0
-		tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		
-	var original_pos: float = size.y
-	tween.tween_property(toast_popup, "position:y", original_pos - toast_popup.size.y, 0.2)
-	tween.tween_interval(3.0)
-	tween.chain().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	tween.tween_property(toast_popup, "position:y", original_pos, 0.2)
+
 
 
 func _on_host_invite_code_copy_button_pressed() -> void:
 	DisplayServer.clipboard_set(host_invite_code_input.text)
 	create_toast_popup("Coppied the invite code to clipboard!")
+	
 	var data: String = Steam.getLobbyData(int(host_invite_code_input.text), "is_joinable")
 
 
@@ -182,3 +160,6 @@ func _on_client_join_code_input_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.is_pressed():
 			client_join_code_input.text = DisplayServer.clipboard_get()
+
+func create_toast_popup(message: String, is_error: bool = false, title: String = "") -> void:
+	EventBus.ui.toast_popup_requested.emit(message, is_error, title)

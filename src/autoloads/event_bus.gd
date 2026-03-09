@@ -7,6 +7,7 @@ var world: WorldSignals = WorldSignals.new()
 class UISignals:
 	## Useful for disabling movement on the player while menus are open
 	signal mouse_mode_changed(mode: int)
+	signal toast_popup_requested(message: String, is_error: bool, title: String)
 
 
 class InventorySignals:

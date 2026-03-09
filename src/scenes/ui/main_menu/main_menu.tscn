@@ -146,3 +146,43 @@ layout_mode = 1
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
+
+[node name="ToastPopup" type="PanelContainer" parent="." unique_id=2030462396]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -401.0
+offset_right = -1.0
+offset_bottom = 135.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ToastPopup" unique_id=585204774]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ToastPopup/MarginContainer" unique_id=1422553585]
+layout_mode = 2
+theme_override_constants/separation = 13
+
+[node name="ToastTitle" type="Label" parent="ToastPopup/MarginContainer/VBoxContainer" unique_id=101286075]
+unique_name_in_owner = true
+modulate = Color(1, 0, 0, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Oh..."
+
+[node name="ToastTextLabel" type="Label" parent="ToastPopup/MarginContainer/VBoxContainer" unique_id=292840101]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "fljkas asl aldifn al;aks aosoi a;ls oa s alsdfja aosdfj; oa"
+autowrap_mode = 2

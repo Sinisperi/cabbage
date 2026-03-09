@@ -1,6 +1,8 @@
 extends Node
 var peer: SteamMultiplayerPeer = null
 signal lobby_created(response: int, lobby_id: int)
+signal user_joined(username: String)
+signal user_left(username: String)
 var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
 
@@ -17,6 +19,8 @@ func _ready() -> void:
 	enable_steam()
 	Steam.lobby_created.connect(_on_steam_lobby_created)
 	Steam.lobby_joined.connect(_on_steam_lobby_joined)
+	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
+	multiplayer.peer_connected.connect(_on_steam_peer_connected)
 
 func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
 	if current_lobby_id > 0:
@@ -41,13 +45,18 @@ func _on_steam_lobby_created(response: int, lobby_id: int) -> void:
 func _on_steam_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
 	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		var host_id: int = Steam.getLobbyOwner(lobby_id)
-		print("host is ", host_id)
 		var user_id: int = Steam.getSteamID()
 		if host_id != user_id:
 			peer.create_client(host_id)
 			multiplayer.set_multiplayer_peer(peer)
-			print(Steam.getPersonaName(), " joined")
 
+func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change_id: int, chat_state: int) -> void:
+	var username: String = Steam.getFriendPersonaName(changed_id)
+	if chat_state == 1:
+		user_joined.emit(username)
+	elif chat_state == 2:
+		user_left.emit(username)
+		
 
 func create_friends_popup() -> void:
 	Steam.activateGameOverlayInviteDialog(current_lobby_id)
@@ -57,7 +66,6 @@ func check_lobby_code(code_string: String) -> Dictionary:
 	var code: int = int(code_string)
 	Steam.requestLobbyData(code)
 	await Steam.lobby_data_update
-	prints(code_string, Steam.getLobbyOwner(code))
 	var res := {"status": 0, "verbal": "ok"}
 	if code_string.length() <= 15:
 		res.status = 1
@@ -75,3 +83,7 @@ func check_lobby_code(code_string: String) -> Dictionary:
 		res.status = 3
 		res.verbal = "Trying to play with yourself... I see that..."
 	return res
+
+
+func _on_steam_peer_connected(peer_id: int) -> void:
+	print("someone connected ", peer_id)
