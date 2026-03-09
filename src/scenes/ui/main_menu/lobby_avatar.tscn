@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b655wwfepeesc"]
+
+[ext_resource type="Script" uid="uid://ctdyc2vmihd86" path="res://src/scenes/ui/main_menu/lobby_avatar.gd" id="1_wmspo"]
+
+[node name="TextureRect" type="TextureRect" unique_id=281585968]
+script = ExtResource("1_wmspo")

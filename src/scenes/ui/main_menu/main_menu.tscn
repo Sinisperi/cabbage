@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://bla5i5xxak8jt" path="res://src/scenes/ui/new_game_screen/new_game_screen.tscn" id="2_ful4p"]
 [ext_resource type="Shader" uid="uid://bpxqt3su54fc7" path="res://src/scenes/ui/main_menu/blur.gdshader" id="3_bl02k"]
 [ext_resource type="PackedScene" uid="uid://cd2v4n2663vdo" path="res://src/scenes/ui/main_menu/online_play_screen.tscn" id="5_myjjp"]
-[ext_resource type="Script" uid="uid://chj8v0kalq6pg" path="res://src/scenes/ui/main_menu/line_edit.gd" id="6_myjjp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_atkhn"]
 shader = ExtResource("3_bl02k")
@@ -75,12 +74,19 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 210
 
-[node name="Label" type="Label" parent="TitleMenu/MarginContainer/VBoxContainer" unique_id=1297389824]
+[node name="VBoxContainer2" type="VBoxContainer" parent="TitleMenu/MarginContainer/VBoxContainer" unique_id=1830780343]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TitleMenu/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1297389824]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 2
 theme_override_font_sizes/font_size = 184
 text = "Game Title"
+
+[node name="LobbyAvatars" type="HBoxContainer" parent="TitleMenu/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1272849549]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TitleMenu/MarginContainer/VBoxContainer" unique_id=1013404501]
 custom_minimum_size = Vector2(164.445, 0)
@@ -187,20 +193,3 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "fljkas asl aldifn al;aks aosoi a;ls oa s alsdfja aosdfj; oa"
 autowrap_mode = 2
-
-[node name="LineEdit" type="LineEdit" parent="." unique_id=1147348234]
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 0
-offset_left = 914.0
-offset_top = 433.0
-offset_right = 986.0
-offset_bottom = 465.0
-script = ExtResource("6_myjjp")
-
-[node name="Button" type="Button" parent="LineEdit" unique_id=1392121987]
-layout_mode = 0
-offset_left = 2.0
-offset_top = 38.0
-offset_right = 117.0
-offset_bottom = 70.0
-text = "Send Message"

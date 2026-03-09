@@ -1,8 +1,9 @@
 extends Node
 var peer: SteamMultiplayerPeer = null
 signal lobby_created(response: int, lobby_id: int)
-signal user_joined(username: String)
-signal user_left(username: String)
+signal user_joined(steam_id: int, username: String)
+signal user_left(steam_id: int, username: String)
+signal lobby_joined
 var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
 
@@ -32,6 +33,7 @@ func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
 	
 
 func join_lobby(lobby_id: int) -> void:
+	#current_lobby_id = lobby_id
 	Steam.joinLobby(lobby_id)
 
 
@@ -49,16 +51,24 @@ func _on_steam_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, res
 		if host_id != user_id:
 			peer.create_client(host_id)
 			multiplayer.set_multiplayer_peer(peer)
+			current_lobby_id = lobby_id
+			lobby_joined.emit()
+
+
 
 func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change_id: int, chat_state: int) -> void:
 	var username: String = Steam.getFriendPersonaName(changed_id)
 	if chat_state == 1:
-		user_joined.emit(username)
+		user_joined.emit(changed_id, username)
 		EventBus.ui.toast_popup_requested.emit(username + " has joined!", false, "Rejoice!")
+
+		
 	elif chat_state == 2:
 		EventBus.ui.toast_popup_requested.emit(username + " has left!", false, "It's fine!")
-		user_left.emit(username)
+		user_left.emit(changed_id, username)
 	print("asdfasdf")
+		
+		
 		
 
 func create_friends_popup() -> void:
@@ -90,3 +100,29 @@ func check_lobby_code(code_string: String) -> Dictionary:
 
 func _on_steam_peer_connected(peer_id: int) -> void:
 	print("someone connected ", peer_id)
+
+
+
+func get_avatar_image(user_id: int) -> ImageTexture:
+	var handle: int = Steam.getMediumFriendAvatar(user_id)
+	if !handle:
+		await Steam.avatar_loaded
+	var data: Dictionary = Steam.getImageRGBA(handle)
+	var img: Image = Image.create_from_data(64, 64, false, Image.FORMAT_RGBA8, data.buffer)
+	var tex: ImageTexture = ImageTexture.create_from_image(img)
+	return tex
+	
+
+func get_users_in_lobby() -> Array:
+	var users: Array = []
+	var user_count: int = Steam.getNumLobbyMembers(current_lobby_id)
+	for u in user_count:
+		var steam_id: int = Steam.getLobbyMemberByIndex(current_lobby_id, u)
+		var username: String = Steam.getFriendPersonaName(steam_id)
+		users.push_back(
+			{
+				"steam_id": steam_id,
+				"username": username
+			}
+		)
+	return users

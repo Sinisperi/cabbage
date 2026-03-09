@@ -1,4 +1,7 @@
 extends Control
+
+const LOBBY_AVATAR = preload("uid://b655wwfepeesc") 
+
 @onready var quit_button: Button = %QuitButton
 @onready var new_game_button: Button = %StartNewGameButton
 @onready var continue_button: Button = %ContinueButton
@@ -8,6 +11,7 @@ extends Control
 @onready var title_menu: Control = %TitleMenu
 @onready var online_play_screen: Control = %OnlinePlayScreen
 
+@onready var lobby_avatars: HBoxContainer = %LobbyAvatars
 
 @onready var toast_popup: PanelContainer = %ToastPopup
 @onready var toast_text_label: Label = %ToastTextLabel
@@ -34,7 +38,10 @@ func _ready() -> void:
 	online_play_screen.back_button_pressed.connect(func() -> void: toggle_screen(ScreenType.ONLINE_PLAY_SCREEN))
 	
 	EventBus.ui.toast_popup_requested.connect(create_toast_popup)
-	
+	SteamManager.user_joined.connect(_on_user_joined)
+	SteamManager.user_left.connect(_on_user_left)
+	SteamManager.lobby_created.connect(_on_lobby_created)
+	SteamManager.lobby_joined.connect(_on_lobby_joined)
 	#NetworkManager.peer_connected.connect(_on_peer_connected)
 	
 
@@ -56,15 +63,7 @@ func _on_online_play_button_pressed() -> void:
 ## Pessed by a host or a singleplayer
 func _on_new_game_button_pressed() -> void:
 	toggle_screen(ScreenType.NEW_GAME_SCREEN)
-	## NEED TO SOMEHOW MAKE IT SO IT aCTUALLY STARSTS A NEW GAME AND NOT LOADING
-	#_load_world()
-	#new_game_screen.visible = true
-## Pressed by a client
-#func _on_join_button_pressed() -> void:
-	#NetworkManager.enable_multiplayer(true)
-	#var status: Error = NetworkManager.join_game()
-	#if status != OK:
-		#print("Joining game failed with status: ", status)
+
 
 
 func _on_quit_button_pressed() -> void:
@@ -94,6 +93,36 @@ func create_toast_popup(text: String, is_error: bool = false, title: String = ""
 	tween.chain().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.tween_property(toast_popup, "position:y", original_pos, 0.2)
 
+
+
+func _on_user_joined(user_id: int, _username: String) -> void:
+	create_lobby_avatar(await SteamManager.get_avatar_image(user_id), user_id)
+	
+func _on_user_left(user_id: int, _username: String) -> void:
+	var avatar_to_remove: TextureRect = null
+	for c in lobby_avatars.get_children():
+		if c.user_id == user_id:
+			avatar_to_remove = c
+			break
+	lobby_avatars.remove_child(avatar_to_remove)
+	avatar_to_remove.queue_free()
+	
+	
+func create_lobby_avatar(image: ImageTexture, user_id: int) -> void:
+	var avatar: TextureRect = LOBBY_AVATAR.instantiate()
+	avatar.texture = image
+	avatar.user_id = user_id
+	lobby_avatars.add_child(avatar)
+
+func _on_lobby_created(_response: int, _lobby_id: int) -> void:
+	create_lobby_avatar(await SteamManager.get_avatar_image(Steam.getSteamID()), Steam.getSteamID())
+
+func _on_lobby_joined() -> void:
+	var users: Array = SteamManager.get_users_in_lobby()
+	for u in users:
+		create_lobby_avatar(await SteamManager.get_avatar_image(u.steam_id), u.steam_id)
+		print("asdfadfsdf")
+
 ## TODO Instead of loading the world, check if player has a save here
 ## if they do, load the world and spawn the player with data,
 ## otherwise, switch to character creator
@@ -107,3 +136,17 @@ func create_toast_popup(text: String, is_error: bool = false, title: String = ""
 		#SceneLoader.Scene.WORLD_SCENE, 
 		#func(world: World) -> void: 
 			#world._request_player_spawn.rpc_id(1, str(Time.get_datetime_string_from_system())))
+			
+			
+			
+			
+			
+	## NEED TO SOMEHOW MAKE IT SO IT aCTUALLY STARSTS A NEW GAME AND NOT LOADING
+	#_load_world()
+	#new_game_screen.visible = true
+## Pressed by a client
+#func _on_join_button_pressed() -> void:
+	#NetworkManager.enable_multiplayer(true)
+	#var status: Error = NetworkManager.join_game()
+	#if status != OK:
+		#print("Joining game failed with status: ", status)

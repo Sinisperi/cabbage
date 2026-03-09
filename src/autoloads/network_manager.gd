@@ -7,13 +7,6 @@ var port: int = 3000
 var ip: String = "127.0.0.1"
 
 
-#func enable_multiplayer(is_nat: bool = true) -> void:
-	#if is_nat:
-		#peer = ENetMultiplayerPeer.new()
-	#else:
-		#peer = SteamMultiplayerPeer.new()
-		#init_steam()
-
 
 func enable_local_host() -> void:
 	peer = ENetMultiplayerPeer.new()
