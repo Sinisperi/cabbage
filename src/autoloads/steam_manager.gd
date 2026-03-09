@@ -34,17 +34,18 @@ func join_lobby(lobby_id: int) -> void:
 func _on_steam_lobby_created(response: int, lobby_id: int) -> void:
 	current_lobby_id = lobby_id
 	lobby_created.emit(response, lobby_id)
-	Steam.setLobbyData(lobby_id, "is_joinable", "true")
+	var res: bool = Steam.setLobbyData(lobby_id, "is_joinable", "true")
+	print("lobby created ", res)
 
 
 func _on_steam_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
-	if response != Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
+	if response == Steam.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		var host_id: int = Steam.getLobbyOwner(lobby_id)
 		var user_id: int = Steam.getSteamID()
 		if host_id != user_id:
 			peer.create_client(host_id)
 			multiplayer.set_multiplayer_peer(peer)
-			print(Steam.getPersonaName(), " joined")
+		print(Steam.getPersonaName(), " joined")
 
 
 func create_friends_popup() -> void:
@@ -53,6 +54,9 @@ func create_friends_popup() -> void:
 
 func check_lobby_code(code_string: String) -> Dictionary:
 	var code: int = int(code_string)
+	Steam.requestLobbyData(code)
+	await Steam.lobby_data_update
+	prints(code_string, Steam.getLobbyOwner(code))
 	var res := {"status": 0, "verbal": "ok"}
 	if code_string.length() <= 15:
 		res.status = 1

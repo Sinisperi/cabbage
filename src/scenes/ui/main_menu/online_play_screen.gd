@@ -35,7 +35,7 @@ extends Control
 @onready var join_button: Button = %JoinButton
 
 var is_local: bool = false
-var lobby_type: Steam.LobbyType = Steam.LobbyType.LOBBY_TYPE_PRIVATE
+var lobby_type: Steam.LobbyType = Steam.LobbyType.LOBBY_TYPE_FRIENDS_ONLY
 var tween: Tween = null
 signal back_button_pressed
 
@@ -105,7 +105,7 @@ func enable_invite_section() -> void:
 	host_invite_code_copy_button.disabled = false
 	if lobby_type != Steam.LobbyType.LOBBY_TYPE_PRIVATE:
 		send_invite_button.disabled = false
-
+#109775242198973756
 
 func _on_create_lobby_button_pressed() -> void:
 	if is_local:
@@ -168,7 +168,7 @@ func _on_join_button_pressed() -> void:
 		create_toast_popup("Steam has to be running for this to work...", true, "Nice try")
 		return
 		
-	var result: Dictionary = SteamManager.check_lobby_code(client_join_code_input.text)
+	var result: Dictionary = await SteamManager.check_lobby_code(client_join_code_input.text)
 	if result.status == 0:
 		SteamManager.join_lobby(int(client_join_code_input.text))
 		create_toast_popup("Successfully joined a lobby!")
