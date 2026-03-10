@@ -45,7 +45,7 @@ func _ready() -> void:
 	SteamManager.lobby_created.connect(_on_lobby_created)
 	SteamManager.lobby_joined.connect(_on_lobby_joined)
 	#NetworkManager.peer_connected.connect(_on_peer_connected)
-	
+	await show_active_users_avatars()
 
 func toggle_screen(screen_type: ScreenType) -> void:
 	ui_state ^= screen_type
@@ -121,10 +121,12 @@ func _on_lobby_created(_response: int, _lobby_id: int) -> void:
 	create_lobby_avatar(await SteamManager.get_avatar_image(Steam.getSteamID()), Steam.getSteamID())
 
 func _on_lobby_joined() -> void:
+	await show_active_users_avatars()
+
+func show_active_users_avatars() -> void:
 	var users: Array = SteamManager.get_users_in_lobby()
-	for u in users:
+	for u: Dictionary in users:
 		create_lobby_avatar(await SteamManager.get_avatar_image(u.steam_id), u.steam_id)
-		print("asdfadfsdf")
 
 ## TODO Instead of loading the world, check if player has a save here
 ## if they do, load the world and spawn the player with data,
