@@ -7,6 +7,7 @@ signal lobby_joined
 var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
 
+
 func enable_steam() -> Dictionary:
 	if is_steam_enabled:
 		return {"status": 0}
@@ -16,12 +17,14 @@ func enable_steam() -> Dictionary:
 		is_steam_enabled = true
 	return result
 
+
 func _ready() -> void:
 	enable_steam()
 	Steam.lobby_created.connect(_on_steam_lobby_created)
 	Steam.lobby_joined.connect(_on_steam_lobby_joined)
 	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
 	multiplayer.peer_connected.connect(_on_steam_peer_connected)
+
 
 func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
 	if current_lobby_id > 0:

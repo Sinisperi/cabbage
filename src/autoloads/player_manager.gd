@@ -7,10 +7,13 @@ var active_players: Dictionary[String, Dictionary] = {}
 # { peer_id: username }
 var active_peers: Dictionary[int, String] = {}
 
-var debug_save_dir: String = "res://test_save/player_data/"
-var SAVE_DIR: String = debug_save_dir
+#var debug_save_dir: String = "res://saves/player_data/"
+#var SAVE_DIR: String = debug_save_dir
+var SAVE_DIR: String = "player_data/"
 ## TODO Load player save data in here
 
+func _ready() -> void:
+	pass
 
 func register_player(peer_id: int, username: String) -> void:
 	if !active_peers.has(peer_id):
@@ -33,6 +36,10 @@ func set_player_pointer_for_peer(peer_id: int, ptr: Player) -> void:
 	else:
 		printerr("Trying to assign player pointer to a peer ", peer_id, " but it's not in active_players!")
 
+func save_active_players() -> void:
+	for i in active_peers:
+		save_player_data(i)
+		
 
 #func add_player(peer_id: int, username: String) -> void:
 	#print("attempting to add new player: ", username)
@@ -63,7 +70,7 @@ func get_player_data(peer_id: int) -> PlayerData:
 
 
 func load_player_data(peer_id: int) -> Dictionary:
-	var file_name: String = SAVE_DIR + active_peers[peer_id] + ".json"
+	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + active_peers[peer_id] + ".json"
 	if !FileAccess.file_exists(file_name):
 		return {}
 	var json: JSON = JSON.new()
@@ -73,7 +80,7 @@ func load_player_data(peer_id: int) -> Dictionary:
 	return data
 
 func save_player_data(peer_id: int) -> void:
-	var file_name: String = SAVE_DIR + active_peers[peer_id] + ".json"
+	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + active_peers[peer_id] + ".json"
 	var player_position: Vector3 = get_player_pointer(peer_id).position
 	var data_to_save: Dictionary = {
 		"player_data": get_player_data(peer_id).to_obj(),
@@ -84,8 +91,8 @@ func save_player_data(peer_id: int) -> void:
 		}
 	}
 	var data_string: String = JSON.stringify(data_to_save)
-	if !DirAccess.dir_exists_absolute(SAVE_DIR):
-		DirAccess.make_dir_absolute(SAVE_DIR)
+	if !DirAccess.dir_exists_absolute(SaveDataManager.current_save_path + SAVE_DIR):
+		DirAccess.make_dir_absolute(SaveDataManager.current_save_path + SAVE_DIR)
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.WRITE)
 	file.store_string(data_string)
 

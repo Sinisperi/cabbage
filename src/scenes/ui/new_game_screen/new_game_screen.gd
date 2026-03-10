@@ -13,8 +13,8 @@ func _ready() -> void:
 	
 
 func _on_continue_button_pressed() -> void:
-	SceneLoader.load_scene(SceneLoader.Scene.CHARACTER_CREATOR)
-	pass
+	SaveDataManager.create_save_slot(world_name_line_edit.text)
+	load_character_creator.rpc()
 	#if online_checkbox.is_pressed():
 		#NetworkManager.enable_multiplayer(true)
 		#var status: Error = NetworkManager.host_game()
@@ -34,3 +34,7 @@ func _on_continue_button_pressed() -> void:
 
 func _go_back_button_pressed() -> void:
 	back_button_pressed.emit()
+
+@rpc("any_peer", "call_local")
+func load_character_creator() -> void:
+	SceneLoader.load_scene(SceneLoader.Scene.CHARACTER_CREATOR)

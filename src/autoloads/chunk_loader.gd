@@ -4,8 +4,7 @@ const CHUNK_COLUMNS: int = 16
 const CHUNKS_PER_REGION: int = CHUNK_COLUMNS * CHUNK_COLUMNS
 
 const HEADER_SIZE: int = CHUNKS_PER_REGION * 8
-const debug_region_root_dir: String = "res://test_save/regions/"
-const REGION_ROOT_DIR: String = debug_region_root_dir
+const SAVE_DIR: String = "regions/"
 
 
 func create_region_file(path: String) -> void:
@@ -20,8 +19,8 @@ func create_region_file(path: String) -> void:
 func save_chunk(chunk_coords: Vector2i, chunk_data: Dictionary) -> void:
 	var region_file_path: String = get_region_file_path(chunk_coords)
 	var chunk_index: int = get_chunk_index(chunk_coords)
-	if !DirAccess.dir_exists_absolute(REGION_ROOT_DIR):
-		DirAccess.make_dir_absolute(REGION_ROOT_DIR)
+	if !DirAccess.dir_exists_absolute(SaveDataManager.current_save_path + SAVE_DIR):
+		DirAccess.make_dir_absolute(SaveDataManager.current_save_path + SAVE_DIR)
 	if !FileAccess.file_exists(region_file_path):
 		create_region_file(region_file_path)
 	var file: FileAccess = FileAccess.open(region_file_path, FileAccess.READ_WRITE)
@@ -44,9 +43,6 @@ func save_chunk(chunk_coords: Vector2i, chunk_data: Dictionary) -> void:
 func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 	var region_file_path: String = get_region_file_path(chunk_coords)
 	var chunk_index: int = get_chunk_index(chunk_coords)
-	#print("Loading chunk ", chunk_coords, " in ", region_file_path, " at index", chunk_index)
-	#var dir: DirAccess = DirAccess.open(REGION_ROOT_DIR)
-	#if dir:
 	var file: FileAccess = FileAccess.open(region_file_path, FileAccess.READ)
 	if file:
 		file.seek(chunk_index * 8)
@@ -64,13 +60,13 @@ func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 
 
 func defragment_region_files() -> void:
-	var files: Array = DirAccess.get_files_at(REGION_ROOT_DIR)
-	for i in files:
+	var files: Array = DirAccess.get_files_at(SaveDataManager.current_save_path + SAVE_DIR)
+	for i: String in files:
 		_defragment_region_file(i)
 	print(files)
 
 func _defragment_region_file(file_name: String) -> void:
-	var file_path: String = REGION_ROOT_DIR + file_name
+	var file_path: String = SaveDataManager.current_save_path + SAVE_DIR + file_name
 	var temp_file: FileAccess = FileAccess.open(file_path + ".tmp", FileAccess.WRITE_READ)
 	var region_file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
 	
@@ -107,10 +103,19 @@ func get_chunk_index(chunk_coords: Vector2i) -> int:
 func get_region_file_path(chunk_coords: Vector2i) -> String:
 	var rx: int = int(floor(chunk_coords.x / float(CHUNK_COLUMNS)))
 	var ry: int = int(floor(chunk_coords.y / float(CHUNK_COLUMNS)))
-	return REGION_ROOT_DIR + "Region_" + str(rx) + "_" + str(ry)
+	return SaveDataManager.current_save_path + SAVE_DIR + "Region_" + str(rx) + "_" + str(ry)
 
 func get_default_chunk_data() -> Dictionary:
 	return {
 		"entities": {},
 		"removed_editor_entities": []
 	}
+
+func save_world() -> void:
+	if Globals.chunker:
+		var loaded_chunks: Dictionary = Globals.chunker.loaded_chunks
+		for chunk: Vector2i in loaded_chunks:
+			if loaded_chunks[chunk].is_dirty:
+				save_chunk(chunk, loaded_chunks[chunk].chunk_data)
+	else:
+		print_rich("[color=yellow]Trying to save the world, but it is not loaded yet![/color]")

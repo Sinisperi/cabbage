@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b655wwfepeesc" path="res://src/scenes/ui/main_menu/lobby_avatar.tscn" id="2_myjjp"]
 [ext_resource type="Shader" uid="uid://bpxqt3su54fc7" path="res://src/scenes/ui/main_menu/blur.gdshader" id="3_bl02k"]
 [ext_resource type="PackedScene" uid="uid://cd2v4n2663vdo" path="res://src/scenes/ui/main_menu/online_play_screen.tscn" id="5_myjjp"]
+[ext_resource type="PackedScene" uid="uid://r8gedp8kt6oq" path="res://src/scenes/ui/main_menu/continue_screen.tscn" id="7_atkhn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_atkhn"]
 shader = ExtResource("3_bl02k")
@@ -152,6 +153,11 @@ visible = false
 layout_mode = 1
 
 [node name="OnlinePlayScreen" parent="." unique_id=1324643061 instance=ExtResource("5_myjjp")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="ContinueScreen" parent="." unique_id=1906972596 instance=ExtResource("7_atkhn")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

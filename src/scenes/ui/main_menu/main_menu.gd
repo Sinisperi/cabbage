@@ -10,6 +10,7 @@ extends Control
 @onready var new_game_screen: Control = %NewGameScreen
 @onready var title_menu: Control = %TitleMenu
 @onready var online_play_screen: Control = %OnlinePlayScreen
+@onready var continue_screen: Control = %ContinueScreen
 
 @onready var lobby_avatars: HBoxContainer = %LobbyAvatars
 
@@ -21,6 +22,7 @@ enum ScreenType {
 	TITLE_MENU = 1,
 	NEW_GAME_SCREEN = 1 << 1,
 	ONLINE_PLAY_SCREEN = 1 << 2,
+	CONTINUE_SCREEN = 1 << 3
 }
 
 var ui_state: int = ScreenType.TITLE_MENU
@@ -49,11 +51,12 @@ func toggle_screen(screen_type: ScreenType) -> void:
 	ui_state ^= screen_type
 	new_game_screen.visible = ui_state & ScreenType.NEW_GAME_SCREEN
 	online_play_screen.visible = ui_state & ScreenType.ONLINE_PLAY_SCREEN
+	continue_screen.visible = ui_state & ScreenType.CONTINUE_SCREEN
 	title_menu.visible = !title_menu.visible
 
 
 func _on_continue_button_pressed() -> void:
-	push_warning("NOT IMPLEMENTED")
+	toggle_screen(ScreenType.CONTINUE_SCREEN)
 
 func _on_online_play_button_pressed() -> void:
 	toggle_screen(ScreenType.ONLINE_PLAY_SCREEN)

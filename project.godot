@@ -26,6 +26,7 @@ EventBus="*uid://cwxpsa1loq3cr"
 PlayerManager="*uid://b524s1owf1nhm"
 ChunkLoader="*uid://2bsbyph848il"
 SteamManager="*uid://nor3tigrxybo"
+SaveDataManager="*uid://c51e8lvohywjp"
 
 [debug]
 

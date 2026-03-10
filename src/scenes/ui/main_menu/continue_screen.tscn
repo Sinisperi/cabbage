@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://r8gedp8kt6oq"]
+
+[ext_resource type="PackedScene" uid="uid://djfg6jfssd4v" path="res://src/scenes/ui/main_menu/save_slot.tscn" id="1_73v4y"]
+[ext_resource type="Script" uid="uid://belgo2njeytor" path="res://src/scenes/ui/main_menu/continue_screen.gd" id="1_pi4kj"]
+
+[node name="ContinueScreen" type="Control" unique_id=1906972596]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pi4kj")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1043476484]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1230141429]
+layout_mode = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1209933168]
+layout_mode = 2
+theme_override_constants/separation = 52
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=97631556]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 64
+text = "Continue Game"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1806288762]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SaveSlotList" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=1508235681]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="SaveSlot" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/SaveSlotList" unique_id=1477858924 instance=ExtResource("1_73v4y")]
+layout_mode = 2
+
+[node name="SaveSlot2" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/SaveSlotList" unique_id=1743648895 instance=ExtResource("1_73v4y")]
+layout_mode = 2
+
+[node name="SaveSlot3" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/SaveSlotList" unique_id=87044172 instance=ExtResource("1_73v4y")]
+layout_mode = 2
+
+[node name="SaveSlot4" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/SaveSlotList" unique_id=1241275404 instance=ExtResource("1_73v4y")]
+layout_mode = 2
+
+[node name="SaveSlot5" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/SaveSlotList" unique_id=1245609561 instance=ExtResource("1_73v4y")]
+layout_mode = 2
+
+[node name="SaveSlot6" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/SaveSlotList" unique_id=1613060575 instance=ExtResource("1_73v4y")]
+layout_mode = 2
+
+[node name="SaveSlot7" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/SaveSlotList" unique_id=733074267 instance=ExtResource("1_73v4y")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1402897314]
+layout_mode = 2
+
+[node name="GoBackButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=669007829]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Go Back"
+
+[node name="ConfirmButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=912643144]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 28
+text = "Confirm"
