@@ -36,6 +36,8 @@ func _request_player_spawn(display_name: String = "") -> void:
 		
 		
 		var save_data: Dictionary = PlayerManager.load_player_data(peer_id)
+		
+		
 		PlayerManager.set_player_data_for_peer(peer_id, save_data.get("player_data", {}), display_name)
 		Globals.inventory.inventory_grid.place_items_request.rpc(peer_id, Inventory.InventoryType.ITEM)
 		Globals.inventory.hot_bar_slots.place_items_request.rpc(peer_id, Inventory.InventoryType.HOT_BAR)

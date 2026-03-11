@@ -8,7 +8,7 @@ func _init(data: Dictionary = {}) -> void:
 	print(data)
 	#return
 	if data.is_empty(): return
-	display_name = data.username
+	display_name = data.display_name
 	inventory = InventoryData.new(data.inventory)
 
 

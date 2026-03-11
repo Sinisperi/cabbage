@@ -28,9 +28,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		ui_state ^= DEBUG_SCREEN
 		_update_ui()
 		
-	#if event is InputEventKey:
-		#if event.keycode == KEY_F4 && event.is_pressed():
+	if event is InputEventKey:
+		if event.keycode == KEY_F4 && event.is_pressed():
 			#PlayerManager.save_player_data(multiplayer.get_unique_id())
+			if multiplayer.is_server():
+				SaveDataManager.save_game()
 		#if event.keycode == KEY_F7 && event.is_pressed():
 			#ChunkLoader.defragment_region_files()
 			

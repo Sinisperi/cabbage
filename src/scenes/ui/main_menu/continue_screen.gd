@@ -1,6 +1,5 @@
 extends Control
 @onready var go_back_button: Button = %GoBackButton
-#@onready var continue_button: Button = %ContinueButton
 @onready var confirm_button: Button = %ConfirmButton
 @onready var save_slot_list: VBoxContainer = %SaveSlotList
 @export var save_slot_scene: PackedScene
