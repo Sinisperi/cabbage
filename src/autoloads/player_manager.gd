@@ -98,5 +98,21 @@ func save_player_data(peer_id: int) -> void:
 	file.store_string(data_string)
 
 
+func save_and_remove_player(peer_id: int) -> Player:
+	save_player_data(peer_id)
+	var removed_player: Player = remove_player_peer(peer_id)
+	return removed_player
+
 func get_player_pointer(peer_id: int) -> Player:
-	return active_players[active_peers[peer_id]].ref
+	if active_peers[peer_id]:
+		return active_players[active_peers[peer_id]].ref
+	else:
+		return null
+
+func remove_player_peer(peer_id: int) -> Player:
+	var removed_player: Player = null
+	if active_peers[peer_id]:
+		removed_player = active_players[active_peers[peer_id]].ref
+		active_players.erase(active_peers[peer_id])
+		active_peers.erase(peer_id)
+	return removed_player

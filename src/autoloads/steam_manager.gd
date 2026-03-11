@@ -3,6 +3,7 @@ var peer: SteamMultiplayerPeer = null
 signal lobby_created(response: int, lobby_id: int)
 signal user_joined(steam_id: int, username: String)
 signal user_left(steam_id: int, username: String)
+signal peer_disconnected(peer_id: int)
 signal lobby_joined
 var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
@@ -14,6 +15,7 @@ func _ready() -> void:
 	Steam.lobby_joined.connect(_on_steam_lobby_joined)
 	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
 	multiplayer.peer_connected.connect(_on_steam_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_steam_peer_disconnected)
 	multiplayer.server_disconnected.connect(_on_steam_server_disconnected)
 	
 	
@@ -80,6 +82,8 @@ func _on_steam_server_disconnected() -> void:
 		multiplayer.multiplayer_peer = null
 		SceneLoader.load_scene(SceneLoader.Scene.MAIN_MENU, false)
 		current_lobby_id = -1
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		
 
 		
 
@@ -149,3 +153,8 @@ func get_peer_steam_username(peer_id: int) -> String:
 		return Steam.getFriendPersonaName(steam_id)
 	else:
 		return Steam.getPersonaName()
+
+
+func _on_steam_peer_disconnected(peer_id: int) -> void:
+	if multiplayer.is_server():
+		peer_disconnected.emit(peer_id)
