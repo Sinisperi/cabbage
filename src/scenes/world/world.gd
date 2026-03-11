@@ -20,25 +20,25 @@ func _ready() -> void:
 
 
 @rpc("any_peer", "call_local")
-func _request_player_spawn(username: String = "NO USERNAME") -> void:
+func _request_player_spawn(display_name: String = "NO USERNAME") -> void:
 	if multiplayer.is_server():
 		var peer_id: int = multiplayer.get_remote_sender_id()
-		PlayerManager.register_player(peer_id, username)
+		var steam_username: String = SteamManager.get_peer_steam_username(peer_id)
+		PlayerManager.register_player(peer_id, steam_username)
 		var save_data: Dictionary = PlayerManager.load_player_data(peer_id)
-		PlayerManager.set_player_data_for_peer(peer_id, {} if save_data.is_empty() else save_data.player_data)
-		#PlayerManager.add_player(peer_id, username)
+		PlayerManager.set_player_data_for_peer(peer_id, save_data.get("player_data", {}), display_name)
 		Globals.inventory.inventory_grid.place_items_request.rpc(peer_id, Inventory.InventoryType.ITEM)
 		Globals.inventory.hot_bar_slots.place_items_request.rpc(peer_id, Inventory.InventoryType.HOT_BAR)
 		Globals.inventory.equipment_slots.init_equipment_request.rpc(peer_id)
 		var data: Dictionary = {
 			"peer_id": peer_id,
-			"username": username,
+			#"display_name": display_name,
 			"save_data": save_data
 		}
 		
 		player_spawner.spawn(data)
 		
-		prints("spawning player", username, peer_id)
+		prints("spawning player", display_name, " aka ", steam_username, " ", peer_id)
 
 
 

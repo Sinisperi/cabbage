@@ -141,3 +141,11 @@ func get_users_in_lobby() -> Array:
 			}
 		)
 	return users
+
+
+func get_peer_steam_username(peer_id: int) -> String:
+	var steam_id: int = peer.get_steam_id_for_peer_id(peer_id)
+	if peer_id > 1:
+		return Steam.getFriendPersonaName(steam_id)
+	else:
+		return Steam.getPersonaName()

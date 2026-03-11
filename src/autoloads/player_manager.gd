@@ -15,14 +15,15 @@ var SAVE_DIR: String = "player_data/"
 func _ready() -> void:
 	pass
 
-func register_player(peer_id: int, username: String) -> void:
+func register_player(peer_id: int, steam_username: String) -> void:
 	if !active_peers.has(peer_id):
-		active_peers[peer_id] = username
+		active_peers[peer_id] = steam_username
 
 
-func set_player_data_for_peer(peer_id: int, player_data: Dictionary) -> void:
+func set_player_data_for_peer(peer_id: int, player_data: Dictionary, display_name: String) -> void:
 	var new_player_data: PlayerData = PlayerData.new(player_data)
-	new_player_data.username = active_peers[peer_id]
+	if player_data.is_empty():
+		new_player_data.display_name = display_name
 	active_players[active_peers[peer_id]] = {
 		"player_data": new_player_data,
 		"ref": null
