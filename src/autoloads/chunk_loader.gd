@@ -42,11 +42,9 @@ func save_chunk(chunk_coords: Vector2i, chunk_data: Dictionary) -> void:
 
 func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 	var region_file_path: String = get_region_file_path(chunk_coords)
-	print(region_file_path)
 	var chunk_index: int = get_chunk_index(chunk_coords)
 	var file: FileAccess = FileAccess.open(region_file_path, FileAccess.READ)
 	if file:
-		print("tying to load chunk from ", region_file_path)
 		file.seek(chunk_index * 8)
 		var chunk_address: int = file.get_64()
 		
@@ -119,5 +117,6 @@ func save_world() -> void:
 		for chunk: Vector2i in loaded_chunks:
 			if loaded_chunks[chunk].is_dirty:
 				save_chunk(chunk, loaded_chunks[chunk].chunk_data)
+				loaded_chunks[chunk].is_dirty = false
 	else:
 		print_rich("[color=yellow]Trying to save the world, but it is not loaded yet![/color]")

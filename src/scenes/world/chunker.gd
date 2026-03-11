@@ -151,7 +151,8 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 			loaded_chunks[chunk] = load_chunk_data(chunk)
 			spawn_player_spawned_items(chunk)
 		despawn_editor_spawned_items(chunk)
-	loaded_chunks[chunk].chunk_viewers.push_back(peer_id)
+	if !loaded_chunks[chunk].chunk_viewers.has(peer_id):
+		loaded_chunks[chunk].chunk_viewers.push_back(peer_id)
 	loaded_chunks[chunk].player_count += 1
 	highlight_chunk(chunk, "LOADED", peer_id > 1)
 	if peer_id > 1:
@@ -265,7 +266,7 @@ func update_chunk_cache(delta: float) -> void:
 @rpc("any_peer", "call_local", "reliable")
 func send_player_exit_request(chunk: Vector2i) -> void:
 	if multiplayer.is_server():
-		_handle_player_exit(chunk, multiplayer.get_unique_id())
+		_handle_player_exit(chunk, multiplayer.get_remote_sender_id())
 	
 	
 
