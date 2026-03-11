@@ -15,13 +15,14 @@ func _ready() -> void:
 	current_scene = get_tree().root.get_child(-1)
 
 
-func _load_scene(scene_path: String, callback: Callable) -> void:
+func _load_scene(scene_path: String, callback: Callable, with_history: bool) -> void:
 	if !current_scene: return
 	
 	if current_scene.scene_file_path != scene_path:
 		var new_scene: Node = ResourceLoader.load(scene_path).instantiate()
 		get_tree().root.remove_child(current_scene)
-		add_scene_to_history(current_scene.scene_file_path)
+		if with_history:
+			add_scene_to_history(current_scene.scene_file_path)
 		current_scene.call_deferred("queue_free")
 		get_tree().root.add_child(new_scene)
 		
@@ -33,8 +34,13 @@ func _load_scene(scene_path: String, callback: Callable) -> void:
 			callback.call(current_scene)
 
 
-func load_scene(scene_path: String, callback: Callable = Callable()) -> void:
-	call_deferred("_load_scene", scene_path, callback)
+func load_scene(scene_path: String, with_history: bool = true) -> void:
+	call_deferred("_load_scene", scene_path, Callable(), with_history)
+
+
+func load_scene_with_callback(scene_path: String, callback: Callable = Callable(), with_history: bool = true) -> void:
+	call_deferred("_load_scene", scene_path, callback, with_history)
+	
 
 
 func go_back() -> void:

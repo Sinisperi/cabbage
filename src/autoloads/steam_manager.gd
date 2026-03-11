@@ -79,7 +79,7 @@ func _on_steam_server_disconnected() -> void:
 	if current_lobby_id != -1:
 		Steam.leaveLobby(current_lobby_id)
 		multiplayer.multiplayer_peer = null
-		SceneLoader.load_scene(SceneLoader.Scene.MAIN_MENU)
+		SceneLoader.load_scene(SceneLoader.Scene.MAIN_MENU, false)
 
 		
 

@@ -41,4 +41,4 @@ func _go_back_button_pressed() -> void:
 
 @rpc("any_peer", "call_local")
 func load_character_creator() -> void:
-	SceneLoader.load_scene(SceneLoader.Scene.CHARACTER_CREATOR)
+	SceneLoader.load_scene(SceneLoader.Scene.CHARACTER_CREATOR, false)

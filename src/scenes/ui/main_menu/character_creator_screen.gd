@@ -22,7 +22,7 @@ func _on_start_game_button_pressed() -> void:
 	if display_name.length() < 2:
 		name_length_error()
 		return
-	SceneLoader.load_scene(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1, display_name))
+	SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1, display_name), false)
 
 
 func name_length_error() -> void:
