@@ -16,6 +16,9 @@ func _on_continue_button_pressed() -> void:
 	if multiplayer.is_server():
 		SaveDataManager.create_save_slot(world_name_line_edit.text)
 		load_character_creator.rpc()
+		
+		
+		
 	#if online_checkbox.is_pressed():
 		#NetworkManager.enable_multiplayer(true)
 		#var status: Error = NetworkManager.host_game()

@@ -8,6 +8,15 @@ var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
 
 
+func _ready() -> void:
+	enable_steam()
+	Steam.lobby_created.connect(_on_steam_lobby_created)
+	Steam.lobby_joined.connect(_on_steam_lobby_joined)
+	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
+	multiplayer.peer_connected.connect(_on_steam_peer_connected)
+	multiplayer.server_disconnected.connect(_on_steam_server_disconnected)
+	
+	
 func enable_steam() -> Dictionary:
 	if is_steam_enabled:
 		return {"status": 0}
@@ -17,13 +26,6 @@ func enable_steam() -> Dictionary:
 		is_steam_enabled = true
 	return result
 
-
-func _ready() -> void:
-	enable_steam()
-	Steam.lobby_created.connect(_on_steam_lobby_created)
-	Steam.lobby_joined.connect(_on_steam_lobby_joined)
-	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
-	multiplayer.peer_connected.connect(_on_steam_peer_connected)
 
 
 func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
@@ -71,7 +73,14 @@ func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change
 		user_left.emit(changed_id, username)
 	print("asdfasdf")
 		
-		
+
+
+func _on_steam_server_disconnected() -> void:
+	if current_lobby_id != -1:
+		Steam.leaveLobby(current_lobby_id)
+		multiplayer.multiplayer_peer = null
+		SceneLoader.load_scene(SceneLoader.Scene.MAIN_MENU)
+
 		
 
 func create_friends_popup() -> void:
