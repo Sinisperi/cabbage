@@ -71,7 +71,6 @@ func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change
 	elif chat_state == 2:
 		EventBus.ui.toast_popup_requested.emit(username + " has left!", false, "It's fine!")
 		user_left.emit(changed_id, username)
-	print("asdfasdf")
 		
 
 
@@ -80,6 +79,7 @@ func _on_steam_server_disconnected() -> void:
 		Steam.leaveLobby(current_lobby_id)
 		multiplayer.multiplayer_peer = null
 		SceneLoader.load_scene(SceneLoader.Scene.MAIN_MENU, false)
+		current_lobby_id = -1
 
 		
 
