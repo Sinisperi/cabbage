@@ -23,7 +23,7 @@ func _on_start_game_button_pressed() -> void:
 	if display_name.length() < 2:
 		name_length_error()
 		return
-	Globals.world._request_player_spawn(display_name)
+	Globals.world._request_player_spawn.rpc_id(1, display_name)
 	EventBus.ui.character_cretion_finished.emit()
 	#SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1, display_name), false)
 
