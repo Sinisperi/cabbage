@@ -128,12 +128,16 @@ func get_loaded_chunks(delta: float) -> void:
 
 
 func _handle_player_exit(chunk: Vector2i, peer_id: int) -> void:
+	print("trying to move chunks to cache from peer ", peer_id)
 	if !loaded_chunks.has(chunk): return
 	loaded_chunks[chunk].chunk_viewers.erase(peer_id)
 	loaded_chunks[chunk].player_count -= 1
+	print(loaded_chunks[chunk].player_count, " player count")
 	highlight_chunk(chunk, "LOADED", loaded_chunks[chunk].player_count)
 	if loaded_chunks[chunk].player_count <= 0:
 		move_chunk_to_cache(chunk)
+
+
 
 @rpc("any_peer", "call_local")
 func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
@@ -147,7 +151,7 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 			loaded_chunks[chunk] = load_chunk_data(chunk)
 			spawn_player_spawned_items(chunk)
 		despawn_editor_spawned_items(chunk)
-	
+	loaded_chunks[chunk].chunk_viewers.push_back(peer_id)
 	loaded_chunks[chunk].player_count += 1
 	highlight_chunk(chunk, "LOADED", peer_id > 1)
 	if peer_id > 1:
@@ -158,6 +162,7 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 @rpc("any_peer", "call_remote")
 func send_chunk_data_to_peer(chunk_data: Dictionary, chunk: Vector2i) -> void:
 	loaded_chunks[chunk] = {
+		"chunk_viewers": [],
 		"player_count": 1,
 		"life_time": CHUNK_LIFE_TIME,
 		"is_dirty": false,
@@ -180,6 +185,7 @@ func spawn_player_spawned_items(chunk: Vector2i) -> void:
 		#print("spawning ", i)
 		EventBus.world.item_spawn_requested.emit(loaded_chunks[chunk].chunk_data.entities[i])
 
+
 func despawn_player_spawned_items(items: Dictionary) -> void:
 	for i: Variant in items:
 		EventBus.world.player_spawned_item_despawn_requested.emit(i)
@@ -201,16 +207,19 @@ func load_chunk_data(chunk: Vector2i) -> Dictionary:
 		"chunk_data": ChunkLoader.load_chunk(chunk)
 	}
 
+
 func load_chunk_from_cache(chunk: Vector2i) -> void:
 	chunk_cache[chunk].life_time = CHUNK_LIFE_TIME
 	loaded_chunks[chunk] = chunk_cache[chunk]
 	chunk_cache.erase(chunk)
 	print("loaded chunk ", chunk, " from cache")
 
+
 func update_regions(active_region_ids: Dictionary) -> void:
 	for i: Vector2i in loaded_region_ids:
 		if !active_region_ids.has(i):
 			print("unloaded region", i)
+	
 	
 	for i: Vector2i in active_region_ids:
 		if !loaded_region_ids.has(i):
@@ -346,7 +355,8 @@ func get_current_region() -> Vector2i:
 
 
 func _on_peer_disconnected(peer_id: int) -> void:
-	for c: Vector2i in loaded_chunks:
+	print("peer disconnected ", peer_id)
+	for c: Vector2i in loaded_chunks.keys():
 		if loaded_chunks[c].chunk_viewers.has(peer_id):
 			_handle_player_exit(c, peer_id)
 			

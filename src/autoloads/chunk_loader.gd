@@ -42,9 +42,11 @@ func save_chunk(chunk_coords: Vector2i, chunk_data: Dictionary) -> void:
 
 func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 	var region_file_path: String = get_region_file_path(chunk_coords)
+	print(region_file_path)
 	var chunk_index: int = get_chunk_index(chunk_coords)
 	var file: FileAccess = FileAccess.open(region_file_path, FileAccess.READ)
 	if file:
+		print("tying to load chunk from ", region_file_path)
 		file.seek(chunk_index * 8)
 		var chunk_address: int = file.get_64()
 		

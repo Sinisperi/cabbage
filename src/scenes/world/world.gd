@@ -27,11 +27,14 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 
 @rpc("any_peer", "call_local")
-func _request_player_spawn(display_name: String = "NO USERNAME") -> void:
+func _request_player_spawn(display_name: String = "") -> void:
 	if multiplayer.is_server():
 		var peer_id: int = multiplayer.get_remote_sender_id()
 		var steam_username: String = SteamManager.get_peer_steam_username(peer_id)
 		PlayerManager.register_player(peer_id, steam_username)
+		
+		
+		
 		var save_data: Dictionary = PlayerManager.load_player_data(peer_id)
 		PlayerManager.set_player_data_for_peer(peer_id, save_data.get("player_data", {}), display_name)
 		Globals.inventory.inventory_grid.place_items_request.rpc(peer_id, Inventory.InventoryType.ITEM)

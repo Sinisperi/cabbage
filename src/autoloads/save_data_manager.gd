@@ -15,7 +15,7 @@ func save_slot_exists(save_name: String) -> bool:
 	return DirAccess.dir_exists_absolute(save_path_root + save_name)
 
 
-func list_save_slots() -> Array[String]:
+func list_save_slots() -> Array:
 	return DirAccess.get_directories_at(save_path_root)
 
 
@@ -30,7 +30,7 @@ func save_game() -> void:
 	
 
 func load_save_slot(save_slot: String) -> void:
-	current_save_slot = save_slot
+	current_save_slot = save_slot + "/"
 
 
 func delete_save_slot(save_slot: String) -> void:

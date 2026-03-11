@@ -1,10 +1,14 @@
 [gd_scene format=3 uid="uid://djfg6jfssd4v"]
 
+[ext_resource type="Script" uid="uid://dftxnkfse43e7" path="res://src/scenes/ui/main_menu/save_slot.gd" id="1_smsjy"]
+
 [node name="SaveSlot" type="PanelContainer" unique_id=1477858924]
 custom_minimum_size = Vector2(0, 150)
+script = ExtResource("1_smsjy")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=380477084]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
@@ -12,6 +16,7 @@ theme_override_constants/margin_bottom = 24
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1109012144]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="SaveSlotTitle" type="Label" parent="MarginContainer/VBoxContainer" unique_id=855121659]
 unique_name_in_owner = true
@@ -21,6 +26,7 @@ text = "Save Slot Name"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=121324675]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="LastPlayed" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=853930772]
 unique_name_in_owner = true

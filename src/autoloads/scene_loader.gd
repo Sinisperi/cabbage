@@ -33,8 +33,10 @@ func _load_scene(scene_path: String, callback: Callable, with_history: bool) -> 
 			callback.call(current_scene)
 
 
+
 func load_scene(scene_path: String, with_history: bool = true) -> void:
 	call_deferred("_load_scene", scene_path, Callable(), with_history)
+
 
 
 func load_scene_with_callback(scene_path: String, callback: Callable = Callable(), with_history: bool = true) -> void:
@@ -46,6 +48,7 @@ func go_back() -> void:
 	if scene_history.size():
 		load_scene(scene_history.pop_back())
 		scene_history.pop_back()
+
 
 
 func add_scene_to_history(path: String) -> void:
