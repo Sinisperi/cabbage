@@ -126,10 +126,13 @@ func get_avatar_image(user_id: int) -> ImageTexture:
 	
 
 func get_users_in_lobby() -> Array:
+	if !is_steam_enabled: return []
 	var users: Array = []
 	var user_count: int = Steam.getNumLobbyMembers(current_lobby_id)
 	for u in user_count:
 		var steam_id: int = Steam.getLobbyMemberByIndex(current_lobby_id, u)
+		if steam_id <= 0:
+			continue
 		var username: String = Steam.getFriendPersonaName(steam_id)
 		users.push_back(
 			{
