@@ -19,10 +19,13 @@ func _on_back_button_pressed() -> void:
 
 func _on_start_game_button_pressed() -> void:
 	var display_name: String = character_name_line_edit.text
+	visible = false
 	if display_name.length() < 2:
 		name_length_error()
 		return
-	SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1, display_name), false)
+	Globals.world._request_player_spawn(display_name)
+	EventBus.ui.character_cretion_finished.emit()
+	#SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1, display_name), false)
 
 
 func name_length_error() -> void:

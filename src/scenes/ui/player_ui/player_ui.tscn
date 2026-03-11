@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dh0bi06ixtrov" path="res://src/scenes/ui/player_ui/player_ui.gd" id="1_w5xlc"]
 [ext_resource type="PackedScene" uid="uid://byff31anloyng" path="res://src/scenes/ui/player_ui/inventory/inventory.tscn" id="2_y6ggm"]
 [ext_resource type="PackedScene" uid="uid://cqi5fp2vl82fd" path="res://src/util/debug_screen.tscn" id="4_y5fg5"]
+[ext_resource type="PackedScene" uid="uid://ccodm1qwcmie4" path="res://src/scenes/ui/main_menu/character_creator_screen.tscn" id="5_pohmq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7vxwc"]
 shader = ExtResource("1_jbrfv")
@@ -84,3 +85,7 @@ size_flags_vertical = 0
 
 [node name="DebugScreen" parent="." unique_id=283264237 instance=ExtResource("4_y5fg5")]
 unique_name_in_owner = true
+
+[node name="CharacterCreatorScreen" parent="." unique_id=68073134 instance=ExtResource("5_pohmq")]
+unique_name_in_owner = true
+visible = false

@@ -8,7 +8,7 @@ func _ready() -> void:
 
 func _spawn_function(data: Dictionary) -> Node:
 	var player: Player = player_scene.instantiate()
-	player.name = str(data.peer_id)
+	player.name = str(data.peer_id if data.peer_id > 0 else 1)
 	#PlayerManager.add_player(data.peer_id, data.username)
 	#Globals.inventory.inventory_grid.place_items_request.rpc(data.peer_id, Inventory.InventoryType.ITEM)
 	#Globals.inventory.hot_bar_slots.place_items_request.rpc(data.peer_id, Inventory.InventoryType.HOT_BAR)

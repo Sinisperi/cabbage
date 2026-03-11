@@ -134,6 +134,9 @@ func _state_to_animation() -> String:
 
 func _on_mouse_mode_changed(mode: int) -> void:
 	if is_multiplayer_authority():
-		set_process_input(mode)
-		set_process_unhandled_input(mode)
-		set_process_unhandled_key_input(mode)
+		var enabled: bool = true if mode == Input.MOUSE_MODE_CAPTURED else false
+		set_process_input(enabled)
+		set_process_unhandled_input(enabled)
+		set_process_unhandled_key_input(enabled)
+		set_physics_process(enabled)
+		set_process(enabled)

@@ -8,7 +8,7 @@ class UISignals:
 	## Useful for disabling movement on the player while menus are open
 	signal mouse_mode_changed(mode: int)
 	signal toast_popup_requested(message: String, is_error: bool, title: String)
-
+	signal character_cretion_finished
 
 class InventorySignals:
 	var equipment: EquipmentSignals = EquipmentSignals.new()

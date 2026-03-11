@@ -15,7 +15,7 @@ func _ready() -> void:
 func _on_continue_button_pressed() -> void:
 	if multiplayer.is_server():
 		SaveDataManager.create_save_slot(world_name_line_edit.text)
-		load_character_creator.rpc()
+	load_world_with_character_creator()
 		
 		
 		
@@ -39,6 +39,7 @@ func _on_continue_button_pressed() -> void:
 func _go_back_button_pressed() -> void:
 	back_button_pressed.emit()
 
-@rpc("any_peer", "call_local")
-func load_character_creator() -> void:
-	SceneLoader.load_scene(SceneLoader.Scene.CHARACTER_CREATOR, false)
+#@rpc("any_peer", "call_local")
+func load_world_with_character_creator() -> void:
+	#SceneLoader.load_scene(SceneLoader.Scene.CHARACTER_CREATOR, false)
+	SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(_world: World) -> void: Globals.player_ui.show_character_creator(), false)
