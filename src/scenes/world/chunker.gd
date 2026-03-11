@@ -39,6 +39,7 @@ var world_area: Rect2 = Rect2(Vector2i(-16, -16), Vector2i(32, 32))
 
 func _ready() -> void:
 	Globals.chunker = self
+	SteamManager.peer_disconnected.connect(_on_peer_disconnected)
 
 
 func get_chunk_name_from_pos(pos: Vector3) -> String:
@@ -89,7 +90,8 @@ func get_loaded_chunks(delta: float) -> void:
 				move_chunk_to_cache(i)
 			else:
 				#loaded_chunks[i].player_count -= 1
-				_handle_player_exit(i)
+				#_handle_player_exit(i)
+				send_player_exit_request.rpc_id(1, i)
 	
 	## LOAD CHUNK FROM DISK OR CACHE
 	for i: Vector2i in new_chunks_in_area.keys():
@@ -125,8 +127,9 @@ func get_loaded_chunks(delta: float) -> void:
 
 
 
-func _handle_player_exit(chunk: Vector2i) -> void:
+func _handle_player_exit(chunk: Vector2i, peer_id: int) -> void:
 	if !loaded_chunks.has(chunk): return
+	loaded_chunks[chunk].chunk_viewers.erase(peer_id)
 	loaded_chunks[chunk].player_count -= 1
 	highlight_chunk(chunk, "LOADED", loaded_chunks[chunk].player_count)
 	if loaded_chunks[chunk].player_count <= 0:
@@ -191,6 +194,7 @@ func move_chunk_to_cache(chunk: Vector2i) -> void:
 	
 func load_chunk_data(chunk: Vector2i) -> Dictionary:
 	return {
+		"chunk_viewers": [],
 		"player_count": 0,
 		"life_time": CHUNK_LIFE_TIME,
 		"is_dirty": false,
@@ -252,7 +256,7 @@ func update_chunk_cache(delta: float) -> void:
 @rpc("any_peer", "call_local", "reliable")
 func send_player_exit_request(chunk: Vector2i) -> void:
 	if multiplayer.is_server():
-		_handle_player_exit(chunk)
+		_handle_player_exit(chunk, multiplayer.get_unique_id())
 	
 	
 
@@ -338,3 +342,11 @@ func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> voi
 
 func get_current_region() -> Vector2i:
 	return get_region_from_coords(current_chunk)
+
+
+
+func _on_peer_disconnected(peer_id: int) -> void:
+	for c: Vector2i in loaded_chunks:
+		if loaded_chunks[c].chunk_viewers.has(peer_id):
+			_handle_player_exit(c, peer_id)
+			
