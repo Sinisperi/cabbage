@@ -19,5 +19,7 @@ func _spawn_function(data: Dictionary) -> Node:
 		player.position = Vector3(spawn_point.x, player.position.y, spawn_point.y)
 	else:
 		player.position = Vector3(data.save_data.position.x, data.save_data.position.y, data.save_data.position.z)
-	PlayerManager.save_player_data(data.peer_id)
+	
+	if multiplayer.is_server():
+		PlayerManager.save_player_data(data.peer_id)
 	return player
