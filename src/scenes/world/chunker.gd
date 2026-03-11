@@ -99,6 +99,8 @@ func get_loaded_chunks(delta: float) -> void:
 			## Chunk was loaded by other client
 			if loaded_chunks.has(i):
 				loaded_chunks[i].player_count += 1
+				if !loaded_chunks[i].chunk_viewers.has(1):
+					loaded_chunks[i].chunk_viewers.push_back(1)
 				highlight_chunk(i, "LOADED", true)
 			else:
 				if chunk_cache.has(i):
