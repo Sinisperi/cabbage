@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://bs3374vl80v8o"]
 
-[ext_resource type="PackedScene" uid="uid://7x3a74iiui7w" path="res://src/scenes/player/player.tscn" id="1_m76yy"]
 [ext_resource type="Script" uid="uid://fs6theacviny" path="res://src/scenes/world/world.gd" id="1_q3of6"]
-[ext_resource type="Script" uid="uid://b2jm6ju4yu4wg" path="res://src/scenes/world/player_spawner.gd" id="3_cacf4"]
 [ext_resource type="Texture2D" uid="uid://81ejynb6jof5" path="res://assets/kenney_prototype_textures/orange/texture_05.png" id="3_m1gqc"]
 [ext_resource type="PackedScene" uid="uid://bxqj4mdvakxia" path="res://src/scenes/world/spawn_area/spawn_area.tscn" id="4_kccwn"]
 [ext_resource type="PackedScene" uid="uid://upma2w865lrs" path="res://src/scenes/ui/player_ui/player_ui.tscn" id="7_m1gqc"]
@@ -54,15 +52,6 @@ material = SubResource("StandardMaterial3D_iwh12")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.14275, 0, 0.03552246)
 metadata/_edit_group_ = true
-
-[node name="Players" type="Node" parent="SpawnArea" unique_id=1680782546]
-
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=795910366]
-unique_name_in_owner = true
-_spawnable_scenes = PackedStringArray("uid://7x3a74iiui7w")
-spawn_path = NodePath("../SpawnArea/Players")
-script = ExtResource("3_cacf4")
-player_scene = ExtResource("1_m76yy")
 
 [node name="ItemSpawner" type="MultiplayerSpawner" parent="." unique_id=1456447614]
 unique_name_in_owner = true

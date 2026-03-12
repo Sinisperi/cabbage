@@ -2,7 +2,7 @@ class_name World extends Node3D
 
 
 
-@onready var player_spawner: MultiplayerSpawner = %PlayerSpawner
+#@onready var player_spawner: MultiplayerSpawner = %PlayerSpawner
 
 
 ## 2 chunks render distance -> 1 we are currently in + 2 on each side and dioganally
@@ -46,7 +46,7 @@ func _request_player_spawn(display_name: String = "") -> void:
 			"save_data": save_data
 		}
 		
-		player_spawner.spawn(data)
+		Globals.player_spawner.spawn(data)
 		
 		prints("spawning player", display_name, " aka ", steam_username, " ", peer_id)
 

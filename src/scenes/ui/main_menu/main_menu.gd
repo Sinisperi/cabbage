@@ -40,6 +40,7 @@ func _ready() -> void:
 	online_play_screen.back_button_pressed.connect(func() -> void: toggle_screen(ScreenType.ONLINE_PLAY_SCREEN))
 	
 	EventBus.ui.toast_popup_requested.connect(create_toast_popup)
+	EventBus.world.world_spawn_requested.connect(func(_callback: Callable) -> void: hide())
 	SteamManager.user_joined.connect(_on_user_joined)
 	SteamManager.user_left.connect(_on_user_left)
 	SteamManager.lobby_created.connect(_on_lobby_created)
@@ -141,9 +142,12 @@ func _on_peer_connected(peer_id: int, steam_username: String) -> void:
 @rpc("any_peer", "call_remote")
 func load_world(has_save: bool) -> void:
 	if !has_save:
-		SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(_world: World) -> void: Globals.player_ui.show_character_creator(), false)
+		#SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(_world: World) -> void: Globals.player_ui.show_character_creator(), false)
+		EventBus.world.world_spawn_requested.emit(func(_world: World) -> void: Globals.player_ui.show_character_creator())
 	else:
-		SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1))
+		#SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1))
+		EventBus.world.world_spawn_requested.emit(func(world: World) -> void: world._request_player_spawn.rpc_id(1))
+		
 
 
 

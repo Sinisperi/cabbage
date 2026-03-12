@@ -20,7 +20,7 @@ func list_save_slots() -> Array:
 
 
 func create_save_slot(save_name: String) -> void:
-	current_save_slot = save_name
+	current_save_slot = save_name + "/"
 	DirAccess.make_dir_absolute(save_path_root + save_name)
 
 
@@ -34,4 +34,4 @@ func load_save_slot(save_slot: String) -> void:
 
 
 func delete_save_slot(save_slot: String) -> void:
-	DirAccess.remove_absolute(save_path_root + save_slot)
+	DirAccess.remove_absolute(save_path_root + "/" + save_slot)

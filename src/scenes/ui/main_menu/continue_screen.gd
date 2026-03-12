@@ -21,7 +21,8 @@ func _on_confirm_button_pressed() -> void:
 
 @rpc("any_peer", "call_local")
 func load_world() -> void:
-	SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1))
+	#SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1))
+	EventBus.world.world_spawn_requested.emit(func(world: World) -> void: world._request_player_spawn.rpc_id(1))
 	
 
 func _go_back_button_pressed() -> void:

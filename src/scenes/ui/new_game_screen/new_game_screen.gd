@@ -42,4 +42,5 @@ func _go_back_button_pressed() -> void:
 @rpc("any_peer", "call_local")
 func load_world_with_character_creator() -> void:
 	#SceneLoader.load_scene(SceneLoader.Scene.CHARACTER_CREATOR, false)
-	SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(_world: World) -> void: Globals.player_ui.show_character_creator(), false)
+	#SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(_world: World) -> void: Globals.player_ui.show_character_creator(), false)
+	EventBus.world.world_spawn_requested.emit(func(_world: World) -> void: Globals.player_ui.show_character_creator())
