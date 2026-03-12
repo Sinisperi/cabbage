@@ -26,6 +26,7 @@ func enable_steam() -> Dictionary:
 	var result: Dictionary = Steam.steamInitEx(480, true)
 	if result.status == 0:
 		is_steam_enabled = true
+	print("steam init result ", result)
 	return result
 
 
