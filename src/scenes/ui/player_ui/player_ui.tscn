@@ -85,6 +85,7 @@ size_flags_vertical = 0
 
 [node name="DebugScreen" parent="." unique_id=283264237 instance=ExtResource("4_y5fg5")]
 unique_name_in_owner = true
+visible = false
 
 [node name="CharacterCreatorScreen" parent="." unique_id=68073134 instance=ExtResource("5_pohmq")]
 unique_name_in_owner = true

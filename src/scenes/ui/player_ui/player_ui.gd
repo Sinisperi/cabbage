@@ -18,6 +18,7 @@ var ui_state: int = HUD
 func _ready() -> void:
 	Globals.player_ui = self
 	EventBus.ui.character_cretion_finished.connect(_on_character_creation_finished)
+	_update_ui()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_inventory"):
