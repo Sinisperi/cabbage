@@ -44,6 +44,8 @@ func _ready() -> void:
 	SteamManager.user_left.connect(_on_user_left)
 	SteamManager.lobby_created.connect(_on_lobby_created)
 	SteamManager.lobby_joined.connect(_on_lobby_joined)
+	SteamManager.peer_connected.connect(_on_peer_connected)
+
 	#NetworkManager.peer_connected.connect(_on_peer_connected)
 	await show_active_users_avatars()
 
@@ -127,6 +129,23 @@ func show_active_users_avatars() -> void:
 	var users: Array = SteamManager.get_users_in_lobby()
 	for u: Dictionary in users:
 		create_lobby_avatar(await SteamManager.get_avatar_image(u.steam_id), u.steam_id)
+
+
+
+func _on_peer_connected(peer_id: int, steam_username: String) -> void:
+	if multiplayer.is_server():
+		if Globals.world != null:
+			load_world.rpc_id(peer_id, PlayerManager.player_has_save(steam_username))
+
+
+@rpc("any_peer", "call_remote")
+func load_world(has_save: bool) -> void:
+	if !has_save:
+		SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(_world: World) -> void: Globals.player_ui.show_character_creator(), false)
+	else:
+		SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1))
+
+
 
 ## TODO Instead of loading the world, check if player has a save here
 ## if they do, load the world and spawn the player with data,

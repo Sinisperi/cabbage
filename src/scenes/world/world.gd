@@ -13,12 +13,10 @@ class_name World extends Node3D
 
 
 
-
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	Globals.world = self
 	SteamManager.peer_disconnected.connect(_on_peer_disconnected)
-	SteamManager.peer_connected.connect(_on_peer_connected)
 
 func _on_peer_disconnected(peer_id: int) -> void:
 	if multiplayer.is_server():
@@ -55,13 +53,3 @@ func _request_player_spawn(display_name: String = "") -> void:
 
 
 				
-func _on_peer_connected(peer_id: int, steam_username: String) -> void:
-	if multiplayer.is_server():
-		load_world.rpc_id(peer_id, PlayerManager.player_has_save(steam_username))
-
-@rpc("any_peer", "call_remote")
-func load_world(has_save: bool) -> void:
-	if !has_save:
-		SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(_world: World) -> void: Globals.player_ui.show_character_creator(), false)
-	else:
-		SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1))
