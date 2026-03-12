@@ -57,8 +57,7 @@ func _request_player_spawn(display_name: String = "") -> void:
 				
 func _on_peer_connected(peer_id: int, steam_username: String) -> void:
 	if multiplayer.is_server():
-		load_world.rpc(peer_id, PlayerManager.player_has_save(steam_username))
-
+		load_world.rpc_id(peer_id, PlayerManager.player_has_save(steam_username))
 
 @rpc("any_peer", "call_remote")
 func load_world(has_save: bool) -> void:
