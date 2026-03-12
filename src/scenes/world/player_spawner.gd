@@ -7,6 +7,7 @@ func _ready() -> void:
 	spawn_function = _spawn_function 
 
 func _spawn_function(data: Dictionary) -> Node:
+	if Globals.world == null: return null
 	var player: Player = player_scene.instantiate()
 	player.name = str(data.peer_id if data.peer_id > 0 else 1)
 	#PlayerManager.add_player(data.peer_id, data.username)
