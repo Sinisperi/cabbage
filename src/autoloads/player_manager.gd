@@ -115,7 +115,7 @@ func get_player_pointer(peer_id: int) -> Player:
 
 func remove_player_peer(peer_id: int) -> Player:
 	var removed_player: Player = null
-	if active_peers[peer_id]:
+	if active_peers.has(peer_id):
 		removed_player = active_players[active_peers[peer_id]].ref
 		active_players.erase(active_peers[peer_id])
 		active_peers.erase(peer_id)
