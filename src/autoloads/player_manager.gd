@@ -40,7 +40,11 @@ func set_player_pointer_for_peer(peer_id: int, ptr: Player) -> void:
 func save_active_players() -> void:
 	for i in active_peers:
 		save_player_data(i)
-		
+
+
+func player_has_save(username: String) -> bool:
+	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + username + ".json"
+	return FileAccess.file_exists(file_name)
 
 #func add_player(peer_id: int, username: String) -> void:
 	#print("attempting to add new player: ", username)

@@ -4,6 +4,7 @@ signal lobby_created(response: int, lobby_id: int)
 signal user_joined(steam_id: int, username: String)
 signal user_left(steam_id: int, username: String)
 signal peer_disconnected(peer_id: int)
+signal peer_connected(peer_id: int, steam_username: String)
 signal lobby_joined
 var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
@@ -117,6 +118,7 @@ func check_lobby_code(code_string: String) -> Dictionary:
 
 func _on_steam_peer_connected(peer_id: int) -> void:
 	print("someone connected ", peer_id)
+	peer_connected.emit(peer_id, get_peer_steam_username(peer_id))
 
 
 
