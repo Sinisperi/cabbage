@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://b2jm6ju4yu4wg" path="res://src/scenes/world/player_spawner.gd" id="2_32aa5"]
 [ext_resource type="PackedScene" uid="uid://bs3374vl80v8o" path="res://src/scenes/world/world.tscn" id="2_o81g6"]
 [ext_resource type="PackedScene" uid="uid://7x3a74iiui7w" path="res://src/scenes/player/player.tscn" id="3_5dlwx"]
+[ext_resource type="Script" uid="uid://buu65chivdnwc" path="res://src/scenes/world/item_spawner.gd" id="6_dbro3"]
 
 [node name="Main" type="Node" unique_id=219153282]
 script = ExtResource("1_5dlwx")
@@ -12,16 +13,25 @@ world_scene = ExtResource("2_o81g6")
 
 [node name="MainMenu" parent="." unique_id=1100850197 instance=ExtResource("1_kkvs4")]
 
-[node name="Spawners" type="Node" parent="." unique_id=2056476776]
+[node name="NetworkBridge" type="Node" parent="." unique_id=1498581837]
 
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="Spawners" unique_id=45284796]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="NetworkBridge" unique_id=45284796]
 unique_name_in_owner = true
 _spawnable_scenes = PackedStringArray("uid://7x3a74iiui7w")
-spawn_path = NodePath("../../Players")
+spawn_path = NodePath("../Players")
 script = ExtResource("2_32aa5")
 player_scene = ExtResource("3_5dlwx")
 
-[node name="Players" type="Node" parent="." unique_id=1914102739]
+[node name="ItemSpawner" type="MultiplayerSpawner" parent="NetworkBridge" unique_id=311043529]
+unique_name_in_owner = true
+_spawnable_scenes = PackedStringArray("uid://diqi0pyya3sb6")
+spawn_path = NodePath("../ItemDrops")
+script = ExtResource("6_dbro3")
+
+[node name="Players" type="Node" parent="NetworkBridge" unique_id=1914102739]
+
+[node name="ItemDrops" type="Node" parent="NetworkBridge" unique_id=553498872]
+unique_name_in_owner = true
 
 [node name="WorldContainer" type="Node" parent="." unique_id=866420941]
 unique_name_in_owner = true

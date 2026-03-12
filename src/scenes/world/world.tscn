@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://bxqj4mdvakxia" path="res://src/scenes/world/spawn_area/spawn_area.tscn" id="4_kccwn"]
 [ext_resource type="PackedScene" uid="uid://upma2w865lrs" path="res://src/scenes/ui/player_ui/player_ui.tscn" id="7_m1gqc"]
 [ext_resource type="PackedScene" uid="uid://diqi0pyya3sb6" path="res://src/scenes/world/item/item_drop.tscn" id="8_br3r2"]
-[ext_resource type="Script" uid="uid://buu65chivdnwc" path="res://src/scenes/world/item_spawner.gd" id="8_hrb3u"]
 [ext_resource type="PackedScene" uid="uid://c7mu5d4hdcu4q" path="res://src/scenes/world/chunk/chunk.tscn" id="9_4fx67"]
 [ext_resource type="Script" uid="uid://xbelfs5x7w73" path="res://src/scenes/world/chunker.gd" id="9_hrb3u"]
 [ext_resource type="Resource" uid="uid://bne3olsqtxt8f" path="res://src/resources/items/test_items/test_mushroom.tres" id="9_qfn71"]
@@ -52,15 +51,6 @@ material = SubResource("StandardMaterial3D_iwh12")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.14275, 0, 0.03552246)
 metadata/_edit_group_ = true
-
-[node name="ItemSpawner" type="MultiplayerSpawner" parent="." unique_id=1456447614]
-unique_name_in_owner = true
-_spawnable_scenes = PackedStringArray("uid://diqi0pyya3sb6")
-spawn_path = NodePath("../GatherableItems")
-script = ExtResource("8_hrb3u")
-
-[node name="GatherableItems" type="Node" parent="." unique_id=814483426]
-unique_name_in_owner = true
 
 [node name="EditorSpawnedItems" type="Node3D" parent="." unique_id=892226649]
 unique_name_in_owner = true

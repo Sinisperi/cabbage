@@ -16,7 +16,6 @@ var chunk_cache: Dictionary = {}
 var world_area: Rect2 = Rect2(Vector2i(-16, -16), Vector2i(32, 32))
 
 @onready var editor_spawned_items: Node3D = %EditorSpawnedItems
-@onready var item_spawner: MultiplayerSpawner = %ItemSpawner
 
 
 @export var regions_container: Node3D

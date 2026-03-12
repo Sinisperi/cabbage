@@ -1,13 +1,12 @@
-extends MultiplayerSpawner
+class_name ItemSpawner extends MultiplayerSpawner
 
-@onready var gatherable_items: Node = %GatherableItems
-@onready var editor_spawned_items: Node3D = %EditorSpawnedItems
+@onready var item_drops: Node = %ItemDrops
 const ITEM_DROP = preload("uid://diqi0pyya3sb6")
 
 
 
 func _ready() -> void:
-	
+	Globals.item_spawner = self
 	EventBus.inventory.item_drop_requested.connect(func (item: Node) -> void: _on_item_dropped.rpc_id(1, item.generate_entity_data()))
 	EventBus.world.item_spawn_requested.connect(func (item_data: Variant) -> void: _on_item_spawn_requested.rpc_id(1, item_data))
 	EventBus.world.player_spawned_item_despawn_requested.connect(
@@ -28,6 +27,7 @@ func _on_item_spawn_requested(item_data: Variant) -> void:
 		item_data["registered_in_chunk"] = true
 		spawn(item_data)
 
+
 func _on_item_spawned(item: Node) -> void:
 	item.update_visuals()
 	
@@ -47,4 +47,4 @@ func _spawn_function(data: Dictionary) -> Node:
 @rpc("any_peer", "call_local")
 func _on_player_spawned_item_despawn_requested(item_id: String) -> void:
 	if multiplayer.is_server():
-		gatherable_items.get_node("./" + item_id).queue_free()
+		item_drops.get_node("./" + item_id).queue_free()
