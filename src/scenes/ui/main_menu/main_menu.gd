@@ -46,17 +46,21 @@ func _ready() -> void:
 	SteamManager.lobby_created.connect(_on_lobby_created)
 	SteamManager.lobby_joined.connect(_on_lobby_joined)
 	SteamManager.peer_connected.connect(_on_peer_connected)
+	SteamManager.host_disconnected.connect(_on_host_disconnected)
 
 	#NetworkManager.peer_connected.connect(_on_peer_connected)
 	await show_active_users_avatars()
 
 func toggle_screen(screen_type: ScreenType) -> void:
 	ui_state ^= screen_type
+	title_menu.visible = !title_menu.visible
+	_update_ui()
+
+
+func _update_ui() -> void:
 	new_game_screen.visible = ui_state & ScreenType.NEW_GAME_SCREEN
 	online_play_screen.visible = ui_state & ScreenType.ONLINE_PLAY_SCREEN
 	continue_screen.visible = ui_state & ScreenType.CONTINUE_SCREEN
-	title_menu.visible = !title_menu.visible
-
 
 func _on_continue_button_pressed() -> void:
 	toggle_screen(ScreenType.CONTINUE_SCREEN)
@@ -149,7 +153,10 @@ func load_world(has_save: bool) -> void:
 		EventBus.world.world_spawn_requested.emit(func(world: World) -> void: world._request_player_spawn.rpc_id(1))
 		
 
-
+func _on_host_disconnected() -> void:
+	show()
+	ui_state = ScreenType.TITLE_MENU
+	_update_ui()
 
 ## TODO Instead of loading the world, check if player has a save here
 ## if they do, load the world and spawn the player with data,
