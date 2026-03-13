@@ -137,10 +137,10 @@ func show_active_users_avatars() -> void:
 
 
 
-func _on_peer_connected(peer_id: int, steam_username: String) -> void:
+func _on_peer_connected(peer_id: int, steam_id: int) -> void:
 	if multiplayer.is_server():
 		if Globals.world != null:
-			load_world.rpc_id(peer_id, PlayerManager.player_has_save(steam_username))
+			load_world.rpc_id(peer_id, PlayerManager.player_has_save(steam_id))
 
 
 @rpc("any_peer", "call_remote")
