@@ -158,6 +158,10 @@ func get_peer_steam_username(peer_id: int) -> String:
 		return Steam.getPersonaName()
 
 
+func get_peer_steam_id(peer_id: int) -> int:
+	return peer.get_steam_id_for_peer_id(peer_id)
+
+
 func _on_steam_peer_disconnected(peer_id: int) -> void:
 	if multiplayer.is_server():
 		peer_disconnected.emit(peer_id)
