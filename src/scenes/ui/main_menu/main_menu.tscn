@@ -10,9 +10,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_atkhn"]
 shader = ExtResource("3_bl02k")
-shader_parameter/samples = 9
-shader_parameter/lod = 1
-shader_parameter/tint_color = Color(0.5775778, 0.7432059, 0.1897483, 0)
+shader_parameter/sigma = 3.3
 
 [sub_resource type="Gradient" id="Gradient_5ihrt"]
 

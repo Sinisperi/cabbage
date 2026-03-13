@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://byff31anloyng" path="res://src/scenes/ui/player_ui/inventory/inventory.tscn" id="2_y6ggm"]
 [ext_resource type="PackedScene" uid="uid://cqi5fp2vl82fd" path="res://src/util/debug_screen.tscn" id="4_y5fg5"]
 [ext_resource type="PackedScene" uid="uid://ccodm1qwcmie4" path="res://src/scenes/ui/main_menu/character_creator_screen.tscn" id="5_pohmq"]
+[ext_resource type="Script" uid="uid://cyl5erknq750s" path="res://src/scenes/ui/player_ui/in_game_menu.gd" id="6_0s6rk"]
+[ext_resource type="Shader" uid="uid://bpxqt3su54fc7" path="res://src/scenes/ui/main_menu/blur.gdshader" id="6_tjquc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7vxwc"]
 shader = ExtResource("1_jbrfv")
@@ -18,6 +20,10 @@ gradient = SubResource("Gradient_w8ig4")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.2991453, 0.41452992)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0s6rk"]
+shader = ExtResource("6_tjquc")
+shader_parameter/sigma = 8.57300040395762
 
 [node name="PlayerUI" type="CanvasLayer" unique_id=1267816161]
 script = ExtResource("1_w5xlc")
@@ -90,3 +96,79 @@ visible = false
 [node name="CharacterCreatorScreen" parent="." unique_id=68073134 instance=ExtResource("5_pohmq")]
 unique_name_in_owner = true
 visible = false
+
+[node name="InGameMenu" type="Control" parent="." unique_id=1185495550]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_0s6rk")
+
+[node name="PanelContainer" type="PanelContainer" parent="InGameMenu" unique_id=1355150946]
+material = SubResource("ShaderMaterial_0s6rk")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="InGameMenu/PanelContainer" unique_id=123746990]
+layout_mode = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="PanelContainer" type="PanelContainer" parent="InGameMenu/PanelContainer/MarginContainer" unique_id=381282096]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer" unique_id=2087752192]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer/MarginContainer" unique_id=1201645254]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=988077717]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Pause Menu"
+
+[node name="HSeparator" type="HSeparator" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=314929558]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=79355733]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ContinueButton" type="Button" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1148893922]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Continue"
+
+[node name="SettingsButton" type="Button" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1049463213]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+
+[node name="SaveGameButton" type="Button" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1921261819]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save Game"
+
+[node name="QuitButton" type="Button" parent="InGameMenu/PanelContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=854252920]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit To Title"

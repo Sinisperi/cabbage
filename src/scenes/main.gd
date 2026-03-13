@@ -20,4 +20,4 @@ func spawn_world(callback: Callable = Callable()) -> void:
 func _on_host_disconnected() -> void:
 	if Globals.world:
 		world_container.get_child(0).queue_free()
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		EventBus.ui.main_menu_requested.emit()

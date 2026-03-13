@@ -9,6 +9,7 @@ class UISignals:
 	signal mouse_mode_changed(mode: int)
 	signal toast_popup_requested(message: String, is_error: bool, title: String)
 	signal character_cretion_finished
+	signal main_menu_requested
 
 class InventorySignals:
 	var equipment: EquipmentSignals = EquipmentSignals.new()

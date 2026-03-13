@@ -40,13 +40,13 @@ func _ready() -> void:
 	online_play_screen.back_button_pressed.connect(func() -> void: toggle_screen(ScreenType.ONLINE_PLAY_SCREEN))
 	
 	EventBus.ui.toast_popup_requested.connect(create_toast_popup)
+	EventBus.ui.main_menu_requested.connect(_on_main_menu_requested)
 	EventBus.world.world_spawn_requested.connect(func(_callback: Callable) -> void: hide())
 	SteamManager.user_joined.connect(_on_user_joined)
 	SteamManager.user_left.connect(_on_user_left)
 	SteamManager.lobby_created.connect(_on_lobby_created)
 	SteamManager.lobby_joined.connect(_on_lobby_joined)
 	SteamManager.peer_connected.connect(_on_peer_connected)
-	SteamManager.host_disconnected.connect(_on_host_disconnected)
 
 	#NetworkManager.peer_connected.connect(_on_peer_connected)
 	await show_active_users_avatars()
@@ -153,8 +153,9 @@ func load_world(has_save: bool) -> void:
 		EventBus.world.world_spawn_requested.emit(func(world: World) -> void: world._request_player_spawn.rpc_id(1))
 		
 
-func _on_host_disconnected() -> void:
+func _on_main_menu_requested() -> void:
 	show()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	ui_state = ScreenType.TITLE_MENU
 	title_menu.visible = true
 	_update_ui()

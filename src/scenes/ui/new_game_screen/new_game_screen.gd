@@ -1,6 +1,5 @@
 extends Control
 @onready var continue_button: Button = %ContinueButton
-@onready var online_checkbox: CheckBox = %OnlineCheckbox
 @onready var world_name_line_edit: LineEdit = %WorldNameLineEdit
 @onready var go_back_button: Button = %GoBackButton
 
