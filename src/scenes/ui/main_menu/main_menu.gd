@@ -156,6 +156,7 @@ func load_world(has_save: bool) -> void:
 func _on_host_disconnected() -> void:
 	show()
 	ui_state = ScreenType.TITLE_MENU
+	title_menu.visibile = true
 	_update_ui()
 
 ## TODO Instead of loading the world, check if player has a save here
