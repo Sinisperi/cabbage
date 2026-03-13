@@ -5,6 +5,7 @@ signal user_joined(steam_id: int, username: String)
 signal user_left(steam_id: int, username: String)
 signal peer_disconnected(peer_id: int)
 signal peer_connected(peer_id: int, steam_username: String)
+signal host_disconnected
 signal lobby_joined
 var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
@@ -82,9 +83,8 @@ func _on_steam_server_disconnected() -> void:
 	if current_lobby_id != -1:
 		Steam.leaveLobby(current_lobby_id)
 		multiplayer.multiplayer_peer = null
-		SceneLoader.load_scene(SceneLoader.Scene.MAIN_MENU, false)
 		current_lobby_id = -1
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		host_disconnected.emit()
 		
 
 		
