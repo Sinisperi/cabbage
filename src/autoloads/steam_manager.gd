@@ -82,7 +82,7 @@ func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change
 func _on_steam_server_disconnected() -> void:
 	if current_lobby_id != -1:
 		Steam.leaveLobby(current_lobby_id)
-		multiplayer.multiplayer_peer = null
+		multiplayer.multiplayer_peer.close()
 		peer = SteamMultiplayerPeer.new()
 		multiplayer.set_multiplayer_peer(peer)
 		current_lobby_id = -1
