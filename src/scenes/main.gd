@@ -18,5 +18,6 @@ func spawn_world(callback: Callable = Callable()) -> void:
 
 
 func _on_host_disconnected() -> void:
-	world_container.get_child(0).queue_free()
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if Globals.world:
+		world_container.get_child(0).queue_free()
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

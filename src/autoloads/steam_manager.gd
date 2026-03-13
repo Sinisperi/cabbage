@@ -1,5 +1,5 @@
 extends Node
-var peer: SteamMultiplayerPeer = null
+var peer: MultiplayerPeer = null
 signal lobby_created(response: int, lobby_id: int)
 signal user_joined(steam_id: int, username: String)
 signal user_left(steam_id: int, username: String)
@@ -83,13 +83,16 @@ func _on_steam_server_disconnected() -> void:
 	if current_lobby_id != -1:
 		Steam.leaveLobby(current_lobby_id)
 		multiplayer.multiplayer_peer.close()
-		peer = SteamMultiplayerPeer.new()
-		multiplayer.set_multiplayer_peer(peer)
+		peer = null
+		multiplayer.set_multiplayer_peer(null)
 		current_lobby_id = -1
 		host_disconnected.emit()
 		
 
-		
+func create_local_peer() -> void:
+	peer = SteamMultiplayerPeer.new()
+	peer.create_host()
+	multiplayer.set_multiplayer_peer(peer)
 
 func create_friends_popup() -> void:
 	Steam.activateGameOverlayInviteDialog(current_lobby_id)
