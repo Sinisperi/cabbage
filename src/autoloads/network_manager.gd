@@ -22,7 +22,6 @@ func enable_local_host() -> void:
 
 
 func enable_multiplayer() -> Dictionary:
-	peer = SteamMultiplayerPeer.new()
 	return SteamManager.enable_steam()
 
 
