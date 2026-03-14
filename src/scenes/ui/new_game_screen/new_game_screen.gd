@@ -15,7 +15,7 @@ func _on_continue_button_pressed() -> void:
 		NetworkManager.enable_local_host()
 	if multiplayer.is_server():
 		SaveDataManager.create_save_slot(world_name_line_edit.text)
-	load_world_with_character_creator.rpc()
+		load_world_with_character_creator.rpc()
 
 
 func _go_back_button_pressed() -> void:
