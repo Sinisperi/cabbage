@@ -109,7 +109,7 @@ func _on_create_lobby_button_pressed() -> void:
 	if is_local:
 		NetworkManager.enable_local_host()
 	else:
-		var result: Dictionary = SteamManager.enable_steam()
+		var result: Dictionary = NetworkManager.enable_multiplayer()
 		if result.status == 0:
 			enable_invite_section()
 			create_toast_popup("Created lobby successfully!")
@@ -118,6 +118,7 @@ func _on_create_lobby_button_pressed() -> void:
 			return
 		else:
 			return
+		
 		SteamManager.create_lobby(lobby_type, int(max_players_select.get_item_text(max_players_select.selected)))
 
 
