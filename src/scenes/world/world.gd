@@ -16,19 +16,21 @@ class_name World extends Node3D
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	Globals.world = self
-	SteamManager.peer_disconnected.connect(_on_peer_disconnected)
+	
+	
+	NetworkManager.peer_disconnected.connect(_on_peer_disconnected)
 
-func _on_peer_disconnected(peer_id: int) -> void:
+func _on_peer_disconnected(peer_id: int, _player_id: int) -> void:
 	if multiplayer.is_server():
 		var player_to_remove: Player = PlayerManager.remove_player_peer(peer_id)
-		player_to_remove.queue_free()
+		player_to_remove.call_deferred("queue_free")
 
 
 @rpc("any_peer", "call_local")
 func _request_player_spawn(display_name: String = "") -> void:
 	if multiplayer.is_server():
 		var peer_id: int = multiplayer.get_remote_sender_id()
-		var steam_id: int = SteamManager.get_peer_steam_id(peer_id)
+		var steam_id: int = NetworkManager.get_player_id(peer_id)
 		PlayerManager.register_player(peer_id, steam_id)
 		
 		

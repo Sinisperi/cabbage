@@ -6,6 +6,7 @@ extends Control
 @onready var new_game_button: Button = %StartNewGameButton
 @onready var continue_button: Button = %ContinueButton
 @onready var online_play_button: Button = %OnlinePlayButton
+@onready var options_button: Button = %OptionsButton
 
 @onready var new_game_screen: Control = %NewGameScreen
 @onready var title_menu: Control = %TitleMenu
@@ -47,6 +48,7 @@ func _ready() -> void:
 	SteamManager.lobby_created.connect(_on_lobby_created)
 	SteamManager.lobby_joined.connect(_on_lobby_joined)
 	SteamManager.peer_connected.connect(_on_peer_connected)
+	options_button.pressed.connect(func() -> void: NetworkManager._disconnect_multiplayer_signals())
 
 	#NetworkManager.peer_connected.connect(_on_peer_connected)
 	await show_active_users_avatars()

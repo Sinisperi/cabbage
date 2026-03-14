@@ -15,12 +15,12 @@ func _ready() -> void:
 func _on_confirm_button_pressed() -> void:
 	print_rich("You press continue button [color=yellow] but nothing happens![/color]")
 	if !multiplayer.has_multiplayer_peer():
-		SteamManager.create_local_peer()
+		NetworkManager.enable_local_host()
 	if multiplayer.is_server():
 		if current_selected_slot.length():
 			SaveDataManager.load_save_slot(current_selected_slot)
 			load_world.rpc()
-	print("peer id", multiplayer.get_unique_id())
+	print("peer id", multiplayer.get_unique_id(), "is peer enet ", NetworkManager.peer is ENetMultiplayerPeer)
 
 @rpc("any_peer", "call_local")
 func load_world() -> void:

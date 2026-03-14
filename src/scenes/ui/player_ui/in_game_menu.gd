@@ -27,3 +27,4 @@ func _on_quit_button_pressed() -> void:
 	EventBus.ui.main_menu_requested.emit()
 	Globals.world.call_deferred("queue_free")
 	Globals.world = null
+	

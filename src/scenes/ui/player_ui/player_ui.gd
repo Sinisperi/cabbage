@@ -36,7 +36,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event is InputEventKey:
 		if event.is_pressed():
-			prints(String.num_int64(ui_state, 2), _is_flag_set(INVENTORY | IN_GAME_MENU))
 			if event.keycode == KEY_F4:
 				#PlayerManager.save_player_data(multiplayer.get_unique_id())
 				if multiplayer.is_server():
