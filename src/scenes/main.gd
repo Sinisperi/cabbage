@@ -5,7 +5,7 @@ extends Node
 
 func _ready() -> void:
 	EventBus.world.world_spawn_requested.connect(spawn_world)
-	SteamManager.host_disconnected.connect(_on_host_disconnected)
+	NetworkManager.host_disconnected.connect(_on_host_disconnected)
 
 func spawn_world(callback: Callable = Callable()) -> void:
 	if world_container.get_child_count() == 0:
@@ -19,5 +19,5 @@ func spawn_world(callback: Callable = Callable()) -> void:
 
 func _on_host_disconnected() -> void:
 	if Globals.world:
-		world_container.get_child(0).queue_free()
+		world_container.get_child(0).call_deferred("queue_free")
 		EventBus.ui.main_menu_requested.emit()

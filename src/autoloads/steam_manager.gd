@@ -16,7 +16,7 @@ func _ready() -> void:
 	Steam.lobby_created.connect(_on_steam_lobby_created)
 	Steam.lobby_joined.connect(_on_steam_lobby_joined)
 	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
-
+	NetworkManager.host_disconnected.connect(_on_steam_server_disconnected)
 #func _connect_steam_signals() -> void:
 	#multiplayer.peer_connected.connect(_on_steam_peer_connected)
 	#multiplayer.peer_disconnected.connect(_on_steam_peer_disconnected)

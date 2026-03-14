@@ -2,7 +2,7 @@ extends Node
 
 signal peer_connected(peer_id: int, player_id: int)
 signal peer_disconnected(peer_id: int, player_id: int)
-
+signal host_disconnected
 
 var peer: MultiplayerPeer = null
 var port: int = 3000
@@ -12,6 +12,7 @@ var ip: String = "127.0.0.1"
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
 
 func enable_local_host() -> void:
@@ -30,6 +31,10 @@ func _on_peer_connected(peer_id: int) -> void:
 
 func _on_peer_disconnected(peer_id: int) -> void:
 	peer_disconnected.emit(peer_id, get_player_id(peer_id))
+
+
+func _on_server_disconnected() -> void:
+	host_disconnected.emit()
 
 
 func get_player_id(peer_id: int) -> int:
