@@ -134,9 +134,9 @@ func check_lobby_code(code_string: String) -> Dictionary:
 	return res
 
 
-func _on_steam_peer_connected(peer_id: int) -> void:
-	print("someone connected ", peer_id)
-	peer_connected.emit(peer_id, get_peer_steam_id(peer_id))
+#func _on_steam_peer_connected(peer_id: int) -> void:
+	#print("someone connected ", peer_id)
+	#peer_connected.emit(peer_id, get_peer_steam_id(peer_id))
 
 
 
@@ -180,6 +180,6 @@ func get_peer_steam_id(peer_id: int) -> int:
 	return NetworkManager.peer.get_steam_id_for_peer_id(peer_id)
 
 
-func _on_steam_peer_disconnected(peer_id: int) -> void:
-	if multiplayer.is_server():
-		peer_disconnected.emit(peer_id)
+#func _on_steam_peer_disconnected(peer_id: int) -> void:
+	#if multiplayer.is_server():
+		#peer_disconnected.emit(peer_id)

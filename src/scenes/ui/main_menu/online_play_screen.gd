@@ -117,6 +117,7 @@ func _on_create_lobby_button_pressed() -> void:
 			create_toast_popup("Seems like Steam is probably not running...", true)
 			return
 		else:
+			create_toast_popup(result.verbal, true)
 			return
 		
 		SteamManager.create_lobby(lobby_type, int(max_players_select.get_item_text(max_players_select.selected)))
