@@ -82,11 +82,15 @@ func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change
 		user_left.emit(changed_id, username)
 		
 
+## NOTE Still not sure about the local to multiplayer to multiplayer to local. something seems off idk what yet
+## like can client start local game or something idks
+
+
 
 func _on_steam_server_disconnected() -> void:
 	if current_lobby_id != -1:
 		Steam.leaveLobby(current_lobby_id)
-		#disconnect_from_current_session()
+		disconnect_from_current_session()
 		current_lobby_id = -1
 		host_disconnected.emit()
 
