@@ -39,6 +39,8 @@ func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
 	if current_lobby_id > 0:
 		Steam.leaveLobby(current_lobby_id)
 	else:
+		if multiplayer.has_multiplayer_peer():
+			NetworkManager.peer.close()
 		NetworkManager.peer = SteamMultiplayerPeer.new()
 		NetworkManager.peer.create_host()
 		multiplayer.set_multiplayer_peer(NetworkManager.peer)
@@ -47,6 +49,8 @@ func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
 
 func join_lobby(lobby_id: int) -> void:
 	#current_lobby_id = lobby_id
+	if multiplayer.has_multiplayer_peer():
+		NetworkManager.peer.close()
 	NetworkManager.peer = SteamMultiplayerPeer.new()
 	Steam.joinLobby(lobby_id)
 
