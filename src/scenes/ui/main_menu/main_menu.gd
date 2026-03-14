@@ -47,8 +47,7 @@ func _ready() -> void:
 	SteamManager.user_left.connect(_on_user_left)
 	SteamManager.lobby_created.connect(_on_lobby_created)
 	SteamManager.lobby_joined.connect(_on_lobby_joined)
-	SteamManager.peer_connected.connect(_on_peer_connected)
-	options_button.pressed.connect(func() -> void: NetworkManager._disconnect_multiplayer_signals())
+	NetworkManager.peer_connected.connect(_on_peer_connected)
 
 	#NetworkManager.peer_connected.connect(_on_peer_connected)
 	await show_active_users_avatars()
