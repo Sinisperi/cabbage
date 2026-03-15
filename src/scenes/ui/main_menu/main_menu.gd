@@ -116,8 +116,9 @@ func _on_user_left(user_id: int, _username: String) -> void:
 		if c.user_id == user_id:
 			avatar_to_remove = c
 			break
-	lobby_avatars.remove_child(avatar_to_remove)
-	avatar_to_remove.queue_free()
+	if avatar_to_remove != null:
+		lobby_avatars.remove_child(avatar_to_remove)
+		avatar_to_remove.queue_free()
 	
 	
 func create_lobby_avatar(image: ImageTexture, user_id: int) -> void:
