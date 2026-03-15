@@ -20,6 +20,7 @@ func _on_confirm_button_pressed() -> void:
 		if current_selected_slot.length():
 			SaveDataManager.load_save_slot(current_selected_slot)
 			load_saves_or_character_creator_for_peers()
+			load_world(true)
 	print("peer id", multiplayer.get_unique_id(), "is peer enet ", NetworkManager.peer is ENetMultiplayerPeer)
 
 @rpc("any_peer", "call_remote")
@@ -34,8 +35,7 @@ func load_saves_or_character_creator_for_peers() -> void:
 		if peer_id > 1:
 			var has_save: bool = PlayerManager.player_has_save(SteamManager.get_peer_steam_id(peer_id))
 			load_world.rpc_id(peer_id, has_save)
-		else:
-			load_world(true)
+
 
 func _go_back_button_pressed() -> void:
 	back_button_pressed.emit()
