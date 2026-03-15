@@ -17,6 +17,8 @@ func _on_visibility_changed() -> void:
 	if current_selected_slot:
 		current_selected_slot.unhighlight()
 		current_selected_slot = null
+		if visible:
+			list_save_slots()
 	
 func _on_confirm_button_pressed() -> void:
 	if !multiplayer.is_server():
