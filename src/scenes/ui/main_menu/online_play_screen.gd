@@ -112,9 +112,8 @@ func _on_create_lobby_button_pressed() -> void:
 		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
 	else:
 		var result: Dictionary = NetworkManager.enable_multiplayer()
-		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_HOST)
-		
 		if result.status == 0:
+			NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_HOST)
 			SteamManager.create_lobby(lobby_type, int(max_players_select.get_item_text(max_players_select.selected)))
 			return
 		elif result.status == 2:
@@ -127,6 +126,8 @@ func _on_create_lobby_button_pressed() -> void:
 
 
 
+
+# DISABLE INVITE SECTION WHEN IS IN LOCAL
 func _on_steam_lobby_created(response: int, lobby_id: int) -> void:
 	if response == 1:
 		enable_invite_section()
@@ -156,7 +157,6 @@ func _on_join_button_pressed() -> void:
 	if !SteamManager.is_steam_enabled:
 		create_toast_popup("Steam has to be running for this to work...", true, "Nice try")
 		return
-	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
 	var result: Dictionary = await SteamManager.join_lobby(client_join_code_input.text)
 	if result.status == 0:
 		#SteamManager.join_lobby(int(client_join_code_input.text))

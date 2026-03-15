@@ -63,6 +63,7 @@ func join_lobby(lobby_id_string: String) -> Dictionary:
 	var lobby_id: int = int(lobby_id_string.strip_edges())
 	var result: Dictionary = await SteamManager.check_lobby_code(lobby_id)
 	if result.status == OK:
+		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
 		Steam.joinLobby(lobby_id)
 	return result
 
@@ -129,14 +130,14 @@ func create_friends_popup() -> void:
 
 func check_lobby_code(lobby_code: int) -> Dictionary:
 	#var code: int = int(code_string)
-	Steam.requestLobbyData(lobby_code)
-	await Steam.lobby_data_update
 	var res := {"status": 0, "verbal": "ok"}
 	if str(lobby_code).length() <= 15:
 		res.status = 1
 		res.verbal = "Join code is missing some stuff.."
 		return res
 	
+	Steam.requestLobbyData(lobby_code)
+	await Steam.lobby_data_update
 	var is_joinable: String = Steam.getLobbyData(lobby_code, "is_joinable")
 	if !is_joinable.length():
 		res.status = 2

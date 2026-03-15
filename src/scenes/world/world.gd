@@ -23,7 +23,8 @@ func _ready() -> void:
 func _on_peer_disconnected(peer_id: int, _player_id: int) -> void:
 	if multiplayer.is_server():
 		var player_to_remove: Player = PlayerManager.remove_player_peer(peer_id)
-		player_to_remove.call_deferred("queue_free")
+		if player_to_remove != null:
+			player_to_remove.call_deferred("queue_free")
 
 
 @rpc("any_peer", "call_local")
