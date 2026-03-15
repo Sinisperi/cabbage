@@ -18,7 +18,6 @@ func spawn_world(callback: Callable = Callable()) -> void:
 
 
 func _on_host_disconnected() -> void:
-	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
 	if Globals.world:
 		world_container.get_child(0).call_deferred("queue_free")
 		EventBus.ui.main_menu_requested.emit()

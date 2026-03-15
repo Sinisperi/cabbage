@@ -49,6 +49,7 @@ func _ready() -> void:
 	SteamManager.lobby_created.connect(_on_lobby_created)
 	SteamManager.lobby_joined.connect(_on_lobby_joined)
 	NetworkManager.peer_connected.connect(_on_peer_connected)
+	NetworkManager.host_disconnected.connect(_on_host_disconnected)
 
 	#NetworkManager.peer_connected.connect(_on_peer_connected)
 	await show_active_users_avatars()
@@ -169,6 +170,10 @@ func _on_main_menu_requested() -> void:
 	ui_state = ScreenType.TITLE_MENU
 	title_menu.visible = true
 	_update_ui()
+
+
+func _on_host_disconnected() -> void:
+	await show_active_users_avatars()
 
 ## TODO Instead of loading the world, check if player has a save here
 ## if they do, load the world and spawn the player with data,

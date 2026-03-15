@@ -22,6 +22,7 @@ extends Control
 
 @onready var create_lobby_button: Button = %CreateLobbyButton
 @onready var send_invite_button: Button = %SendInviteButton
+@onready var close_lobby_button: Button = %CloseLobbyButton
 
 @onready var host_invite_code_input: LineEdit = %HostInviteCodeInput
 @onready var host_invite_code_copy_button: TextureButton = %HostInviteCodeCopyButton
@@ -33,7 +34,7 @@ extends Control
 @onready var join_button: Button = %JoinButton
 
 var is_local: bool = false
-var lobby_type: Steam.LobbyType = Steam.LobbyType.LOBBY_TYPE_FRIENDS_ONLY
+var lobby_type: NetworkManager.LobbyType = NetworkManager.LobbyType.FRIENDS_ONLY
 var tween: Tween = null
 signal back_button_pressed
 
@@ -49,13 +50,14 @@ func _ready() -> void:
 	create_lobby_button.pressed.connect(_on_create_lobby_button_pressed)
 	steam_checkbox.pressed.connect(func() -> void: is_local = false)
 	local_host_checkbox.pressed.connect(func() -> void: is_local = true)
-	private_checkbox.pressed.connect(func() -> void: lobby_type = Steam.LobbyType.LOBBY_TYPE_PRIVATE)
-	friends_checkbox.pressed.connect(func() -> void: lobby_type = Steam.LobbyType.LOBBY_TYPE_FRIENDS_ONLY)
+	private_checkbox.pressed.connect(func() -> void: lobby_type = NetworkManager.LobbyType.PRIVATE)
+	friends_checkbox.pressed.connect(func() -> void: lobby_type = NetworkManager.LobbyType.FRIENDS_ONLY)
 	send_invite_button.pressed.connect(_on_send_invite_button_pressed)
 	host_invite_code_copy_button.button_down.connect(_on_host_invite_code_copy_button_pressed)
 	
 	join_button.pressed.connect(_on_join_button_pressed)
 	client_join_code_input.gui_input.connect(_on_client_join_code_input_gui_input)
+	close_lobby_button.pressed.connect(_on_close_lobby_button_pressed)
 	join_lobby_tab.modulate.a = 0.5
 	await get_tree().process_frame
 	move_lines(CREATE)
@@ -63,7 +65,12 @@ func _ready() -> void:
 	SteamManager.lobby_created.connect(_on_steam_lobby_created)
 	SteamManager.lobby_joined.connect(_on_steam_lobby_joined)
 	
-	
+
+	visibility_changed.connect(_on_visibility_changed)
+
+func _on_visibility_changed() -> void:
+	if NetworkManager.current_connection_type == NetworkManager.ConnectionType.LOCAL:
+		disable_invite_section()
 	
 func _on_back_button_pressed() -> void:
 	back_button_pressed.emit()
@@ -102,8 +109,19 @@ func move_lines(to: int) -> void:
 func enable_invite_section() -> void:
 	invite_section.modulate.a = 1.0
 	host_invite_code_copy_button.disabled = false
-	if lobby_type != Steam.LobbyType.LOBBY_TYPE_PRIVATE:
+	close_lobby_button.disabled = false
+	
+	if lobby_type != NetworkManager.LobbyType.PRIVATE:
 		send_invite_button.disabled = false
+
+
+
+func disable_invite_section() -> void:
+	invite_section.modulate.a = 0.4
+	host_invite_code_copy_button.disabled = true
+	send_invite_button.disabled = true
+	close_lobby_button.disabled = true
+	host_invite_code_input.text = ""
 
 
 
@@ -124,8 +142,10 @@ func _on_create_lobby_button_pressed() -> void:
 			return
 		
 
-
-
+func _on_close_lobby_button_pressed() -> void:
+	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
+	create_toast_popup("Lobby was closed", false, "Closed!")
+	disable_invite_section()
 
 # DISABLE INVITE SECTION WHEN IS IN LOCAL
 func _on_steam_lobby_created(response: int, lobby_id: int) -> void:

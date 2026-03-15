@@ -16,6 +16,12 @@ enum ConnectionType
 	MULTIPLAYER_CLIENT
 }
 
+enum LobbyType
+{
+	FRIENDS_ONLY = Steam.LobbyType.LOBBY_TYPE_FRIENDS_ONLY,
+	PRIVATE = Steam.LobbyType.LOBBY_TYPE_PRIVATE
+}
+
 var current_connection_type: ConnectionType = ConnectionType.LOCAL
 
 func _ready() -> void:
@@ -48,6 +54,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 
 func _on_server_disconnected() -> void:
+	switch_connection_type(ConnectionType.LOCAL)
 	host_disconnected.emit()
 
 

@@ -16,9 +16,8 @@ func _ready() -> void:
 	Steam.lobby_created.connect(_on_steam_lobby_created)
 	Steam.lobby_joined.connect(_on_steam_lobby_joined)
 	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
-	#NetworkManager.host_disconnected.connect(_on_steam_server_disconnected)
 
-	
+
 func enable_steam() -> Dictionary:
 	if is_steam_enabled:
 		return {"status": 0}
@@ -46,20 +45,18 @@ func create_client() -> void:
 	NetworkManager.peer = SteamMultiplayerPeer.new()
 	
 
-func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
-	Steam.createLobby(lobby_type, max_players)
+func create_lobby(lobby_type: NetworkManager.LobbyType, max_players: int) -> void:
+	Steam.createLobby(lobby_type as Steam.LobbyType, max_players)
+
+
 
 func leave_lobby() -> void:
 	if current_lobby_id != -1:
 		Steam.leaveLobby(current_lobby_id)
 	current_lobby_id = -1
 
+
 func join_lobby(lobby_id_string: String) -> Dictionary:
-	#current_lobby_id = lobby_id
-	#if current_lobby_id != -1:
-		#Steam.leaveLobby(current_lobby_id)
-	#if multiplayer.has_multiplayer_peer():
-		#NetworkManager.peer.close()
 	var lobby_id: int = int(lobby_id_string.strip_edges())
 	var result: Dictionary = await SteamManager.check_lobby_code(lobby_id)
 	if result.status == OK:
