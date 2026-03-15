@@ -123,6 +123,10 @@ func _on_user_left(user_id: int, _username: String) -> void:
 	
 	
 func create_lobby_avatar(image: ImageTexture, user_id: int) -> void:
+	for a in lobby_avatars.get_children():
+		if a.user_id == user_id:
+			return
+			
 	var avatar: TextureRect = LOBBY_AVATAR.instantiate()
 	avatar.texture = image
 	avatar.user_id = user_id
