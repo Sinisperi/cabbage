@@ -1,11 +1,7 @@
 extends Node
-#var peer: MultiplayerPeer = null
 signal lobby_created(response: int, lobby_id: int)
 signal user_joined(steam_id: int, username: String)
 signal user_left(steam_id: int, username: String)
-signal peer_disconnected(peer_id: int)
-signal peer_connected(peer_id: int, steam_id: int)
-signal host_disconnected
 signal lobby_joined
 var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
@@ -25,18 +21,12 @@ func enable_steam() -> Dictionary:
 	var result: Dictionary = Steam.steamInitEx(480, true)
 	if result.status == 0:
 		is_steam_enabled = true
-		#_connect_steam_signals()
 	print("steam init result ", result)
 	return result
 
 
 
 func create_host() -> void:
-	#if current_lobby_id > 0:
-		#Steam.leaveLobby(current_lobby_id)
-		#
-	#if multiplayer.has_multiplayer_peer():
-		#NetworkManager.peer.close()
 	NetworkManager.peer = SteamMultiplayerPeer.new()
 	NetworkManager.peer.create_host()
 	multiplayer.set_multiplayer_peer(NetworkManager.peer)
@@ -100,37 +90,12 @@ func _on_invite_accepted(lobby_id: int, _steam_id: int) -> void:
 	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
 	Steam.joinLobby(lobby_id)
 
-## NOTE Still not sure about the local to multiplayer to multiplayer to local. something seems off idk what yet
-## like can client start local game or something idks
-
-
-
-#func _on_steam_server_disconnected() -> void:
-	#if current_lobby_id != -1:
-		#Steam.leaveLobby(current_lobby_id)
-		#disconnect_from_current_session()
-		#current_lobby_id = -1
-		#host_disconnected.emit()
-
-
-#func disconnect_from_current_session() -> void:
-	#if multiplayer.has_multiplayer_peer():
-		#multiplayer.multiplayer_peer.close()
-		#NetworkManager.peer = null
-		#multiplayer.set_multiplayer_peer(null)
-
-
-#func create_local_peer() -> void:
-	#NetworkManager.peer = SteamMultiplayerPeer.new()
-	#NetworkManager.peer.create_host()
-	#multiplayer.set_multiplayer_peer(NetworkManager.peer)
 
 func create_friends_popup() -> void:
 	Steam.activateGameOverlayInviteDialog(current_lobby_id)
 
 
 func check_lobby_code(lobby_code: int) -> Dictionary:
-	#var code: int = int(code_string)
 	var res := {"status": 0, "verbal": "ok"}
 	if str(lobby_code).length() <= 15:
 		res.status = 1
@@ -150,11 +115,6 @@ func check_lobby_code(lobby_code: int) -> Dictionary:
 		res.status = 3
 		res.verbal = "Trying to play with yourself... I see that..."
 	return res
-
-
-#func _on_steam_peer_connected(peer_id: int) -> void:
-	#print("someone connected ", peer_id)
-	#peer_connected.emit(peer_id, get_peer_steam_id(peer_id))
 
 
 
@@ -196,8 +156,3 @@ func get_peer_steam_username(peer_id: int) -> String:
 
 func get_peer_steam_id(peer_id: int) -> int:
 	return NetworkManager.peer.get_steam_id_for_peer_id(peer_id)
-
-
-#func _on_steam_peer_disconnected(peer_id: int) -> void:
-	#if multiplayer.is_server():
-		#peer_disconnected.emit(peer_id)

@@ -4,31 +4,58 @@
 
 [node name="SaveSlot" type="PanelContainer" unique_id=1477858924]
 custom_minimum_size = Vector2(0, 150)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 126.0
+grow_horizontal = 2
 script = ExtResource("1_smsjy")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=380477084]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
+theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1109012144]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1442064169]
 layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=916911121]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=839911095]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1109012144]
+layout_mode = 2
+size_flags_horizontal = 4
 mouse_filter = 2
 
-[node name="SaveSlotTitle" type="Label" parent="MarginContainer/VBoxContainer" unique_id=855121659]
+[node name="SaveSlotTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=855121659]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 34
 text = "Save Slot Name"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=121324675]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=121324675]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="LastPlayed" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=853930772]
+[node name="LastPlayed" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=853930772]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Last Played"
+
+[node name="DeleteButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1260205482]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+text = "Delete"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1317320970]
+layout_mode = 2
+size_flags_vertical = 6

@@ -24,7 +24,7 @@ var world_area: Rect2 = Rect2(Vector2i(-16, -16), Vector2i(32, 32))
 
 func _ready() -> void:
 	Globals.chunker = self
-	SteamManager.peer_disconnected.connect(_on_peer_disconnected)
+	NetworkManager.peer_disconnected.connect(_on_peer_disconnected)
 
 
 func get_chunk_name_from_pos(pos: Vector3) -> String:
@@ -342,7 +342,7 @@ func get_current_region() -> Vector2i:
 
 
 
-func _on_peer_disconnected(peer_id: int) -> void:
+func _on_peer_disconnected(peer_id: int, _steam_id: int) -> void:
 	print("peer disconnected ", peer_id)
 	for c: Vector2i in loaded_chunks.keys():
 		if loaded_chunks[c].chunk_viewers.has(peer_id):

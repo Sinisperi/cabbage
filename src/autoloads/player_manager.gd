@@ -50,23 +50,7 @@ func player_has_save(steam_id: int) -> bool:
 	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + str(steam_id) + ".json"
 	return FileAccess.file_exists(file_name)
 
-#func add_player(peer_id: int, username: String) -> void:
-	#print("attempting to add new player: ", username)
-	#if !active_peers.has(peer_id):
-		#active_peers[peer_id] = username
-		#var player_save_data: Dictionary = load_player_data(peer_id)
-		#if player_save_data.is_empty():
-			#var new_player_data: PlayerData = PlayerData.new()
-			#new_player_data.username = username
-			#active_players[username] = {
-				#"player_data": new_player_data,
-				#"ref": null
-			#}
-		#else:
-			#active_players[username] = player_save_data
-		#print("added new player ", peer_id, username)
-		#return
-	#print("player ", username, " already exists")
+
 
 func get_player_data(peer_id: int) -> PlayerData:
 	if active_peers.has(peer_id):
@@ -110,7 +94,7 @@ func save_player_data(peer_id: int) -> void:
 		DirAccess.make_dir_absolute(SaveDataManager.current_save_path + SAVE_DIR)
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.WRITE)
 	file.store_string(data_string)
-
+	file.close()
 
 func save_and_remove_player(peer_id: int) -> Player:
 	save_player_data(peer_id)

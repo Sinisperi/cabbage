@@ -99,7 +99,6 @@ visible = false
 
 [node name="InGameMenu" type="Control" parent="." unique_id=1185495550]
 unique_name_in_owner = true
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

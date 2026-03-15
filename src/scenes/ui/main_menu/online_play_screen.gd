@@ -61,7 +61,6 @@ func _ready() -> void:
 	join_lobby_tab.modulate.a = 0.5
 	await get_tree().process_frame
 	move_lines(CREATE)
-	visibility_changed.connect(func() -> void: await get_tree().process_frame; move_lines(CREATE))
 	SteamManager.lobby_created.connect(_on_steam_lobby_created)
 	SteamManager.lobby_joined.connect(_on_steam_lobby_joined)
 	
@@ -69,8 +68,11 @@ func _ready() -> void:
 	visibility_changed.connect(_on_visibility_changed)
 
 func _on_visibility_changed() -> void:
+	await get_tree().process_frame
+	move_lines(CREATE)
 	if NetworkManager.current_connection_type == NetworkManager.ConnectionType.LOCAL:
 		disable_invite_section()
+		client_join_code_input.text = ""
 	
 func _on_back_button_pressed() -> void:
 	back_button_pressed.emit()

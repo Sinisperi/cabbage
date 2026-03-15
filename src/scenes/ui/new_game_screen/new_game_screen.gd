@@ -11,8 +11,6 @@ func _ready() -> void:
 	
 
 func _on_continue_button_pressed() -> void:
-	#if !multiplayer.has_multiplayer_peer():
-		#NetworkManager.enable_local_host()
 	if !multiplayer.is_server():
 		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
 	SaveDataManager.create_save_slot(world_name_line_edit.text)

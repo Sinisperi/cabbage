@@ -16,7 +16,14 @@ func save_slot_exists(save_name: String) -> bool:
 
 
 func list_save_slots() -> Array:
-	return DirAccess.get_directories_at(save_path_root)
+	var res: Array[Dictionary] = []
+	for i in DirAccess.get_directories_at(save_path_root):
+		var save_slot_data: Dictionary = {
+			"slot_name": i,
+			"slot_meta": load_root_save_file(save_path_root + i + "/" + i + ".json")
+		}
+		res.push_back(save_slot_data)
+	return res
 
 
 func create_save_slot(save_name: String) -> void:
@@ -27,6 +34,7 @@ func create_save_slot(save_name: String) -> void:
 func save_game() -> void:
 	PlayerManager.save_active_players()
 	ChunkLoader.save_world()
+	save_root_save_file()
 	
 
 func load_save_slot(save_slot: String) -> void:
@@ -34,4 +42,49 @@ func load_save_slot(save_slot: String) -> void:
 
 
 func delete_save_slot(save_slot: String) -> void:
-	DirAccess.remove_absolute(save_path_root + "/" + save_slot)
+	_remove_dir_recursive(save_path_root + save_slot)
+	
+	
+func _remove_dir_recursive(file_path: String) -> void:
+	var dir: DirAccess = DirAccess.open(file_path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name: String = dir.get_next()
+		while file_name.length():
+			if file_name == "." || file_name == "..":
+				file_name = dir.get_next()
+				continue
+			var current_path: String = file_path + "/" + file_name
+			print(current_path)
+			if dir.current_is_dir():
+				_remove_dir_recursive(current_path)
+			else:
+				dir.remove(current_path)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+		DirAccess.remove_absolute(file_path)
+	
+
+
+func save_root_save_file() -> void:
+	var file_name: String = current_save_path + current_save_slot.get_slice("/", 0) + ".json"
+	var data: Dictionary = {
+		"last_played": Time.get_datetime_string_from_system(),
+	}
+	var data_string: String = JSON.stringify(data)
+	var file: FileAccess = FileAccess.open(file_name, FileAccess.WRITE)
+	file.store_string(data_string)
+	file.close()
+
+
+func load_root_save_file(path: String) -> Dictionary:
+	var file_name: String = path
+	if !FileAccess.file_exists(file_name):
+		return {
+			"last_played": "00-00-00"
+		}
+	var file: FileAccess = FileAccess.open(file_name, FileAccess.READ)
+	var json: JSON = JSON.new()
+	json.parse(file.get_line())
+	var data: Variant = json.data
+	return data

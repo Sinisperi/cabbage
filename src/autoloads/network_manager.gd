@@ -82,33 +82,3 @@ func switch_connection_type(connection_type: ConnectionType) -> void:
 	
 	current_connection_type = connection_type
 	connection_type_changed.emit(current_connection_type)
-	
-	
-	
-#func _disconnect_multiplayer_signals() -> void:
-	#var signals: Array[Dictionary] = multiplayer.get_signal_list()
-	#for i in signals:
-		#for connection in multiplayer.get_signal_connection_list(i.name):
-			##multiplayer.disconnect(i.name, connection.callable)
-			#prints(i.name, connection.callable)
-
-
-
-		
-		
-#func join_game(_lobby_id: int = 0) -> Error:
-	#var status: Error = OK
-	#if peer is ENetMultiplayerPeer:
-		#status = peer.create_client(ip, port)
-		#if status != OK:
-			#return status
-		#multiplayer.set_multiplayer_peer(peer)
-	#return status
-#
-#
-#
-#func create_local_server() -> Error:
-	#var status: Error = OK
-	#status = peer.create_server(port, 2)
-	#multiplayer.set_multiplayer_peer(peer)
-	#return status
