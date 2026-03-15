@@ -16,7 +16,7 @@ func _ready() -> void:
 	Steam.lobby_created.connect(_on_steam_lobby_created)
 	Steam.lobby_joined.connect(_on_steam_lobby_joined)
 	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
-
+	Steam.join_requested.connect(_on_invite_accepted)
 
 func enable_steam() -> Dictionary:
 	if is_steam_enabled:
@@ -94,7 +94,11 @@ func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change
 	elif chat_state == 2:
 		EventBus.ui.toast_popup_requested.emit(username + " has left!", false, "It's fine!")
 		user_left.emit(changed_id, username)
-		
+
+
+func _on_invite_accepted(lobby_id: int, _steam_id: int) -> void:
+	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
+	Steam.joinLobby(lobby_id)
 
 ## NOTE Still not sure about the local to multiplayer to multiplayer to local. something seems off idk what yet
 ## like can client start local game or something idks

@@ -132,11 +132,16 @@ func create_lobby_avatar(image: ImageTexture, user_id: int) -> void:
 	avatar.user_id = user_id
 	lobby_avatars.add_child(avatar)
 
+
+
 func _on_lobby_created(_response: int, _lobby_id: int) -> void:
 	create_lobby_avatar(await SteamManager.get_avatar_image(Steam.getSteamID()), Steam.getSteamID())
 
+
+
 func _on_lobby_joined() -> void:
 	await show_active_users_avatars()
+
 
 func show_active_users_avatars() -> void:
 	var users: Array = SteamManager.get_users_in_lobby()
