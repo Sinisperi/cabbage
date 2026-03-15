@@ -134,6 +134,11 @@ func _on_lobby_joined() -> void:
 
 func show_active_users_avatars() -> void:
 	var users: Array = SteamManager.get_users_in_lobby()
+	while lobby_avatars.get_child_count():
+		var avatar_to_remove: Node = lobby_avatars.get_child(-1)
+		lobby_avatars.remove_child(avatar_to_remove)
+		avatar_to_remove.queue_free()
+		
 	for u: Dictionary in users:
 		create_lobby_avatar(await SteamManager.get_avatar_image(u.steam_id), u.steam_id)
 
@@ -157,6 +162,7 @@ func load_world(has_save: bool) -> void:
 		
 
 func _on_main_menu_requested() -> void:
+	await show_active_users_avatars()
 	show()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	ui_state = ScreenType.TITLE_MENU
