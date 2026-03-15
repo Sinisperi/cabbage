@@ -23,7 +23,7 @@ fill_to = Vector2(0.2991453, 0.41452992)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0s6rk"]
 shader = ExtResource("6_tjquc")
-shader_parameter/sigma = 8.57300040395762
+shader_parameter/sigma = 2.96000013734012
 
 [node name="PlayerUI" type="CanvasLayer" unique_id=1267816161]
 script = ExtResource("1_w5xlc")

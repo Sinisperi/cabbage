@@ -139,6 +139,7 @@ func show_active_users_avatars() -> void:
 
 
 func _on_peer_connected(peer_id: int, steam_id: int) -> void:
+	print("peer_connected and it feels like they have to join")
 	if multiplayer.is_server():
 		if Globals.world != null:
 			load_world.rpc_id(peer_id, PlayerManager.player_has_save(steam_id))
