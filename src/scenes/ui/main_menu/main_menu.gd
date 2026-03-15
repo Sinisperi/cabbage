@@ -39,6 +39,7 @@ func _ready() -> void:
 	
 	new_game_screen.back_button_pressed.connect(func() -> void: toggle_screen(ScreenType.NEW_GAME_SCREEN))
 	online_play_screen.back_button_pressed.connect(func() -> void: toggle_screen(ScreenType.ONLINE_PLAY_SCREEN))
+	continue_screen.back_button_pressed.connect(func() -> void: toggle_screen(ScreenType.CONTINUE_SCREEN))
 	
 	EventBus.ui.toast_popup_requested.connect(create_toast_popup)
 	EventBus.ui.main_menu_requested.connect(_on_main_menu_requested)

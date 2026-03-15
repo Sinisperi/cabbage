@@ -16,7 +16,7 @@ func _ready() -> void:
 	Steam.lobby_created.connect(_on_steam_lobby_created)
 	Steam.lobby_joined.connect(_on_steam_lobby_joined)
 	Steam.lobby_chat_update.connect(_on_steam_lobby_chat_update)
-	NetworkManager.host_disconnected.connect(_on_steam_server_disconnected)
+	#NetworkManager.host_disconnected.connect(_on_steam_server_disconnected)
 
 	
 func enable_steam() -> Dictionary:
@@ -32,24 +32,39 @@ func enable_steam() -> Dictionary:
 
 
 
-func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
-	if current_lobby_id > 0:
-		Steam.leaveLobby(current_lobby_id)
-		
-	if multiplayer.has_multiplayer_peer():
-		NetworkManager.peer.close()
+func create_host() -> void:
+	#if current_lobby_id > 0:
+		#Steam.leaveLobby(current_lobby_id)
+		#
+	#if multiplayer.has_multiplayer_peer():
+		#NetworkManager.peer.close()
 	NetworkManager.peer = SteamMultiplayerPeer.new()
 	NetworkManager.peer.create_host()
 	multiplayer.set_multiplayer_peer(NetworkManager.peer)
-	Steam.createLobby(lobby_type, max_players)
+	
+func create_client() -> void:
+	NetworkManager.peer = SteamMultiplayerPeer.new()
 	
 
-func join_lobby(lobby_id: int) -> void:
+func create_lobby(lobby_type: Steam.LobbyType, max_players: int) -> void:
+	Steam.createLobby(lobby_type, max_players)
+
+func leave_lobby() -> void:
+	if current_lobby_id != -1:
+		Steam.leaveLobby(current_lobby_id)
+	current_lobby_id = -1
+
+func join_lobby(lobby_id_string: String) -> Dictionary:
 	#current_lobby_id = lobby_id
-	if multiplayer.has_multiplayer_peer():
-		NetworkManager.peer.close()
-	NetworkManager.peer = SteamMultiplayerPeer.new()
-	Steam.joinLobby(lobby_id)
+	#if current_lobby_id != -1:
+		#Steam.leaveLobby(current_lobby_id)
+	#if multiplayer.has_multiplayer_peer():
+		#NetworkManager.peer.close()
+	var lobby_id: int = int(lobby_id_string.strip_edges())
+	var result: Dictionary = await SteamManager.check_lobby_code(lobby_id)
+	if result.status == OK:
+		Steam.joinLobby(lobby_id)
+	return result
 
 
 func _on_steam_lobby_created(response: int, lobby_id: int) -> void:
@@ -88,19 +103,19 @@ func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change
 
 
 
-func _on_steam_server_disconnected() -> void:
-	if current_lobby_id != -1:
-		Steam.leaveLobby(current_lobby_id)
-		disconnect_from_current_session()
-		current_lobby_id = -1
-		host_disconnected.emit()
+#func _on_steam_server_disconnected() -> void:
+	#if current_lobby_id != -1:
+		#Steam.leaveLobby(current_lobby_id)
+		#disconnect_from_current_session()
+		#current_lobby_id = -1
+		#host_disconnected.emit()
 
 
-func disconnect_from_current_session() -> void:
-	if multiplayer.has_multiplayer_peer():
-		multiplayer.multiplayer_peer.close()
-		NetworkManager.peer = null
-		multiplayer.set_multiplayer_peer(null)
+#func disconnect_from_current_session() -> void:
+	#if multiplayer.has_multiplayer_peer():
+		#multiplayer.multiplayer_peer.close()
+		#NetworkManager.peer = null
+		#multiplayer.set_multiplayer_peer(null)
 
 
 #func create_local_peer() -> void:
@@ -112,23 +127,23 @@ func create_friends_popup() -> void:
 	Steam.activateGameOverlayInviteDialog(current_lobby_id)
 
 
-func check_lobby_code(code_string: String) -> Dictionary:
-	var code: int = int(code_string)
-	Steam.requestLobbyData(code)
+func check_lobby_code(lobby_code: int) -> Dictionary:
+	#var code: int = int(code_string)
+	Steam.requestLobbyData(lobby_code)
 	await Steam.lobby_data_update
 	var res := {"status": 0, "verbal": "ok"}
-	if code_string.length() <= 15:
+	if str(lobby_code).length() <= 15:
 		res.status = 1
 		res.verbal = "Join code is missing some stuff.."
 		return res
 	
-	var is_joinable: String = Steam.getLobbyData(code, "is_joinable")
+	var is_joinable: String = Steam.getLobbyData(lobby_code, "is_joinable")
 	if !is_joinable.length():
 		res.status = 2
 		res.verbal = "Lobby code is for the lobby that does not exist or is not joinable!"
 		return res
 	var client_id: int = Steam.getSteamID()
-	var host_id: int = Steam.getLobbyOwner(code)
+	var host_id: int = Steam.getLobbyOwner(lobby_code)
 	if client_id == host_id:
 		res.status = 3
 		res.verbal = "Trying to play with yourself... I see that..."

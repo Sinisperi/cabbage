@@ -3,11 +3,20 @@ extends Node
 signal peer_connected(peer_id: int, player_id: int)
 signal peer_disconnected(peer_id: int, player_id: int)
 signal host_disconnected
+signal connection_type_changed(connection_type: ConnectionType)
 
 var peer: MultiplayerPeer = null
 var port: int = 3000
 var ip: String = "127.0.0.1"
 
+enum ConnectionType
+{
+	LOCAL,
+	MULTIPLAYER_HOST,
+	MULTIPLAYER_CLIENT
+}
+
+var current_connection_type: ConnectionType = ConnectionType.LOCAL
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
@@ -15,11 +24,16 @@ func _ready() -> void:
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
 
-func enable_local_host() -> void:
+func _enable_local_host() -> void:
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(port, 1)
 	multiplayer.set_multiplayer_peer(peer)
 
+func _reset_peer() -> void:
+	if multiplayer.has_multiplayer_peer():
+		multiplayer.multiplayer_peer.close()
+	peer = null
+	multiplayer.set_multiplayer_peer(peer)
 
 func enable_multiplayer() -> Dictionary:
 	return SteamManager.enable_steam()
@@ -45,6 +59,25 @@ func get_player_id(peer_id: int) -> int:
 		
 		
 
+func switch_connection_type(connection_type: ConnectionType) -> void:
+	if connection_type == current_connection_type: return
+	SteamManager.leave_lobby()
+	_reset_peer()
+	match connection_type:
+		ConnectionType.LOCAL:
+			_enable_local_host()
+		ConnectionType.MULTIPLAYER_HOST:
+			enable_multiplayer()
+			SteamManager.create_host()
+		ConnectionType.MULTIPLAYER_CLIENT:
+			enable_multiplayer()
+			SteamManager.create_client()
+	
+	current_connection_type = connection_type
+	connection_type_changed.emit(current_connection_type)
+	
+	
+	
 #func _disconnect_multiplayer_signals() -> void:
 	#var signals: Array[Dictionary] = multiplayer.get_signal_list()
 	#for i in signals:

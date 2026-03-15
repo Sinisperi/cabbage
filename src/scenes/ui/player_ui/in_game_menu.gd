@@ -23,7 +23,8 @@ func _on_save_game_button_pressed() -> void:
 
 
 func _on_quit_button_pressed() -> void:
-	SteamManager.disconnect_from_current_session()
+	#SteamManager.disconnect_from_current_session()
+	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
 	EventBus.ui.main_menu_requested.emit()
 	Globals.world.call_deferred("queue_free")
 	Globals.world = null

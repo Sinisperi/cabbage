@@ -61,6 +61,7 @@ func _ready() -> void:
 	move_lines(CREATE)
 	visibility_changed.connect(func() -> void: await get_tree().process_frame; move_lines(CREATE))
 	SteamManager.lobby_created.connect(_on_steam_lobby_created)
+	SteamManager.lobby_joined.connect(_on_steam_lobby_joined)
 	
 	
 	
@@ -103,16 +104,19 @@ func enable_invite_section() -> void:
 	host_invite_code_copy_button.disabled = false
 	if lobby_type != Steam.LobbyType.LOBBY_TYPE_PRIVATE:
 		send_invite_button.disabled = false
-#109775242198973756
+
+
 
 func _on_create_lobby_button_pressed() -> void:
 	if is_local:
-		NetworkManager.enable_local_host()
+		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
 	else:
 		var result: Dictionary = NetworkManager.enable_multiplayer()
+		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_HOST)
+		
 		if result.status == 0:
-			enable_invite_section()
-			create_toast_popup("Created lobby successfully!")
+			SteamManager.create_lobby(lobby_type, int(max_players_select.get_item_text(max_players_select.selected)))
+			return
 		elif result.status == 2:
 			create_toast_popup("Seems like Steam is probably not running...", true)
 			return
@@ -120,13 +124,19 @@ func _on_create_lobby_button_pressed() -> void:
 			create_toast_popup(result.verbal, true)
 			return
 		
-		SteamManager.create_lobby(lobby_type, int(max_players_select.get_item_text(max_players_select.selected)))
 
 
 
 func _on_steam_lobby_created(response: int, lobby_id: int) -> void:
 	if response == 1:
+		enable_invite_section()
+		create_toast_popup("Created lobby successfully!")
 		host_invite_code_input.text = str(lobby_id)
+
+
+func _on_steam_lobby_joined() -> void:
+	create_toast_popup("Successfully joined a lobby!")
+	
 
 
 func _on_send_invite_button_pressed() -> void:
@@ -146,11 +156,11 @@ func _on_join_button_pressed() -> void:
 	if !SteamManager.is_steam_enabled:
 		create_toast_popup("Steam has to be running for this to work...", true, "Nice try")
 		return
-		
-	var result: Dictionary = await SteamManager.check_lobby_code(client_join_code_input.text)
+	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
+	var result: Dictionary = await SteamManager.join_lobby(client_join_code_input.text)
 	if result.status == 0:
-		SteamManager.join_lobby(int(client_join_code_input.text))
-		create_toast_popup("Successfully joined a lobby!")
+		#SteamManager.join_lobby(int(client_join_code_input.text))
+		return
 	elif result.status == 3:
 		create_toast_popup(result.verbal, true, "Feels so lonely here...")
 	else:
@@ -161,6 +171,8 @@ func _on_client_join_code_input_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.is_pressed():
 			client_join_code_input.text = DisplayServer.clipboard_get()
+			create_toast_popup("Pasted lobby id", false, "Pasted")
+			
 
 func create_toast_popup(message: String, is_error: bool = false, title: String = "") -> void:
 	EventBus.ui.toast_popup_requested.emit(message, is_error, title)
