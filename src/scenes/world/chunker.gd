@@ -16,30 +16,15 @@ var chunk_cache: Dictionary = {}
 var world_area: Rect2 = Rect2(Vector2i(-16, -16), Vector2i(32, 32))
 
 @onready var editor_spawned_items: Node3D = %EditorSpawnedItems
-@onready var item_spawner: MultiplayerSpawner = %ItemSpawner
 
 
 @export var regions_container: Node3D
 
 
-## TODO
-## Don't need to init chunks ( change their names cause it's been done in blender )
-## Calculate world size somehow idk how maybe don't even need that
-## No need to get and store chunk nodes just coordinates
-## Store loaded regions each one will load the file from which you would get the chunk data with
-## chunk coordinates as keys
-
-
-## NOTE
-## I think I don't need to do much with item spawning
-## I have ItemSpawner that will replicate, so all I have to do is load the region on host and
-## spawn the items -> they will be replicated to clients. The only thing is the host will have
-## every active region loaded but it's fine i think
-
 
 func _ready() -> void:
 	Globals.chunker = self
-	SteamManager.peer_disconnected.connect(_on_peer_disconnected)
+	NetworkManager.peer_disconnected.connect(_on_peer_disconnected)
 
 
 func get_chunk_name_from_pos(pos: Vector3) -> String:
@@ -357,7 +342,7 @@ func get_current_region() -> Vector2i:
 
 
 
-func _on_peer_disconnected(peer_id: int) -> void:
+func _on_peer_disconnected(peer_id: int, _steam_id: int) -> void:
 	print("peer disconnected ", peer_id)
 	for c: Vector2i in loaded_chunks.keys():
 		if loaded_chunks[c].chunk_viewers.has(peer_id):

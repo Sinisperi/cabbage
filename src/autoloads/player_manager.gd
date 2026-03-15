@@ -3,9 +3,9 @@ extends Node
 
 ## FRICKING REDOING EVERYTHING FFS
 # { username: {ref: Player, player_data: PlayerData} }
-var active_players: Dictionary[String, Dictionary] = {}
-# { peer_id: username }
-var active_peers: Dictionary[int, String] = {}
+var active_players: Dictionary[int, Dictionary] = {}
+# { peer_id: steam_id }
+var active_peers: Dictionary[int, int] = {}
 
 #var debug_save_dir: String = "res://saves/player_data/"
 #var SAVE_DIR: String = debug_save_dir
@@ -15,9 +15,13 @@ var SAVE_DIR: String = "player_data/"
 func _ready() -> void:
 	pass
 
-func register_player(peer_id: int, steam_username: String) -> void:
+func register_player(peer_id: int, steam_id: int) -> void:
 	if !active_peers.has(peer_id):
-		active_peers[peer_id] = steam_username
+		if peer_id <= 1:
+			steam_id = 0
+		active_peers[peer_id] = steam_id
+
+
 
 
 func set_player_data_for_peer(peer_id: int, player_data: Dictionary, display_name: String) -> void:
@@ -42,27 +46,11 @@ func save_active_players() -> void:
 		save_player_data(i)
 
 
-func player_has_save(username: String) -> bool:
-	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + username + ".json"
+func player_has_save(steam_id: int) -> bool:
+	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + str(steam_id) + ".json"
 	return FileAccess.file_exists(file_name)
 
-#func add_player(peer_id: int, username: String) -> void:
-	#print("attempting to add new player: ", username)
-	#if !active_peers.has(peer_id):
-		#active_peers[peer_id] = username
-		#var player_save_data: Dictionary = load_player_data(peer_id)
-		#if player_save_data.is_empty():
-			#var new_player_data: PlayerData = PlayerData.new()
-			#new_player_data.username = username
-			#active_players[username] = {
-				#"player_data": new_player_data,
-				#"ref": null
-			#}
-		#else:
-			#active_players[username] = player_save_data
-		#print("added new player ", peer_id, username)
-		#return
-	#print("player ", username, " already exists")
+
 
 func get_player_data(peer_id: int) -> PlayerData:
 	if active_peers.has(peer_id):
@@ -75,7 +63,7 @@ func get_player_data(peer_id: int) -> PlayerData:
 
 
 func load_player_data(peer_id: int) -> Dictionary:
-	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + active_peers[peer_id] + ".json"
+	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + str(active_peers[peer_id]) + ".json"
 	if !FileAccess.file_exists(file_name):
 		return {}
 	var json: JSON = JSON.new()
@@ -85,8 +73,14 @@ func load_player_data(peer_id: int) -> Dictionary:
 	return data
 
 func save_player_data(peer_id: int) -> void:
-	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + active_peers[peer_id] + ".json"
-	var player_position: Vector3 = get_player_pointer(peer_id).position
+	print("trying to save player data", active_players)
+	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + str(active_peers[peer_id]) + ".json"
+	var player_pointer: Player = get_player_pointer(peer_id)
+	if player_pointer == null:
+		printerr("Player pointer is null ", active_players)
+		return
+	var player_position: Vector3 = player_pointer.position
+	
 	var data_to_save: Dictionary = {
 		"player_data": get_player_data(peer_id).to_obj(),
 		"position": {
@@ -100,7 +94,7 @@ func save_player_data(peer_id: int) -> void:
 		DirAccess.make_dir_absolute(SaveDataManager.current_save_path + SAVE_DIR)
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.WRITE)
 	file.store_string(data_string)
-
+	file.close()
 
 func save_and_remove_player(peer_id: int) -> Player:
 	save_player_data(peer_id)
@@ -108,7 +102,7 @@ func save_and_remove_player(peer_id: int) -> Player:
 	return removed_player
 
 func get_player_pointer(peer_id: int) -> Player:
-	if active_peers[peer_id]:
+	if active_peers.has(peer_id):
 		return active_players[active_peers[peer_id]].ref
 	else:
 		return null

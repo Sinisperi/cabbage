@@ -4,13 +4,15 @@ class_name PlayerUI extends CanvasLayer
 @onready var hud: Control = %HUD
 @onready var debug_screen: DebugScreen = %DebugScreen
 @onready var character_creator_screen: Control = %CharacterCreatorScreen
+@onready var in_game_menu: Control = %InGameMenu
 
 enum {
 	NONE = 0,
 	HUD = 1,
 	INVENTORY = 1 << 1,
 	DEBUG_SCREEN = 1 << 2,
-	CHARACTER_CREATOR = 1 << 3
+	CHARACTER_CREATOR = 1 << 3,
+	IN_GAME_MENU = 1 << 4
 }
 
 var ui_state: int = HUD
@@ -18,28 +20,32 @@ var ui_state: int = HUD
 func _ready() -> void:
 	Globals.player_ui = self
 	EventBus.ui.character_cretion_finished.connect(_on_character_creation_finished)
+	in_game_menu.continue_button_pressed.connect(_on_in_game_menu_continue_button_pressed)
 	_update_ui()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_inventory"):
+		if _is_flag_set(IN_GAME_MENU): return
 		ui_state ^= INVENTORY
-		prints(String.num_int64(ui_state, 2), _is_flag_set(INVENTORY))
+		inventory.toggle_inventory(_is_flag_set(INVENTORY))
 		_update_ui()
 	if event.is_action_pressed("toggle_debug_screen"):
+		if _is_flag_set(IN_GAME_MENU): return
 		ui_state ^= DEBUG_SCREEN
 		_update_ui()
 		
 	if event is InputEventKey:
-		if event.keycode == KEY_F4 && event.is_pressed():
-			#PlayerManager.save_player_data(multiplayer.get_unique_id())
-			if multiplayer.is_server():
-				SaveDataManager.save_game()
-		#if event.keycode == KEY_F7 && event.is_pressed():
-			#ChunkLoader.defragment_region_files()
-			
+		if event.is_pressed():
+			if event.keycode == KEY_F4:
+				#PlayerManager.save_player_data(multiplayer.get_unique_id())
+				if multiplayer.is_server():
+					SaveDataManager.save_game()
+			if event.keycode == KEY_ESCAPE:
+				ui_state ^= IN_GAME_MENU
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if ui_state & (IN_GAME_MENU | INVENTORY) else Input.MOUSE_MODE_CAPTURED
+				EventBus.ui.mouse_mode_changed.emit(Input.mouse_mode)
+				_update_ui()
 
-#func _physics_process(_delta: float) -> void:
-	#_show_ui()
 
 
 func _update_ui() -> void:
@@ -48,7 +54,8 @@ func _update_ui() -> void:
 	character_creator_screen.visible = _is_flag_set(CHARACTER_CREATOR)
 	inventory.visible = !_is_flag_set(CHARACTER_CREATOR)
 	hud.visible = !_is_flag_set(CHARACTER_CREATOR)
-	inventory.toggle_inventory(_is_flag_set(INVENTORY))
+	hud.visible = !_is_flag_set(IN_GAME_MENU)
+	in_game_menu.visible = _is_flag_set(IN_GAME_MENU)
 
 
 func _is_flag_set(flag: int) -> bool:
@@ -66,3 +73,10 @@ func _on_character_creation_finished() -> void:
 	_update_ui()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	EventBus.ui.mouse_mode_changed.emit(Input.MOUSE_MODE_CAPTURED)
+
+
+func _on_in_game_menu_continue_button_pressed() -> void:
+	ui_state ^= IN_GAME_MENU
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if ui_state & (IN_GAME_MENU | INVENTORY) else Input.MOUSE_MODE_CAPTURED
+	EventBus.ui.mouse_mode_changed.emit(Input.mouse_mode)
+	_update_ui()

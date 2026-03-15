@@ -204,7 +204,7 @@ text = "Create Lobby"
 
 [node name="InviteSection" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/CreateLobbyContainer" unique_id=1506245302]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.36078432)
+modulate = Color(1, 1, 1, 0.33333334)
 layout_mode = 2
 theme_override_constants/separation = 2
 
@@ -244,12 +244,22 @@ stretch_mode = 0
 layout_mode = 2
 text = "or"
 
-[node name="SendInviteButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/CreateLobbyContainer/InviteSection" unique_id=324043327]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/CreateLobbyContainer/InviteSection" unique_id=694948411]
+layout_mode = 2
+
+[node name="SendInviteButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/CreateLobbyContainer/InviteSection/HBoxContainer" unique_id=324043327]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 disabled = true
 text = "Send Invite"
+
+[node name="CloseLobbyButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/CreateLobbyContainer/InviteSection/HBoxContainer" unique_id=1359794226]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(1, 0.13333334, 0.3372549, 1)
+text = "Close Lobby"
 
 [node name="JoinLobbyContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1562077206]
 unique_name_in_owner = true
@@ -278,9 +288,13 @@ drag_and_drop_selection_enabled = false
 virtual_keyboard_enabled = false
 secret = true
 
-[node name="JoinButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer" unique_id=1610236988]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer" unique_id=1169510527]
+layout_mode = 2
+
+[node name="JoinButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/HBoxContainer" unique_id=1610236988]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Join"
 
 [node name="GoBackButton" type="Button" parent="PanelContainer/MarginContainer" unique_id=1227659812]

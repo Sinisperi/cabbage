@@ -2,7 +2,7 @@ class_name World extends Node3D
 
 
 
-@onready var player_spawner: MultiplayerSpawner = %PlayerSpawner
+#@onready var player_spawner: MultiplayerSpawner = %PlayerSpawner
 
 
 ## 2 chunks render distance -> 1 we are currently in + 2 on each side and dioganally
@@ -16,25 +16,27 @@ class_name World extends Node3D
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	Globals.world = self
-	SteamManager.peer_disconnected.connect(_on_peer_disconnected)
+	
+	
+	NetworkManager.peer_disconnected.connect(_on_peer_disconnected)
 
-func _on_peer_disconnected(peer_id: int) -> void:
+func _on_peer_disconnected(peer_id: int, _player_id: int) -> void:
 	if multiplayer.is_server():
 		var player_to_remove: Player = PlayerManager.remove_player_peer(peer_id)
-		player_to_remove.queue_free()
+		if player_to_remove != null:
+			player_to_remove.call_deferred("queue_free")
 
 
 @rpc("any_peer", "call_local")
 func _request_player_spawn(display_name: String = "") -> void:
 	if multiplayer.is_server():
 		var peer_id: int = multiplayer.get_remote_sender_id()
-		var steam_username: String = SteamManager.get_peer_steam_username(peer_id)
-		PlayerManager.register_player(peer_id, steam_username)
+		var steam_id: int = NetworkManager.get_player_id(peer_id)
+		PlayerManager.register_player(peer_id, steam_id)
 		
 		
 		
 		var save_data: Dictionary = PlayerManager.load_player_data(peer_id)
-		
 		
 		PlayerManager.set_player_data_for_peer(peer_id, save_data.get("player_data", {}), display_name)
 		Globals.inventory.inventory_grid.place_items_request.rpc(peer_id, Inventory.InventoryType.ITEM)
@@ -46,9 +48,9 @@ func _request_player_spawn(display_name: String = "") -> void:
 			"save_data": save_data
 		}
 		
-		player_spawner.spawn(data)
+		Globals.player_spawner.spawn(data)
 		
-		prints("spawning player", display_name, " aka ", steam_username, " ", peer_id)
+		prints("spawning player", display_name, " aka ", " ", peer_id)
 
 
 
