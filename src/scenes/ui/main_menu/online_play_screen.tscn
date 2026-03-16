@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cmuim4eplg8sr" path="res://src/scenes/ui/main_menu/online_play_screen.gd" id="1_tqunx"]
 [ext_resource type="Texture2D" uid="uid://c6qou7208pfam" path="res://assets/ui/CopyIcon.svg" id="2_lbi37"]
+[ext_resource type="PackedScene" uid="uid://dldtlg6ajejd6" path="res://src/scenes/ui/main_menu/sever_list_item.tscn" id="2_pnuhr"]
 [ext_resource type="Shader" uid="uid://caeiaja5j6pli" path="res://src/scenes/ui/main_menu/animated_gradient.gdshader" id="3_p7f3m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbi37"]
@@ -74,6 +75,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tqunx")
+server_list_item_scene = ExtResource("2_pnuhr")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=851565548]
 layout_mode = 1
@@ -365,10 +367,29 @@ theme_override_constants/separation = 16
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=582612526]
 layout_mode = 2
 
-[node name="JoinLocalGame" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=527252805]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=128127253]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="LocalServerList" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2/ScrollContainer" unique_id=307325102]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=838000285]
+layout_mode = 2
+
+[node name="JoinLocalGameButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=527252805]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Join Local Game"
+
+[node name="RefreshLocalServerListButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=23705575]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Refresh"
 
 [node name="GoBackButton" type="Button" parent="PanelContainer/MarginContainer" unique_id=1227659812]
 unique_name_in_owner = true

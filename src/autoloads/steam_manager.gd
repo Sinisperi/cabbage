@@ -18,7 +18,7 @@ func _ready() -> void:
 func enable_steam() -> Dictionary:
 	if is_steam_enabled:
 		return {"status": 0}
-	NetworkManager.peer = SteamMultiplayerPeer.new()
+	#NetworkManager.peer = SteamMultiplayerPeer.new()
 	var result: Dictionary = Steam.steamInitEx(480, true)
 	if result.status == 0:
 		is_steam_enabled = true
@@ -51,7 +51,7 @@ func join_lobby(lobby_id_string: String) -> Dictionary:
 	var lobby_id: int = int(lobby_id_string.strip_edges())
 	var result: Dictionary = await SteamManager.check_lobby_code(lobby_id)
 	if result.status == OK:
-		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
+		await NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
 		Steam.joinLobby(lobby_id)
 	return result
 
@@ -89,7 +89,7 @@ func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change
 func _on_invite_accepted(lobby_id: int, _steam_id: int) -> void:
 	invite_accepted.emit()
 	await EventBus.world.world_cleanup_finished
-	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
+	await NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
 	Steam.joinLobby(lobby_id)
 
 

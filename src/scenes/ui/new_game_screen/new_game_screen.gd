@@ -8,14 +8,13 @@ signal back_button_pressed
 func _ready() -> void:
 	continue_button.pressed.connect(_on_continue_button_pressed)
 	go_back_button.pressed.connect(_go_back_button_pressed)
-	
+
 
 func _on_continue_button_pressed() -> void:
 	if !multiplayer.is_server():
-		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL_HOST)
+		await NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL_HOST)
 	SaveDataManager.create_save_slot(world_name_line_edit.text)
 	load_world_with_character_creator.rpc()
-	
 
 
 func _go_back_button_pressed() -> void:
