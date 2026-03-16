@@ -3,6 +3,7 @@ signal lobby_created(response: int, lobby_id: int)
 signal user_joined(steam_id: int, username: String)
 signal user_left(steam_id: int, username: String)
 signal lobby_joined
+signal invite_accepted
 var current_lobby_id: int = -1
 var is_steam_enabled: bool = false
 
@@ -80,13 +81,14 @@ func _on_steam_lobby_chat_update(_lobby_id: int, changed_id: int, _making_change
 		user_joined.emit(changed_id, username)
 		EventBus.ui.toast_popup_requested.emit(username + " has joined!", false, "Rejoice!")
 
-		
 	elif chat_state == 2:
 		EventBus.ui.toast_popup_requested.emit(username + " has left!", false, "It's fine!")
 		user_left.emit(changed_id, username)
 
 
 func _on_invite_accepted(lobby_id: int, _steam_id: int) -> void:
+	invite_accepted.emit()
+	await EventBus.world.world_cleanup_finished
 	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.MULTIPLAYER_CLIENT)
 	Steam.joinLobby(lobby_id)
 
@@ -97,9 +99,10 @@ func create_friends_popup() -> void:
 
 func check_lobby_code(lobby_code: int) -> Dictionary:
 	var res := {"status": 0, "verbal": "ok"}
+	print(lobby_code, " lobby code")
 	if str(lobby_code).length() <= 15:
 		res.status = 1
-		res.verbal = "Join code is missing some stuff.."
+		res.verbal = "Join code looks a bit off"
 		return res
 	
 	Steam.requestLobbyData(lobby_code)
