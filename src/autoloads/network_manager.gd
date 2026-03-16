@@ -11,7 +11,8 @@ var ip: String = "127.0.0.1"
 
 enum ConnectionType
 {
-	LOCAL,
+	LOCAL_HOST,
+	LOCAL_CLIENT,
 	MULTIPLAYER_HOST,
 	MULTIPLAYER_CLIENT
 }
@@ -22,7 +23,8 @@ enum LobbyType
 	PRIVATE = Steam.LobbyType.LOBBY_TYPE_PRIVATE
 }
 
-var current_connection_type: ConnectionType = ConnectionType.LOCAL
+var current_connection_type: ConnectionType = ConnectionType.LOCAL_HOST
+
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
@@ -35,11 +37,19 @@ func _enable_local_host() -> void:
 	peer.create_server(port, 1)
 	multiplayer.set_multiplayer_peer(peer)
 
+
+func _create_local_client() -> void:
+	peer = ENetMultiplayerPeer.new()
+	peer.create_client(ip, port)
+	multiplayer.set_multiplayer_peer(peer)
+
+
 func _reset_peer() -> void:
 	if multiplayer.has_multiplayer_peer():
 		multiplayer.multiplayer_peer.close()
 	peer = null
 	multiplayer.set_multiplayer_peer(peer)
+
 
 func enable_multiplayer() -> Dictionary:
 	return SteamManager.enable_steam()
@@ -54,7 +64,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 
 func _on_server_disconnected() -> void:
-	switch_connection_type(ConnectionType.LOCAL)
+	switch_connection_type(ConnectionType.LOCAL_HOST)
 	host_disconnected.emit()
 
 
@@ -71,7 +81,9 @@ func switch_connection_type(connection_type: ConnectionType) -> void:
 	SteamManager.leave_lobby()
 	_reset_peer()
 	match connection_type:
-		ConnectionType.LOCAL:
+		ConnectionType.LOCAL_HOST:
+			_enable_local_host()
+		ConnectionType.LOCAL_CLIENT:
 			_enable_local_host()
 		ConnectionType.MULTIPLAYER_HOST:
 			enable_multiplayer()

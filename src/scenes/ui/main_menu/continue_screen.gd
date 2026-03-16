@@ -22,7 +22,7 @@ func _on_visibility_changed() -> void:
 	
 func _on_confirm_button_pressed() -> void:
 	if !multiplayer.is_server():
-		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
+		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL_HOST)
 	if current_selected_slot != null && current_selected_slot.save_name.length():
 		SaveDataManager.load_save_slot(current_selected_slot.save_name)
 		load_saves_or_character_creator_for_peers()

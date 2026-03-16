@@ -70,7 +70,7 @@ func _ready() -> void:
 func _on_visibility_changed() -> void:
 	await get_tree().process_frame
 	move_lines(CREATE)
-	if NetworkManager.current_connection_type == NetworkManager.ConnectionType.LOCAL:
+	if NetworkManager.current_connection_type == NetworkManager.ConnectionType.LOCAL_HOST:
 		disable_invite_section()
 		client_join_code_input.text = ""
 	
@@ -129,7 +129,7 @@ func disable_invite_section() -> void:
 
 func _on_create_lobby_button_pressed() -> void:
 	if is_local:
-		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
+		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL_HOST)
 	else:
 		var result: Dictionary = NetworkManager.enable_multiplayer()
 		if result.status == 0:
@@ -145,7 +145,7 @@ func _on_create_lobby_button_pressed() -> void:
 		
 
 func _on_close_lobby_button_pressed() -> void:
-	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
+	NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL_HOST)
 	create_toast_popup("Lobby was closed", false, "Closed!")
 	disable_invite_section()
 

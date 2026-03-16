@@ -99,7 +99,6 @@ func create_friends_popup() -> void:
 
 func check_lobby_code(lobby_code: int) -> Dictionary:
 	var res := {"status": 0, "verbal": "ok"}
-	print(lobby_code, " lobby code")
 	if str(lobby_code).length() <= 15:
 		res.status = 1
 		res.verbal = "Join code looks a bit off"

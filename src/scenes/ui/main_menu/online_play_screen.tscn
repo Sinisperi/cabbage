@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cmuim4eplg8sr" path="res://src/scenes/ui/main_menu/online_play_screen.gd" id="1_tqunx"]
 [ext_resource type="Texture2D" uid="uid://c6qou7208pfam" path="res://assets/ui/CopyIcon.svg" id="2_lbi37"]
+[ext_resource type="Shader" uid="uid://caeiaja5j6pli" path="res://src/scenes/ui/main_menu/animated_gradient.gdshader" id="3_p7f3m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbi37"]
 content_margin_left = 24.0
@@ -45,6 +46,25 @@ Button/styles/pressed = SubResource("StyleBoxFlat_p7f3m")
 [sub_resource type="ButtonGroup" id="ButtonGroup_tqunx"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_lbi37"]
+
+[sub_resource type="Gradient" id="Gradient_p7f3m"]
+colors = PackedColorArray(0.38556328, 0.5776331, 0.99999267, 1, 0.9490196, 0.9647059, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pnuhr"]
+frequency = 0.0013
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8ksod"]
+noise = SubResource("FastNoiseLite_pnuhr")
+color_ramp = SubResource("Gradient_p7f3m")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pnuhr"]
+shader = ExtResource("3_p7f3m")
+shader_parameter/noise = SubResource("NoiseTexture2D_8ksod")
+shader_parameter/speed = 0.10000000149012
+shader_parameter/direction = Vector2(0.38, 0.075)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ksod"]
 
 [node name="OnlinePlayScreen" type="Control" unique_id=1324643061]
 layout_mode = 3
@@ -111,6 +131,7 @@ alignment = 0
 
 [node name="CreateLobbyContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=424033014]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 59
@@ -263,23 +284,44 @@ text = "Close Lobby"
 
 [node name="JoinLobbyContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1562077206]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 19
+theme_override_constants/separation = 66
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer" unique_id=1418428723]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer" unique_id=671206611]
 layout_mode = 2
-size_flags_horizontal = 0
-theme_override_font_sizes/font_size = 36
-text = "Enter Join Code"
 
-[node name="ClientJoinCodeInput" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer" unique_id=2029946994]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer" unique_id=1667568806]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer/MarginContainer" unique_id=552387102]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer/MarginContainer/VBoxContainer3" unique_id=644249311]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_pnuhr")
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Remote Play"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer/MarginContainer/VBoxContainer3" unique_id=1699868929]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer/MarginContainer/VBoxContainer3/VBoxContainer" unique_id=1473263132]
+layout_mode = 2
+
+[node name="ClientJoinCodeInput" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer/MarginContainer/VBoxContainer3/VBoxContainer" unique_id=2029946994]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
+placeholder_text = "Click to paste the invite code"
 editable = false
 context_menu_enabled = false
 emoji_menu_enabled = false
@@ -288,14 +330,45 @@ drag_and_drop_selection_enabled = false
 virtual_keyboard_enabled = false
 secret = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer" unique_id=1169510527]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer/MarginContainer/VBoxContainer3/VBoxContainer" unique_id=1169510527]
 layout_mode = 2
 
-[node name="JoinButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/HBoxContainer" unique_id=1610236988]
+[node name="JoinButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer/MarginContainer/VBoxContainer3/VBoxContainer/HBoxContainer" unique_id=1610236988]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Join"
+text = "Join Lobby"
+
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer" unique_id=921507266]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_8ksod")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2" unique_id=1217177645]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer" unique_id=1281347138]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer" unique_id=1837943578]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Local Play"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer" unique_id=447890414]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=582612526]
+layout_mode = 2
+
+[node name="JoinLocalGame" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/JoinLobbyContainer/PanelContainer2/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=527252805]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Join Local Game"
 
 [node name="GoBackButton" type="Button" parent="PanelContainer/MarginContainer" unique_id=1227659812]
 unique_name_in_owner = true

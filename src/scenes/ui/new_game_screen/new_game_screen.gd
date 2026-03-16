@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _on_continue_button_pressed() -> void:
 	if !multiplayer.is_server():
-		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL)
+		NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL_HOST)
 	SaveDataManager.create_save_slot(world_name_line_edit.text)
 	load_world_with_character_creator.rpc()
 	
