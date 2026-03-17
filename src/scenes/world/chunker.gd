@@ -144,17 +144,20 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 	highlight_chunk(chunk, "LOADED", peer_id > 1)
 	if peer_id > 1:
 		## TODO send only removed editor spawned items
-		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk], chunk)
+		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk].chunk_data.removed_editor_entities, chunk)
 		
 
 @rpc("any_peer", "call_remote")
-func send_chunk_data_to_peer(chunk_data: Dictionary, chunk: Vector2i) -> void:
+func send_chunk_data_to_peer(removed_editor_entities: Array, chunk: Vector2i) -> void:
 	loaded_chunks[chunk] = {
 		"chunk_viewers": [],
 		"player_count": 1,
 		"life_time": CHUNK_LIFE_TIME,
 		"is_dirty": false,
-		"chunk_data": chunk_data.chunk_data
+		"chunk_data": {
+			"entities": {},
+			"removed_editor_entities": removed_editor_entities
+		}
 	}
 	highlight_chunk(chunk, "LOADED")
 	despawn_editor_spawned_items(chunk)
