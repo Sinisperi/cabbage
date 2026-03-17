@@ -29,8 +29,9 @@ func enable_steam() -> Dictionary:
 
 func create_host() -> void:
 	NetworkManager.peer = SteamMultiplayerPeer.new()
-	NetworkManager.peer.create_host()
+	(NetworkManager.peer as SteamMultiplayerPeer).create_host()
 	multiplayer.set_multiplayer_peer(NetworkManager.peer)
+	
 	
 func create_client() -> void:
 	NetworkManager.peer = SteamMultiplayerPeer.new()

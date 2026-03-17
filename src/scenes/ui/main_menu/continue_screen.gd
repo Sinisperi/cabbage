@@ -44,7 +44,7 @@ func load_world(has_save: bool) -> void:
 func load_saves_or_character_creator_for_peers() -> void:
 	for peer_id: int in multiplayer.get_peers():
 		if peer_id > 1:
-			var has_save: bool = PlayerManager.player_has_save(SteamManager.get_peer_steam_id(peer_id))
+			var has_save: bool = PlayerManager.player_has_save(NetworkManager.get_player_id(peer_id))
 			load_world.rpc_id(peer_id, has_save)
 
 

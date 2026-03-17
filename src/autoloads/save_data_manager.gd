@@ -1,10 +1,10 @@
 extends Node
 
-@onready var save_path_root: String = "res://saves/"
+var save_path_root: String = "res://saves/"
 var current_save_slot: String = ""
 var current_save_path: String:
 	get():
-		return save_path_root + current_save_slot
+		return save_path_root + current_save_slot + "/"
 
 func _ready() -> void:
 	if !DirAccess.dir_exists_absolute(save_path_root):
@@ -27,7 +27,7 @@ func list_save_slots() -> Array:
 
 
 func create_save_slot(save_name: String) -> void:
-	current_save_slot = save_name + "/"
+	current_save_slot = save_name
 	DirAccess.make_dir_absolute(save_path_root + save_name)
 
 
@@ -38,7 +38,7 @@ func save_game() -> void:
 	
 
 func load_save_slot(save_slot: String) -> void:
-	current_save_slot = save_slot + "/"
+	current_save_slot = save_slot
 
 
 func delete_save_slot(save_slot: String) -> void:

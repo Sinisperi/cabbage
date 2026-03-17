@@ -42,8 +42,7 @@ signal back_button_pressed
 
 var is_local: bool = false
 var lobby_type: NetworkManager.LobbyType = NetworkManager.LobbyType.FRIENDS_ONLY
-var tween: Tween = null
-
+var current_selected_local_server: ServerListItem
 enum {
 	CREATE,
 	JOIN
@@ -141,6 +140,7 @@ func disable_invite_section() -> void:
 func _on_create_lobby_button_pressed() -> void:
 	if is_local:
 		await NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL_HOST)
+		create_toast_popup("Server is running on port " + str(NetworkManager.port), false, "Done!")
 		NetworkManager.start_broadcast()
 	else:
 		var result: Dictionary = NetworkManager.enable_multiplayer()
@@ -211,7 +211,11 @@ func _on_client_join_code_input_gui_input(event: InputEvent) -> void:
 
 
 func _on_join_local_game_button_pressed() -> void:
+	if !current_selected_local_server: return
+	current_selected_local_server.unhighlight()
+	NetworkManager.set_local_client_port(current_selected_local_server.port)
 	await NetworkManager.switch_connection_type(NetworkManager.ConnectionType.LOCAL_CLIENT)
+	current_selected_local_server = null
 
 
 func create_toast_popup(message: String, is_error: bool = false, title: String = "") -> void:
@@ -229,17 +233,24 @@ func _refresh_local_server_list() -> void:
 		local_server_list.remove_child(i)
 		i.queue_free()
 	
-	var server_ports: Array[int] = await NetworkManager.get_local_servers()
+	var local_servers: Dictionary = await NetworkManager.get_local_servers()
 	
-	for i in server_ports:
+	for server_port: int in local_servers:
 		var server_list_item: ServerListItem = server_list_item_scene.instantiate()
-		server_list_item.server_name = "Local server " + str(i)
-		server_list_item.port = i
+		server_list_item.server_name = local_servers[server_port]
+		server_list_item.port = server_port
 		local_server_list.add_child(server_list_item)
+		server_list_item.selected.connect(_on_server_list_item_selected)
+		
 	
-	if server_ports.size():
+	if local_servers.size():
 		join_local_game_button.disabled = false
 	refresh_local_server_list_button.disabled = false
 		
 	
 	
+func _on_server_list_item_selected(server_list_item: ServerListItem) -> void:
+	if current_selected_local_server:
+		current_selected_local_server.unhighlight()
+	server_list_item.highlight()
+	current_selected_local_server = server_list_item

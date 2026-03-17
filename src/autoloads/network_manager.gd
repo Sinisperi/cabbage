@@ -4,10 +4,11 @@ signal peer_connected(peer_id: int, player_id: int)
 signal peer_disconnected(peer_id: int, player_id: int)
 signal host_disconnected
 signal connection_type_changed(connection_type: ConnectionType)
+signal local_host_created
 
 var peer: MultiplayerPeer = null
 var port: int = 3000
-
+var local_client_port: int = -1
 
 var broadcast_port: int = 7000
 var broadcast_interval: float = 0.3
@@ -47,25 +48,38 @@ func _enable_local_host() -> void:
 	if multiplayer.has_multiplayer_peer():
 		multiplayer.multiplayer_peer.close()
 	peer = ENetMultiplayerPeer.new()
-	peer.create_server(_find_available_port(), 1)
-	multiplayer.multiplayer_peer = peer
+	var response: Error = peer.create_server(_find_available_port(), 1)
+	if response == OK:
+		multiplayer.multiplayer_peer = peer
+		local_host_created.emit()
+	else:
+		print("Something went asdfa ")
+		
+		_reset_peer()
 	
 
 func _create_local_client() -> void:
+	print("local port ", local_client_port)
+	if local_client_port < 0: return
+	print("creating local client")
 	if multiplayer.has_multiplayer_peer():
-		print("peer has connections ")
 		multiplayer.multiplayer_peer.close()
 	peer = ENetMultiplayerPeer.new()
-	peer.create_client(ip, port)
-	multiplayer.multiplayer_peer = peer
-	port += 1
+	var response: Error = peer.create_client(ip, local_client_port)
+	if response == OK:
+		multiplayer.multiplayer_peer = peer
+		print("created local client")
+		
+	else:
+		_reset_peer()
+
 
 func _reset_peer() -> void:
 	if multiplayer.has_multiplayer_peer():
 		multiplayer.multiplayer_peer.close()
 	peer = null
 	multiplayer.multiplayer_peer = peer
-	
+
 
 func enable_multiplayer() -> Dictionary:
 	return SteamManager.enable_steam()
@@ -92,9 +106,8 @@ func get_player_id(peer_id: int) -> int:
 			return 69
 	else:
 		return 0
-		
-		
 
+## TODO add error as a return type to this and to every state switching thing here
 func switch_connection_type(connection_type: ConnectionType) -> void:
 	if connection_type == current_connection_type: return
 	SteamManager.leave_lobby()
@@ -112,6 +125,8 @@ func switch_connection_type(connection_type: ConnectionType) -> void:
 		ConnectionType.MULTIPLAYER_CLIENT:
 			enable_multiplayer()
 			SteamManager.create_client()
+		ConnectionType.NONE:
+			local_client_port = -1
 	
 	current_connection_type = connection_type
 	connection_type_changed.emit(current_connection_type)
@@ -130,7 +145,10 @@ func start_broadcast() -> void:
 func _send_broadcast_packet() -> void:
 	if since_last_broadcast >= broadcast_interval:
 		since_last_broadcast = 0.0
-		broadcast_peer.put_packet(JSON.stringify(port).to_utf8_buffer())
+		broadcast_peer.put_packet(JSON.stringify({
+			"port": port,
+			"server_name": SaveDataManager.current_save_slot if SaveDataManager.current_save_slot.length() else "Idle"
+		}).to_utf8_buffer())
 	since_last_broadcast += 0.01666666666
 
 
@@ -147,8 +165,8 @@ func _stop_broadcast() -> void:
 	is_broadcasting = false
 
 
-func get_local_servers() -> Array[int]:
-	var res: Array[int] = []
+func get_local_servers() -> Dictionary:
+	var res: Dictionary = {}
 	var listener: PacketPeerUDP = PacketPeerUDP.new()
 	var err: Error = listener.bind(broadcast_port)
 	if !err:
@@ -157,8 +175,7 @@ func get_local_servers() -> Array[int]:
 			while listener.get_available_packet_count() > 0:
 				var bytes: PackedByteArray = listener.get_packet()
 				var data: Variant = JSON.parse_string(bytes.get_string_from_utf8())
-				if !res.has(data):
-					res.push_back(data)
+				res[int(data.port)] = data.server_name
 			await get_tree().process_frame
 		listener.close()
 	return res
@@ -175,3 +192,6 @@ func _find_available_port() -> int:
 			break
 	return res
 		
+
+func set_local_client_port(value: int) -> void:
+	local_client_port = value
