@@ -10,6 +10,8 @@ class UISignals:
 	signal toast_popup_requested(message: String, is_error: bool, title: String)
 	signal character_cretion_finished
 	signal main_menu_requested
+	signal hide_in_game_ui
+	signal show_in_game_ui
 
 class InventorySignals:
 	var equipment: EquipmentSignals = EquipmentSignals.new()

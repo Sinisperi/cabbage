@@ -114,7 +114,7 @@ func get_loaded_chunks(delta: float) -> void:
 
 
 
-func _handle_player_exit(chunk: Vector2i, peer_id: int, bypass_cahce: bool = false) -> void:
+func _handle_player_exit(chunk: Vector2i, peer_id: int, bypass_cache: bool = false) -> void:
 	print("trying to move chunks to cache from peer ", peer_id)
 	if !loaded_chunks.has(chunk): return
 	loaded_chunks[chunk].chunk_viewers.erase(peer_id)
@@ -123,7 +123,9 @@ func _handle_player_exit(chunk: Vector2i, peer_id: int, bypass_cahce: bool = fal
 	highlight_chunk(chunk, "LOADED", loaded_chunks[chunk].player_count)
 	if loaded_chunks[chunk].player_count <= 0:
 		move_chunk_to_cache(chunk)
-
+	if bypass_cache:
+		ChunkLoader.save_chunk(chunk, loaded_chunks[chunk].chunk_data)
+		loaded_chunks[chunk].is_dirty = false
 
 
 @rpc("any_peer", "call_local")

@@ -41,6 +41,7 @@ func _ready() -> void:
 		Globals.player = self
 		camera_3d.make_current()
 		EventBus.ui.mouse_mode_changed.connect(_on_mouse_mode_changed)
+		Globals.screenshot_sub_viewport = %SubViewport
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:

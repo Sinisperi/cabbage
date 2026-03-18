@@ -6,15 +6,19 @@ signal delete_requested(slot: SaveSlot)
 @onready var last_played: Label = %LastPlayed
 @onready var save_slot_title: Label = %SaveSlotTitle
 @onready var delete_button: Button = %DeleteButton
+@onready var save_icon: TextureRect = %SaveIcon
+
 
 var save_name: String = ""
 var last_time_played: String = ""
 var tween: Tween = null
-
+var texture: Texture2D = null
 
 func _ready() -> void:
 	last_played.text = last_time_played
 	save_slot_title.text = save_name
+	save_icon.texture = texture
+	
 	gui_input.connect(_on_gui_input)
 	delete_button.pressed.connect(func() -> void: delete_requested.emit(self))
 

@@ -6,6 +6,7 @@ extends Control
 signal back_button_pressed
 var current_selected_slot: SaveSlot = null
 
+
 func _ready() -> void:
 	confirm_button.pressed.connect(_on_confirm_button_pressed)
 	go_back_button.pressed.connect(_go_back_button_pressed)
@@ -17,8 +18,7 @@ func _on_visibility_changed() -> void:
 	if current_selected_slot:
 		current_selected_slot.unhighlight()
 		current_selected_slot = null
-		if visible:
-			list_save_slots()
+	
 	
 func _on_confirm_button_pressed() -> void:
 	if NetworkManager.current_connection_type == NetworkManager.ConnectionType.NONE || !multiplayer.is_server():
@@ -41,6 +41,7 @@ func load_world(has_save: bool) -> void:
 	else:
 		EventBus.world.world_spawn_requested.emit(func(world: World) -> void: world._request_player_spawn.rpc_id(1))
 
+
 func load_saves_or_character_creator_for_peers() -> void:
 	for peer_id: int in multiplayer.get_peers():
 		if peer_id > 1:
@@ -58,6 +59,7 @@ func list_save_slots() -> void:
 		var save_slot: SaveSlot = save_slot_scene.instantiate()
 		save_slot.save_name = i.slot_name
 		save_slot.last_time_played = i.slot_meta.last_played
+		save_slot.texture = i.slot_icon
 		save_slot_list.add_child(save_slot)
 		save_slot.selected.connect(_on_save_slot_selected)
 		save_slot.delete_requested.connect(_on_save_slot_delete_requested)
@@ -75,3 +77,4 @@ func _on_save_slot_delete_requested(slot: SaveSlot) -> void:
 	SaveDataManager.delete_save_slot(slot.save_name)
 	save_slot_list.remove_child(slot)
 	slot.call_deferred("queue_free")
+	list_save_slots()

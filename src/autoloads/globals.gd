@@ -8,3 +8,4 @@ var player_ui: PlayerUI = null
 var player_spawner: PlayerSpawner = null
 var item_spawner: ItemSpawner = null
 var network_bridge: NetworkBridge = null
+var screenshot_sub_viewport: SubViewport = null

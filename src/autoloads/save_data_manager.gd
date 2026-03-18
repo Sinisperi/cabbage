@@ -18,9 +18,13 @@ func save_slot_exists(save_name: String) -> bool:
 func list_save_slots() -> Array:
 	var res: Array[Dictionary] = []
 	for i in DirAccess.get_directories_at(save_path_root):
+		var slot_icon: Texture2D = null
+		if FileAccess.file_exists(save_path_root + i + "/" + i + ".jpg"):
+			slot_icon = load(save_path_root + i + "/" + i + ".jpg")
 		var save_slot_data: Dictionary = {
 			"slot_name": i,
-			"slot_meta": load_root_save_file(save_path_root + i + "/" + i + ".json")
+			"slot_meta": load_root_save_file(save_path_root + i + "/" + i + ".json"),
+			"slot_icon": slot_icon
 		}
 		res.push_back(save_slot_data)
 	return res
@@ -36,6 +40,7 @@ func save_game() -> void:
 	#PlayerManager.save_inactive_players()
 	ChunkLoader.save_world()
 	save_root_save_file()
+	await take_screenshot()
 	
 
 func load_save_slot(save_slot: String) -> void:
@@ -89,3 +94,11 @@ func load_root_save_file(path: String) -> Dictionary:
 	json.parse(file.get_line())
 	var data: Variant = json.data
 	return data
+
+
+func take_screenshot() -> void:
+	var file_name: String = current_save_path + current_save_slot.get_slice("/", 0) + ".jpg"
+	await RenderingServer.frame_post_draw
+	Globals.screenshot_sub_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	var image: Image = Globals.screenshot_sub_viewport.get_texture().get_image()
+	image.save_jpg(file_name, 0.5)

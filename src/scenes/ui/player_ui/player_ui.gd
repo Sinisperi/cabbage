@@ -19,6 +19,8 @@ var ui_state: int = HUD
 
 func _ready() -> void:
 	Globals.player_ui = self
+	EventBus.ui.hide_in_game_ui.connect(func() -> void: hide())
+	EventBus.ui.show_in_game_ui.connect(func() -> void: show())
 	EventBus.ui.character_cretion_finished.connect(_on_character_creation_finished)
 	in_game_menu.continue_button_pressed.connect(_on_in_game_menu_continue_button_pressed)
 	_update_ui()
@@ -37,9 +39,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.is_pressed():
 			if event.keycode == KEY_F4:
-				#PlayerManager.save_player_data(multiplayer.get_unique_id())
 				if multiplayer.is_server():
-					SaveDataManager.save_game()
+					await SaveDataManager.save_game()
 			if event.keycode == KEY_ESCAPE:
 				ui_state ^= IN_GAME_MENU
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if ui_state & (IN_GAME_MENU | INVENTORY) else Input.MOUSE_MODE_CAPTURED

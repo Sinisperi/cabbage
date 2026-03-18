@@ -133,7 +133,6 @@ alignment = 0
 
 [node name="CreateLobbyContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=424033014]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 59
@@ -286,6 +285,7 @@ text = "Close Lobby"
 
 [node name="JoinLobbyContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1562077206]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 66

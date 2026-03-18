@@ -19,7 +19,7 @@ func _on_continue_button_pressed() -> void:
 
 
 func _on_save_game_button_pressed() -> void:
-	SaveDataManager.save_game()
+	await SaveDataManager.save_game()
 
 
 func _on_quit_button_pressed() -> void:
