@@ -114,7 +114,7 @@ func get_loaded_chunks(delta: float) -> void:
 
 
 
-func _handle_player_exit(chunk: Vector2i, peer_id: int) -> void:
+func _handle_player_exit(chunk: Vector2i, peer_id: int, bypass_cahce: bool = false) -> void:
 	print("trying to move chunks to cache from peer ", peer_id)
 	if !loaded_chunks.has(chunk): return
 	loaded_chunks[chunk].chunk_viewers.erase(peer_id)
@@ -346,8 +346,7 @@ func get_current_region() -> Vector2i:
 
 
 func _on_peer_disconnected(peer_id: int, _steam_id: int) -> void:
-	print("peer disconnected ", peer_id)
+	print("Peer ", peer_id, " has disconnected. Attempting to save dirty chunks")
 	for c: Vector2i in loaded_chunks.keys():
 		if loaded_chunks[c].chunk_viewers.has(peer_id):
-			_handle_player_exit(c, peer_id)
-			
+			_handle_player_exit(c, peer_id, true)

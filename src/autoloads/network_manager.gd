@@ -152,9 +152,6 @@ func _send_broadcast_packet() -> void:
 	since_last_broadcast += 0.01666666666
 
 
-## NOTE QQQQQQQQQQQQQQ
-## HOOK UP THIS BREADCAST STUFF
-
 
 func _stop_broadcast() -> void:
 	if !is_broadcasting: return
@@ -190,6 +187,7 @@ func _find_available_port() -> int:
 		if response == OK:
 			temp_peer.close()
 			break
+	port = res
 	return res
 		
 

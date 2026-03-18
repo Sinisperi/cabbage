@@ -47,9 +47,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		rotation.y -= event.relative.x * 0.001
 		camera_3d.rotation.x -= event.relative.y * 0.001
 	if event is InputEventKey:
-		if event.keycode == KEY_F1 && event.is_pressed():
+		if event.keycode == KEY_F5 && event.is_pressed():
 			$DebugCamera.current = !$DebugCamera.current
-			
+	
+
+func _input(event: InputEvent) -> void:
+	
+	if event is InputEventMouseButton && event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			$DebugCamera.global_position += (global_position - $DebugCamera.global_position).normalized() * 0.1
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			$DebugCamera.global_position -= (global_position - $DebugCamera.global_position).normalized() * 0.1
 			## HAHAHAHAHA CANNOT SAVE WHILE IN INVENTORY BECAUSE PROCESS_INPUT IS FALSE LUL LUL LUL
 
 

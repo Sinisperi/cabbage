@@ -45,6 +45,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if ui_state & (IN_GAME_MENU | INVENTORY) else Input.MOUSE_MODE_CAPTURED
 				EventBus.ui.mouse_mode_changed.emit(Input.mouse_mode)
 				_update_ui()
+			if event.keycode == KEY_F1:
+				inventory.visible = !inventory.visible
+				hud.visible = !hud.visible
 
 
 

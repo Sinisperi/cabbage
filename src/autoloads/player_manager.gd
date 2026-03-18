@@ -2,7 +2,8 @@ extends Node
 
 
 ## FRICKING REDOING EVERYTHING FFS
-# { username: {ref: Player, player_data: PlayerData} }
+#var inactive_unsaved_players: Dictionary[int, Dictionary] = {}
+# { steam_id: {ref: Player, player_data: PlayerData} }
 var active_players: Dictionary[int, Dictionary] = {}
 # { peer_id: steam_id }
 var active_peers: Dictionary[int, int] = {}
@@ -12,16 +13,12 @@ var active_peers: Dictionary[int, int] = {}
 var SAVE_DIR: String = "player_data/"
 ## TODO Load player save data in here
 
-func _ready() -> void:
-	pass
 
 func register_player(peer_id: int, steam_id: int) -> void:
 	if !active_peers.has(peer_id):
 		if peer_id <= 1:
 			steam_id = 0
 		active_peers[peer_id] = steam_id
-
-
 
 
 func set_player_data_for_peer(peer_id: int, player_data: Dictionary, display_name: String) -> void:
@@ -41,9 +38,16 @@ func set_player_pointer_for_peer(peer_id: int, ptr: Player) -> void:
 	else:
 		printerr("Trying to assign player pointer to a peer ", peer_id, " but it's not in active_players!")
 
+
 func save_active_players() -> void:
 	for i in active_peers:
 		save_player_data(i)
+
+
+func save_inactive_players() -> void:
+	#for i in active_peers.keys():
+		#save_player_data(i)
+	return
 
 
 func player_has_save(steam_id: int) -> bool:
@@ -51,15 +55,11 @@ func player_has_save(steam_id: int) -> bool:
 	return FileAccess.file_exists(file_name)
 
 
-
 func get_player_data(peer_id: int) -> PlayerData:
 	if active_peers.has(peer_id):
 		if active_players.has(active_peers[peer_id]):
 			return active_players[active_peers[peer_id]].player_data
 	return null
-
-## TODO
-
 
 
 func load_player_data(peer_id: int) -> Dictionary:
@@ -71,6 +71,7 @@ func load_player_data(peer_id: int) -> Dictionary:
 	json.parse(file.get_line())
 	var data: Variant = json.data
 	return data
+
 
 func save_player_data(peer_id: int) -> void:
 	print("trying to save player data", active_players)
@@ -96,16 +97,19 @@ func save_player_data(peer_id: int) -> void:
 	file.store_string(data_string)
 	file.close()
 
-func save_and_remove_player(peer_id: int) -> Player:
-	save_player_data(peer_id)
-	var removed_player: Player = remove_player_peer(peer_id)
-	return removed_player
+
+func mark_player_inactive(peer_id: int) -> Player:
+	#inactive_unsaved_players[active_peers[peer_id]] = active_players[active_peers[peer_id]]
+	var removed_player_ptr: Player = remove_player_peer(peer_id)
+	return removed_player_ptr
+
 
 func get_player_pointer(peer_id: int) -> Player:
 	if active_peers.has(peer_id):
 		return active_players[active_peers[peer_id]].ref
 	else:
 		return null
+
 
 func remove_player_peer(peer_id: int) -> Player:
 	var removed_player: Player = null

@@ -33,6 +33,7 @@ func create_save_slot(save_name: String) -> void:
 
 func save_game() -> void:
 	PlayerManager.save_active_players()
+	#PlayerManager.save_inactive_players()
 	ChunkLoader.save_world()
 	save_root_save_file()
 	
