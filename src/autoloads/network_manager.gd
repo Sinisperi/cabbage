@@ -1,13 +1,15 @@
 extends Node
 
+const INTERNAL_HOST_PORT: int = 3000
 signal peer_connected(peer_id: int, player_id: int)
 signal peer_disconnected(peer_id: int, player_id: int)
 signal host_disconnected
 signal connection_type_changed(connection_type: ConnectionType)
 signal local_host_created
+signal connected_to_server
 
 var peer: MultiplayerPeer = null
-var port: int = 3000
+var port: int = INTERNAL_HOST_PORT
 var local_client_port: int = -1
 
 var broadcast_port: int = 7000
@@ -42,9 +44,9 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	multiplayer.connected_to_server.connect(_on_connected_to_server)
 
-
-func _enable_local_host() -> void:
+func _enable_local_host() -> Error:
 	if multiplayer.has_multiplayer_peer():
 		multiplayer.multiplayer_peer.close()
 	peer = ENetMultiplayerPeer.new()
@@ -56,11 +58,12 @@ func _enable_local_host() -> void:
 		print("Something went asdfa ")
 		
 		_reset_peer()
+	return response
 	
 
-func _create_local_client() -> void:
+func _create_local_client() -> Error:
 	print("local port ", local_client_port)
-	if local_client_port < 0: return
+	if local_client_port < 0: return ERR_CANT_CREATE
 	print("creating local client")
 	if multiplayer.has_multiplayer_peer():
 		multiplayer.multiplayer_peer.close()
@@ -72,6 +75,7 @@ func _create_local_client() -> void:
 		
 	else:
 		_reset_peer()
+	return response
 
 
 func _reset_peer() -> void:
@@ -79,6 +83,7 @@ func _reset_peer() -> void:
 		multiplayer.multiplayer_peer.close()
 	peer = null
 	multiplayer.multiplayer_peer = peer
+	port = INTERNAL_HOST_PORT
 
 
 func enable_multiplayer() -> Dictionary:
@@ -108,20 +113,21 @@ func get_player_id(peer_id: int) -> int:
 		return 0
 
 ## TODO add error as a return type to this and to every state switching thing here
-func switch_connection_type(connection_type: ConnectionType) -> void:
-	if connection_type == current_connection_type: return
+func switch_connection_type(connection_type: ConnectionType) -> Error:
+	var error: Error = OK
+	if connection_type == current_connection_type: return error
 	SteamManager.leave_lobby()
 	_reset_peer()
 	_stop_broadcast()
 	await get_tree().process_frame
 	match connection_type:
 		ConnectionType.LOCAL_HOST:
-			_enable_local_host()
+			error = _enable_local_host()
 		ConnectionType.LOCAL_CLIENT:
-			_create_local_client()
+			error = _create_local_client()
 		ConnectionType.MULTIPLAYER_HOST:
 			enable_multiplayer()
-			SteamManager.create_host()
+			error = SteamManager.create_host()
 		ConnectionType.MULTIPLAYER_CLIENT:
 			enable_multiplayer()
 			SteamManager.create_client()
@@ -130,7 +136,7 @@ func switch_connection_type(connection_type: ConnectionType) -> void:
 	
 	current_connection_type = connection_type
 	connection_type_changed.emit(current_connection_type)
-
+	return error
 
 func start_broadcast() -> void:
 	if is_broadcasting: return
@@ -176,7 +182,7 @@ func get_local_servers() -> Dictionary:
 			await get_tree().process_frame
 		listener.close()
 	return res
-	
+
 
 func _find_available_port() -> int:
 	var res: int = port
@@ -189,7 +195,14 @@ func _find_available_port() -> int:
 			break
 	port = res
 	return res
-		
+
 
 func set_local_client_port(value: int) -> void:
 	local_client_port = value
+
+
+
+
+
+func _on_connected_to_server() -> void:
+	connected_to_server.emit()

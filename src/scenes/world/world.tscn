@@ -10,7 +10,6 @@
 [ext_resource type="Resource" uid="uid://bne3olsqtxt8f" path="res://src/resources/items/test_items/test_mushroom.tres" id="9_qfn71"]
 [ext_resource type="Resource" uid="uid://c6lsarr12tfio" path="res://src/resources/items/test_items/weird_tool.tres" id="10_br3r2"]
 [ext_resource type="PackedScene" uid="uid://cbhuk0nrjipgu" path="res://src/scenes/world/regions/region_0_0.tscn" id="13_br3r2"]
-[ext_resource type="ArrayMesh" uid="uid://dsjhhm3re1w5v" path="res://assets/models/test/mushroom.tres" id="14_1sa8s"]
 [ext_resource type="PackedScene" uid="uid://c3352vimi4dnh" path="res://src/scenes/world/regions/region_0_-1.tscn" id="14_tthay"]
 [ext_resource type="PackedScene" uid="uid://c262qiejasah" path="res://src/scenes/world/regions/region_-1_0.tscn" id="15_gu5fw"]
 [ext_resource type="PackedScene" uid="uid://k17a7pt2fsea" path="res://src/scenes/world/regions/region_-1_-1.tscn" id="16_77q8y"]
@@ -31,9 +30,6 @@ glow_enabled = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iwh12"]
 albedo_texture = ExtResource("3_m1gqc")
 uv1_triplanar = true
-
-[sub_resource type="MultiMesh" id="MultiMesh_ma7xk"]
-transform_format = 1
 
 [node name="World" type="Node3D" unique_id=311237112]
 script = ExtResource("1_q3of6")
@@ -1261,10 +1257,3 @@ radius = 2.590357
 [node name="CSGSphere3D4" type="CSGSphere3D" parent="Tree14" unique_id=1190119154]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0394597, -0.14271164)
 radius = 2.590357
-
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="." unique_id=1472310869]
-multimesh = SubResource("MultiMesh_ma7xk")
-
-[node name="Mushroom" type="MeshInstance3D" parent="MultiMeshInstance3D" unique_id=849098075]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.425827, 0, 24.495598)
-mesh = ExtResource("14_1sa8s")

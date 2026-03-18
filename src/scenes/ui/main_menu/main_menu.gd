@@ -50,9 +50,9 @@ func _ready() -> void:
 	SteamManager.lobby_joined.connect(_on_lobby_joined)
 	NetworkManager.peer_connected.connect(_on_peer_connected)
 	NetworkManager.host_disconnected.connect(_on_host_disconnected)
-
-	#NetworkManager.peer_connected.connect(_on_peer_connected)
+	NetworkManager.connected_to_server.connect(_on_connected_to_server)
 	await show_active_users_avatars()
+
 
 func toggle_screen(screen_type: ScreenType) -> void:
 	ui_state ^= screen_type
@@ -65,18 +65,18 @@ func _update_ui() -> void:
 	online_play_screen.visible = ui_state & ScreenType.ONLINE_PLAY_SCREEN
 	continue_screen.visible = ui_state & ScreenType.CONTINUE_SCREEN
 
+
 func _on_continue_button_pressed() -> void:
 	toggle_screen(ScreenType.CONTINUE_SCREEN)
+
 
 func _on_online_play_button_pressed() -> void:
 	toggle_screen(ScreenType.ONLINE_PLAY_SCREEN)
 
 
-
 ## Pessed by a host or a singleplayer
 func _on_new_game_button_pressed() -> void:
 	toggle_screen(ScreenType.NEW_GAME_SCREEN)
-
 
 
 func _on_quit_button_pressed() -> void:
@@ -107,9 +107,9 @@ func create_toast_popup(text: String, is_error: bool = false, title: String = ""
 	tween.tween_property(toast_popup, "position:y", original_pos, 0.2)
 
 
-
 func _on_user_joined(user_id: int, _username: String) -> void:
 	create_lobby_avatar(await SteamManager.get_avatar_image(user_id), user_id)
+	
 	
 func _on_user_left(user_id: int, _username: String) -> void:
 	var avatar_to_remove: TextureRect = null
@@ -133,10 +133,8 @@ func create_lobby_avatar(image: ImageTexture, user_id: int) -> void:
 	lobby_avatars.add_child(avatar)
 
 
-
 func _on_lobby_created(_response: int, _lobby_id: int) -> void:
 	create_lobby_avatar(await SteamManager.get_avatar_image(Steam.getSteamID()), Steam.getSteamID())
-
 
 
 func _on_lobby_joined() -> void:
@@ -154,7 +152,6 @@ func show_active_users_avatars() -> void:
 		create_lobby_avatar(await SteamManager.get_avatar_image(u.steam_id), u.steam_id)
 
 
-
 func _on_peer_connected(peer_id: int, steam_id: int) -> void:
 	print("peer_connected and it feels like they have to join")
 	if multiplayer.is_server():
@@ -162,15 +159,17 @@ func _on_peer_connected(peer_id: int, steam_id: int) -> void:
 			load_world.rpc_id(peer_id, PlayerManager.player_has_save(steam_id))
 
 
+func _on_connected_to_server() -> void:
+	create_toast_popup("Connected to local server on port " + str(NetworkManager.local_client_port) + " !!1")
+
+
 @rpc("any_peer", "call_remote")
 func load_world(has_save: bool) -> void:
 	if !has_save:
-		#SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(_world: World) -> void: Globals.player_ui.show_character_creator(), false)
 		EventBus.world.world_spawn_requested.emit(func(_world: World) -> void: Globals.player_ui.show_character_creator())
 	else:
-		#SceneLoader.load_scene_with_callback(SceneLoader.Scene.WORLD_SCENE, func(world: World) -> void: world._request_player_spawn.rpc_id(1))
 		EventBus.world.world_spawn_requested.emit(func(world: World) -> void: world._request_player_spawn.rpc_id(1))
-		
+
 
 func _on_main_menu_requested() -> void:
 	await show_active_users_avatars()
@@ -183,31 +182,3 @@ func _on_main_menu_requested() -> void:
 
 func _on_host_disconnected() -> void:
 	await show_active_users_avatars()
-
-## TODO Instead of loading the world, check if player has a save here
-## if they do, load the world and spawn the player with data,
-## otherwise, switch to character creator
-
-#func _on_peer_connected(_peer_id: int) -> void:
-	#call_deferred("_load_world")
-#
-#
-#func _load_world() -> void:
-	#SceneLoader.load_scene(
-		#SceneLoader.Scene.WORLD_SCENE, 
-		#func(world: World) -> void: 
-			#world._request_player_spawn.rpc_id(1, str(Time.get_datetime_string_from_system())))
-			
-			
-			
-			
-			
-	## NEED TO SOMEHOW MAKE IT SO IT aCTUALLY STARSTS A NEW GAME AND NOT LOADING
-	#_load_world()
-	#new_game_screen.visible = true
-## Pressed by a client
-#func _on_join_button_pressed() -> void:
-	#NetworkManager.enable_multiplayer(true)
-	#var status: Error = NetworkManager.join_game()
-	#if status != OK:
-		#print("Joining game failed with status: ", status)
