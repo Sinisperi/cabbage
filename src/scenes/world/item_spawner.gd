@@ -17,7 +17,6 @@ func _ready() -> void:
 
 @rpc("any_peer", "call_local")
 func _on_item_dropped(item: Variant) -> void:	
-
 	if multiplayer.is_server():
 		spawn(item)
 

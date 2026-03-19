@@ -3,7 +3,7 @@ extends Node
 const CHUNK_COLUMNS: int = 16
 const CHUNKS_PER_REGION: int = CHUNK_COLUMNS * CHUNK_COLUMNS
 
-const HEADER_SIZE: int = CHUNKS_PER_REGION * 8
+const HEADER_SIZE: int = CHUNKS_PER_REGION * 8 # 8 bytes -> 64 bits -> size of a pointer
 const SAVE_DIR: String = "regions/"
 
 
@@ -98,6 +98,7 @@ func _defragment_region_file(file_name: String) -> void:
 func get_chunk_index(chunk_coords: Vector2i) -> int:
 	var column: int = posmod(chunk_coords.x, CHUNK_COLUMNS)
 	var row: int = posmod(chunk_coords.y, CHUNK_COLUMNS)
+	# column + row * CHUNK_COLUMNS for readability
 	return (column * CHUNK_COLUMNS) + row
 
 func get_region_file_path(chunk_coords: Vector2i) -> String:
