@@ -99,10 +99,7 @@ func get_loaded_chunks(delta: float) -> void:
 						request_chunk_data.rpc_id(1, i.x, i.y)
 				else:
 					request_chunk_data.rpc_id(1, i.x, i.y)
-				
-					#if multiplayer.is_server():
-						#spawn_player_spawned_items(i)
-						#despawn_editor_spawned_items(i)
+
 				
 			
 	update_regions(active_region_ids)
@@ -121,11 +118,14 @@ func _handle_player_exit(chunk: Vector2i, peer_id: int, bypass_cache: bool = fal
 	loaded_chunks[chunk].player_count -= 1
 	print(loaded_chunks[chunk].player_count, " player count")
 	highlight_chunk(chunk, "LOADED", loaded_chunks[chunk].player_count)
-	if loaded_chunks[chunk].player_count <= 0:
-		move_chunk_to_cache(chunk)
+	
 	if bypass_cache:
 		ChunkLoader.save_chunk(chunk, loaded_chunks[chunk].chunk_data)
 		loaded_chunks[chunk].is_dirty = false
+		return
+		
+	if loaded_chunks[chunk].player_count <= 0:
+		move_chunk_to_cache(chunk)
 
 
 @rpc("any_peer", "call_local")
@@ -351,4 +351,5 @@ func _on_peer_disconnected(peer_id: int, _steam_id: int) -> void:
 	print("Peer ", peer_id, " has disconnected. Attempting to save dirty chunks")
 	for c: Vector2i in loaded_chunks.keys():
 		if loaded_chunks[c].chunk_viewers.has(peer_id):
-			_handle_player_exit(c, peer_id, true)
+			if loaded_chunks[c].is_dirty:
+				_handle_player_exit(c, peer_id, true)

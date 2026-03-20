@@ -3,7 +3,9 @@ extends Node
 var items: Dictionary = {}
 const ITEMS_PATH = "res://src/resources/items/"
 
+
 func _ready() -> void:
+	
 	_load_items(ITEMS_PATH)
 
 
