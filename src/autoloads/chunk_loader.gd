@@ -1,5 +1,7 @@
 extends Node
 
+const CHUNK_SIZE: int = 128 # right now it's 64 actually
+
 const CHUNK_COLUMNS: int = 16
 const CHUNKS_PER_REGION: int = CHUNK_COLUMNS * CHUNK_COLUMNS
 
@@ -37,8 +39,8 @@ func save_chunk(chunk_coords: Vector2i, chunk_data: Dictionary) -> void:
 ## TODO pack everything into bytes instead of dealing with dicts
 #func pack_chunk_data(chunk_data: Dictionary) -> PackedByteArray:
 	#var buffer: StreamPeerBuffer = StreamPeerBuffer.new()
-	#
-	#pass
+	#buffer.put_8(3)
+	#return buffer.data_array
 
 func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 	var region_file_path: String = get_region_file_path(chunk_coords)
@@ -64,6 +66,7 @@ func defragment_region_files() -> void:
 	for i: String in files:
 		_defragment_region_file(i)
 	print(files)
+
 
 func _defragment_region_file(file_name: String) -> void:
 	var file_path: String = SaveDataManager.current_save_path + SAVE_DIR + file_name
