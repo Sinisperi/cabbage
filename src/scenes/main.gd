@@ -3,63 +3,11 @@ extends Node
 @export var world_scene: PackedScene
 
 
-var counter: int = 0
-var mutex: Mutex = null
-var thread: Thread = null
-
-
-
-
-func test_threading() -> void:
-	mutex = Mutex.new()
-	thread = Thread.new()
-	thread.start(increment)
-	
-	mutex.lock()
-	counter += 1
-	mutex.unlock()
-	
-	var result: Variant = thread.wait_to_finish()
-	print(counter, " couter", result, " result")
-	
-	
-func increment() -> int:
-	mutex.lock()
-	print(counter, " counter in increment")
-	var i: int = 1000000
-	while i > 0:
-		counter += 1
-		i -= 1
-	mutex.unlock()
-	return 69 + counter
-
-
-
-
-
-
-
-
-
 func _ready() -> void:
 	EventBus.world.world_spawn_requested.connect(spawn_world)
 	NetworkManager.host_disconnected.connect(_on_host_disconnected)
 	SteamManager.invite_accepted.connect(_on_invite_accepted)
-	test_threading()
-	counter = 0
-	test_threading()
-	counter = 0
-	
-	test_threading()
-	counter = 0
-	
-	test_threading()
-	counter = 0
-	
-	test_threading()
-	counter = 0
-	
-	test_threading()
+
 
 func spawn_world(callback: Callable = Callable()) -> void:
 	if world_container.get_child_count() == 0:
