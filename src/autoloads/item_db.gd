@@ -2,6 +2,7 @@ extends Node
 
 const ITEMS_PATH = "res://src/resources/items/"
 const WORLD_DICT_FILE_NAME = "world_dict.dat"
+const ITEMS_MANIFEST_FILE = "items.manifest"
 
 var items: Dictionary = {}
 var _name_to_path: Dictionary = {}
@@ -12,8 +13,8 @@ var _next_item_id: int = 0
 
 
 func load_world_dict() -> void:
-	_id_to_name.clear()
-	_name_to_id.clear()
+	#_id_to_name.clear()
+	#_name_to_id.clear()
 
 	var file_path: String = SaveDataManager.current_save_path + WORLD_DICT_FILE_NAME
 	if !FileAccess.file_exists(file_path):
@@ -52,6 +53,8 @@ func name_from_id(id: int) -> String:
 
 
 func id_from_name(item_name: String) -> int:
+	if !item_name.length():
+		print("item with no name")
 	if !_name_to_id.has(item_name):
 		_is_dirty = true
 		var id: int = _next_item_id
@@ -76,27 +79,20 @@ func item_from_id(id: int) -> ItemData:
 	return item_data
 
 
-func _load_item_paths(base_path: String, relative_path: String = "") -> void:
-	var current_folder: String = base_path.path_join(relative_path)
-	var dir: DirAccess = DirAccess.open(current_folder)
-	if dir:
-		dir.list_dir_begin()
-		var file_name: String = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir():
-				_load_item_paths(base_path, relative_path.path_join(file_name))
-			elif file_name.ends_with(".tres"):
-				_name_to_path[file_name.get_basename()] = relative_path.path_join(file_name)
-			file_name = dir.get_next()
-
+func _load_item_paths() -> void:
+	var file_name: String = ITEMS_PATH.path_join(ITEMS_MANIFEST_FILE)
+	var file: FileAccess = FileAccess.open(file_name, FileAccess.READ)
+	if file:
+		var data: Variant = file.get_var()
+		print(data)
 	else:
-		printerr("No such directory ", current_folder)
+		printerr("Unable to load manifest file ", file_name)
 
 
 # OLD WAY
 func _ready() -> void:
 	_load_items(ITEMS_PATH)
-	_load_item_paths(ITEMS_PATH)
+	_load_item_paths()
 	load_world_dict()
 
 
