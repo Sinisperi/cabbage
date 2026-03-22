@@ -47,7 +47,7 @@ func save_world_dict() -> void:
 
 func name_from_id(id: int) -> String:
 	if !_id_to_name.has(id):
-		return "Unknown Item"
+		return "unknown_item"
 	return _id_to_name[id]
 
 
@@ -62,9 +62,18 @@ func id_from_name(item_name: String) -> int:
 	return _name_to_id[item_name]
 
 
-# OLD WAY
-func _ready() -> void:
-	_load_items(ITEMS_PATH)
+func item_from_id(id: int) -> ItemData:
+	var item_data: ItemData = null
+	var item_name: String = name_from_id(id)
+
+	if item_name == "unknown_item":
+		return item_data
+
+	if _name_to_path.has(item_name):
+		var resource_path: String = ITEMS_PATH.path_join(_name_to_path[item_name])
+		item_data = load(resource_path)
+
+	return item_data
 
 
 func _load_item_paths(base_path: String, relative_path: String = "") -> void:
@@ -82,6 +91,13 @@ func _load_item_paths(base_path: String, relative_path: String = "") -> void:
 
 	else:
 		printerr("No such directory ", current_folder)
+
+
+# OLD WAY
+func _ready() -> void:
+	_load_items(ITEMS_PATH)
+	_load_item_paths(ITEMS_PATH)
+	load_world_dict()
 
 
 func _load_items(path: String) -> void:

@@ -10,14 +10,15 @@ var data_array: PackedByteArray:
 var coord_precision_factor: float = 100.0
 # maximum negative y coordinate. we are turning negative y into positive to prevent from
 # wasting one bit in the coord int for the sign
-var y_offset: int = 5000
+var y_offset: float = 5000.0
 
-enum Type { S8, S16, S32, S64, U8, U16, U32, U64, COORD }
+enum Type { S8, S16, S32, S64, U8, U16, U32, U64, COORD, STRING }
 
 # TODO think about how to do this with nested inventories
 
 # schema should be like this
 #var schema: Dictionary = {
+#"id": 3234,
 #"position": Type.COORD,
 #"something_else": Type.S8,
 #"inventory": [Schema]
@@ -54,6 +55,8 @@ func _to_buffer(data: Dictionary, schema: Dictionary) -> void:
 				_buffer.put_u32(data[key])
 			Type.U64:
 				_buffer.put_u64(data[key])
+			Type.STRING:
+				_buffer.put_string(data[key])
 			Type.COORD:
 				var coord: int = 0
 				var x: int = int(data[key].x * coord_precision_factor) & 0xFFFFF  # first 20 bits
@@ -65,8 +68,12 @@ func _to_buffer(data: Dictionary, schema: Dictionary) -> void:
 			_:
 				if schema[key] is Array:
 					_buffer.put_8(data[key].size())
-					for i: Schema in data[key]:
-						_buffer.put_data(i.data_array)
+					var array_item_schema: Dictionary = schema[key][0]
+					for i: Dictionary in data[key]:
+						_to_buffer(i, array_item_schema)
+
+				elif schema[key] is Dictionary:
+					_to_buffer(data[key], schema[key])
 
 
 ## Static function.
@@ -76,41 +83,57 @@ func _to_buffer(data: Dictionary, schema: Dictionary) -> void:
 ## then, if schema's key is an array, i will get the first byte of that and repeat the process
 
 
-func from_bytes(bytes: PackedByteArray) -> Resource:
-	var res: Resource = null
-	var buffer: StreamPeerBuffer = StreamPeerBuffer.new()
+func from_bytes(bytes: PackedByteArray) -> Dictionary:
 	_buffer.data_array = bytes
+	_buffer.seek(0)
+	var result: Dictionary = _unpack_buffer(_schema)
+	return result
 
-	for key: String in _schema:
-		match _schema[key]:
+
+func _unpack_buffer(schema: Dictionary) -> Dictionary:
+	var res: Dictionary = {}
+	for key: String in schema:
+		match schema[key]:
 			Type.S8:
-				res[key] = buffer.get_8()
+				res[key] = _buffer.get_8()
 			Type.S16:
-				res[key] = buffer.get_16()
+				res[key] = _buffer.get_16()
 			Type.S32:
-				res[key] = buffer.get_32()
+				res[key] = _buffer.get_32()
 			Type.S64:
-				res[key] = buffer.get_64()
+				res[key] = _buffer.get_64()
 			Type.U8:
-				res[key] = buffer.get_u8()
+				res[key] = _buffer.get_u8()
 			Type.U16:
-				res[key] = buffer.get_u16()
+				res[key] = _buffer.get_u16()
 			Type.U32:
-				res[key] = buffer.get_u32()
+				res[key] = _buffer.get_u32()
 			Type.U64:
-				res[key] = buffer.get_u64()
+				res[key] = _buffer.get_u64()
+			Type.STRING:
+				res[key] = _buffer.get_string()
 			Type.COORD:
-				var coord_packed: int = buffer.get_u64()
-				var x: float = (coord_packed & 0xFFFFF) / coord_precision_factor
-				var y: float = ((coord_packed >> 20) & 0xFFFFFF) / coord_precision_factor - y_offset
-				var z: float = ((coord_packed >> 44) & 0xFFFFF) / coord_precision_factor
-				res[key] = {"x": x, "y": y, "z": z}
+				var coord_packed: int = _buffer.get_u64()
+				var x: float = float(coord_packed & 0xFFFFF) / coord_precision_factor
+				var y: float = (
+					float((coord_packed >> 20) & 0xFFFFFF) / coord_precision_factor - y_offset
+				)
+				var z: float = float((coord_packed >> 44) & 0xFFFFF) / coord_precision_factor
+				res[key] = Vector3(x, y, z)
 			_:
-				if _schema[key] is Array:
-					var array_size: int = buffer.get_u8()
+				if schema[key] is Array:
+					var array_size: int = _buffer.get_u8()
+					res[key] = []
+					(res[key] as Array).resize(array_size)
+					var array_item_schema: Dictionary = schema[key][0]
 					for i in range(array_size):
-						var item_id: int = buffer.get_u16()
-					# then use this id in world dict to get the resource which will hold the schema for its data
-					pass
-	# for now nothing, have to make world dict for this to be able to work
+						var data: Dictionary = _unpack_buffer(array_item_schema)
+						res[key][i] = data
+
+				elif schema[key] is Dictionary:
+					res[key] = _unpack_buffer(schema[key])
 	return res
+
+
+func get_schema() -> Dictionary:
+	return _schema
