@@ -9,7 +9,7 @@ func test() -> void:
 		. new(
 			{
 				"name": Schema.Type.STRING,
-				"price": Schema.Type.U16,
+				"price": Schema.Type.F32,
 			}
 		)
 	)
@@ -41,9 +41,9 @@ func test() -> void:
 		"location": Vector3(32.3450094475, 12.34230498, 324.3443423),
 		"inventory":
 		[
-			{"name": "Potato", "price": 453.43},
+			{"name": "Potato", "price": 4053.43},
 			{"name": "Orange Juice", "price": 324.54},
-			{"name": "Blue Cheese", "price": 3.44}
+			{"name": "Blue Cheese", "price": -3.44}
 		],
 		"personal_details":
 		{

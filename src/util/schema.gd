@@ -7,12 +7,12 @@ var data_array: PackedByteArray:
 	get():
 		return _buffer.data_array
 # 1cm precision for coordinate quantizing
-var coord_precision_factor: float = 100.0
+var float_precision_factor: float = 100.0
 # maximum negative y coordinate. we are turning negative y into positive to prevent from
 # wasting one bit in the coord int for the sign
 var y_offset: float = 5000.0
 
-enum Type { S8, S16, S32, S64, U8, U16, U32, U64, COORD, STRING }
+enum Type { F32, S8, S16, S32, S64, U8, U16, U32, U64, COORD, STRING }
 
 # TODO think about how to do this with nested inventories
 
@@ -39,6 +39,8 @@ func create_buffer(data: Dictionary) -> void:
 func _to_buffer(data: Dictionary, schema: Dictionary) -> void:
 	for key: String in schema:
 		match schema[key]:
+			Type.F32:
+				_buffer.put_32(int(data[key] * float_precision_factor))
 			Type.S8:
 				_buffer.put_8(data[key])
 			Type.S16:
@@ -59,9 +61,9 @@ func _to_buffer(data: Dictionary, schema: Dictionary) -> void:
 				_buffer.put_string(data[key])
 			Type.COORD:
 				var coord: int = 0
-				var x: int = int(data[key].x * coord_precision_factor) & 0xFFFFF  # first 20 bits
-				var y: int = int((data[key].y + y_offset) * coord_precision_factor) & 0xFFFFFF  # first 24 bits
-				var z: int = int(data[key].z * coord_precision_factor) & 0xFFFFF  # first 20 bits again
+				var x: int = int(data[key].x * float_precision_factor) & 0xFFFFF  # first 20 bits
+				var y: int = int((data[key].y + y_offset) * float_precision_factor) & 0xFFFFFF  # first 24 bits
+				var z: int = int(data[key].z * float_precision_factor) & 0xFFFFF  # first 20 bits again
 				# first 20 bits is x coord, next 24 bits is y, next 20 is z
 				coord = x | (y << 20) | (z << 44)
 				_buffer.put_64(coord)
@@ -74,6 +76,8 @@ func _to_buffer(data: Dictionary, schema: Dictionary) -> void:
 
 				elif schema[key] is Dictionary:
 					_to_buffer(data[key], schema[key])
+				else:
+					print("unknown type has been provided to the schema")
 
 
 ## Static function.
@@ -94,7 +98,9 @@ func _unpack_buffer(schema: Dictionary) -> Dictionary:
 	var res: Dictionary = {}
 	for key: String in schema:
 		match schema[key]:
-			Type.S8:
+			Type.F32:
+				res[key] = float(_buffer.get_32()) / float_precision_factor
+			Type.U8:
 				res[key] = _buffer.get_8()
 			Type.S16:
 				res[key] = _buffer.get_16()
@@ -114,11 +120,11 @@ func _unpack_buffer(schema: Dictionary) -> Dictionary:
 				res[key] = _buffer.get_string()
 			Type.COORD:
 				var coord_packed: int = _buffer.get_u64()
-				var x: float = float(coord_packed & 0xFFFFF) / coord_precision_factor
+				var x: float = float(coord_packed & 0xFFFFF) / float_precision_factor
 				var y: float = (
-					float((coord_packed >> 20) & 0xFFFFFF) / coord_precision_factor - y_offset
+					float((coord_packed >> 20) & 0xFFFFFF) / float_precision_factor - y_offset
 				)
-				var z: float = float((coord_packed >> 44) & 0xFFFFF) / coord_precision_factor
+				var z: float = float((coord_packed >> 44) & 0xFFFFF) / float_precision_factor
 				res[key] = Vector3(x, y, z)
 			_:
 				if schema[key] is Array:
@@ -132,6 +138,8 @@ func _unpack_buffer(schema: Dictionary) -> Dictionary:
 
 				elif schema[key] is Dictionary:
 					res[key] = _unpack_buffer(schema[key])
+				else:
+					print("unknown type has been provided to the schema")
 	return res
 
 
