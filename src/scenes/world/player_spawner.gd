@@ -22,6 +22,6 @@ func _spawn_function(data: Dictionary) -> Node:
 	else:
 		player.position = Vector3(data.save_data.position.x, data.save_data.position.y, data.save_data.position.z)
 	
-	if multiplayer.is_server():
-		PlayerManager.save_player_data(data.peer_id)
+	#if multiplayer.is_server():
+		#PlayerManager.save_player_data(data.peer_id)
 	return player

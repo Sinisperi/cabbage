@@ -36,7 +36,7 @@ func place_items(items_obj: Array) -> void:
 	var items: Array = []
 	for i: Variant in items_obj:
 		if i != null:
-			items.append(ItemDb.get_item(i.uid))
+			items.append(ItemDb.get_item_by_id(i.uid))
 		else:
 			items.append(i)
 			
@@ -48,5 +48,5 @@ func get_selected_item() -> ItemData:
 
 @rpc("authority", "call_remote")
 func add_item(item_data: Variant, index: int) -> void:
-	var item: ItemData = ItemDb.get_item(item_data.uid)
+	var item: ItemData = ItemDb.get_item_by_id(item_data.uid)
 	inventory_grid.place_item(item, index)

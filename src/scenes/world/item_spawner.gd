@@ -34,7 +34,7 @@ func _on_item_spawned(item: Node) -> void:
 
 func _spawn_function(data: Dictionary) -> Node:
 	var item: ItemDrop = ITEM_DROP.instantiate()
-	item.data = ItemDb.get_item(data.item_data.uid)
+	item.data = ItemDb.get_item_by_id(data.item_data.uid)
 	item.position = Vector3(data.position.x, data.position.y, data.position.z)
 	item.rotation = Vector3(data.rotation.x, data.rotation.y, data.rotation.z)
 	item.name = UUID.gen()

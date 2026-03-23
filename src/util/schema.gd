@@ -143,5 +143,66 @@ func _unpack_buffer(schema: Dictionary) -> Dictionary:
 	return res
 
 
+func _get_field_value(field: Variant) -> Variant:
+	if field is Type:
+		match field:
+			Type.F32:
+				return float(_buffer.get_32()) / float_precision_factor
+			Type.U8:
+				return _buffer.get_8()
+			Type.S16:
+				return _buffer.get_16()
+			Type.S32:
+				return _buffer.get_32()
+			Type.S64:
+				return _buffer.get_64()
+			Type.U8:
+				return _buffer.get_u8()
+			Type.U16:
+				return _buffer.get_u16()
+			Type.U32:
+				return _buffer.get_u32()
+			Type.U64:
+				return _buffer.get_u64()
+			Type.STRING:
+				return _buffer.get_string()
+			Type.COORD:
+				var coord_packed: int = _buffer.get_u64()
+				var x: float = float(coord_packed & 0xFFFFF) / float_precision_factor
+				var y: float = (
+					float((coord_packed >> 20) & 0xFFFFFF) / float_precision_factor - y_offset
+				)
+				var z: float = float((coord_packed >> 44) & 0xFFFFF) / float_precision_factor
+				return Vector3(x, y, z)
+			_:
+				return null
+	else:
+		if field is Array:
+			var array_size: int = _buffer.get_u8()
+			var array_item: Variant = field[0]
+			var res: Array = []
+			(res as Array).resize(array_size)
+			if array_item is Type:
+				for i in range(array_size):
+					res[i] = _get_field_value(array_item)
+			else:
+				var array_item_schema: Dictionary = field[0]
+				for i in range(array_size):
+					var data: Dictionary = _unpack_buffer(array_item_schema)
+					res[i] = data
+			return res
+
+		elif field is Dictionary:
+			return _unpack_buffer(field)
+		else:
+			print("unknown type has been provided to the schema")
+			return null
+
+
+func extend(schema: Dictionary, data: Dictionary) -> void:
+	# make it so that this is appended to the schema
+	pass
+
+
 func get_schema() -> Dictionary:
 	return _schema

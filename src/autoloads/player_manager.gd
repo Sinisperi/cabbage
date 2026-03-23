@@ -70,6 +70,7 @@ func load_player_data(peer_id: int) -> Dictionary:
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.READ)
 	json.parse(file.get_line())
 	var data: Variant = json.data
+	print(data, " save file")
 	return data
 
 

@@ -62,13 +62,14 @@ func _init(data: Dictionary = {}) -> void:
 	if data.is_empty(): return
 	for i in range(data.inventory_items.size()):
 		if data.inventory_items[i]:
-			inventory_items[i] = ItemDb.get_item(data.inventory_items[i].uid)
+			inventory_items[i] = ItemDb.get_item_by_id(int(data.inventory_items[i].uid))
+			print("item id ", int(data.inventory_items[i].uid))
 	for i in range(data.hot_bar_items.size()):
 		if data.hot_bar_items[i]:
-			hot_bar_items[i] = ItemDb.get_item(data.hot_bar_items[i].uid)
+			hot_bar_items[i] = ItemDb.get_item_by_id(int(data.hot_bar_items[i].uid))
 	for i in range(data.equipment_items.size()):
 		if data.equipment_items[i]:
-			equipment_items[i] = ItemDb.get_item(data.equipment_items[i].uid)
+			equipment_items[i] = ItemDb.get_item_by_id(int(data.equipment_items[i].uid))
 			
 
 func _array_to_obj(array: Array) -> Array:

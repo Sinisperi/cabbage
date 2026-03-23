@@ -18,7 +18,7 @@ func _on_item_equipped(item_data: Variant, index: int) -> void:
 	if multiplayer.is_server():
 		var peer_id: int = multiplayer.get_remote_sender_id()
 		var inv: Array = PlayerManager.get_player_data(peer_id).inventory.equipment_items
-		var new_item_data: EquipableItemData = ItemDb.get_item(item_data.uid)
+		var new_item_data: EquipableItemData = ItemDb.get_item_by_id(item_data.uid)
 		inv[index] = new_item_data
 		if peer_id > 1:
 			_set_equipment_slot_display.rpc_id(peer_id, item_data, index)
@@ -30,7 +30,7 @@ func _on_item_equipped(item_data: Variant, index: int) -> void:
 
 @rpc("authority", "call_remote")
 func _set_equipment_slot_display(item_data: Variant, index: int) -> void:
-	equipment_grid.get_child(index).set_item(ItemDb.get_item(item_data.uid))
+	equipment_grid.get_child(index).set_item(ItemDb.get_item_by_id(item_data.uid))
 
 
 @rpc("any_peer", "call_local")
@@ -62,4 +62,4 @@ func _init_equipment(equipment: Array) -> void:
 
 	for i in equipment.size():
 		equipment_grid.get_child(i).slot_index = i
-		equipment_grid.get_child(i).set_item(ItemDb.get_item(equipment[i].uid) if equipment[i] else null)
+		equipment_grid.get_child(i).set_item(ItemDb.get_item_by_id(equipment[i].uid) if equipment[i] else null)

@@ -6,6 +6,7 @@ var current_save_path: String:
 	get():
 		return save_path_root + current_save_slot + "/"
 
+
 func _ready() -> void:
 	if !DirAccess.dir_exists_absolute(save_path_root):
 		DirAccess.make_dir_absolute(save_path_root)
@@ -39,9 +40,10 @@ func save_game() -> void:
 	PlayerManager.save_active_players()
 	#PlayerManager.save_inactive_players()
 	ChunkLoader.save_world()
+	ItemDb.save_world_dict()
 	save_root_save_file()
 	await take_screenshot()
-	
+
 
 func load_save_slot(save_slot: String) -> void:
 	current_save_slot = save_slot
@@ -49,8 +51,8 @@ func load_save_slot(save_slot: String) -> void:
 
 func delete_save_slot(save_slot: String) -> void:
 	_remove_dir_recursive(save_path_root + save_slot)
-	
-	
+
+
 func _remove_dir_recursive(file_path: String) -> void:
 	var dir: DirAccess = DirAccess.open(file_path)
 	if dir:
@@ -69,7 +71,6 @@ func _remove_dir_recursive(file_path: String) -> void:
 			file_name = dir.get_next()
 		dir.list_dir_end()
 		DirAccess.remove_absolute(file_path)
-	
 
 
 func save_root_save_file() -> void:
@@ -86,9 +87,7 @@ func save_root_save_file() -> void:
 func load_root_save_file(path: String) -> Dictionary:
 	var file_name: String = path
 	if !FileAccess.file_exists(file_name):
-		return {
-			"last_played": "00-00-00"
-		}
+		return {"last_played": "00-00-00"}
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.READ)
 	var json: JSON = JSON.new()
 	json.parse(file.get_line())

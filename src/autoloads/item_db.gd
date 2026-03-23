@@ -127,11 +127,10 @@ func load_items_manifest() -> void:
 		printerr("Unable to load manifest file ", file_name)
 
 
-# by name
-func get_item(item_uid: String) -> ItemData:
+func get_item_by_name(item_name: String) -> ItemData:
 	var res: ItemData = null
-	if _items_manifest.has(item_uid):
-		res = load(ITEMS_PATH.path_join(_items_manifest[item_uid])).duplicate()
+	if _items_manifest.has(item_name):
+		res = load(ITEMS_PATH.path_join(_items_manifest[item_name])).duplicate()
 	else:
-		printerr("Failed to load an item resource ", item_uid, " from items.manifest")
+		printerr("Failed to load an item resource ", item_name, " from items.manifest")
 	return res

@@ -99,7 +99,7 @@ func _add_item(inventory_type: InventoryType, index: int, item_data: Variant) ->
 		
 		if item_data != null:
 			print(item_data)
-			inventory_kind[index] = ItemDb.get_item(item_data.uid)
+			inventory_kind[index] = ItemDb.get_item_by_id(item_data.uid)
 		else:
 			inventory_kind[index] = null
 		prints(peer_id, "item added")
@@ -124,7 +124,7 @@ func _on_item_equipped(item_data: ItemData) -> void:
 func _on_item_picked_up(item_data: Variant) -> void:
 	if multiplayer.is_server():
 		var item_index: int = -1
-		var item: ItemData = ItemDb.get_item(item_data.uid)
+		var item: ItemData = ItemDb.get_item_by_id(item_data.uid)
 		var peer_id: int = multiplayer.get_remote_sender_id()
 		var inventory_items: Array = PlayerManager.get_player_data(1 if peer_id == 0 else peer_id).inventory.inventory_items
 		for i in inventory_items.size():

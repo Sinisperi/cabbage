@@ -13,23 +13,20 @@ var schema: Schema = null
 var name_normalized: String:
 	get():
 		return item_name.to_lower().replace(" ", "_")
-
-var uid: String:
+var _uid: int = -1
+var uid: int:
 	get():
-		var _uid: String = item_name.to_lower().replace(" ", "_")
-		#print(ItemDb.id_from_name(_uid))
+		if _uid < 0:
+			_uid = ItemDb.id_from_name(name_normalized)
 		return _uid
 
 
 func _init() -> void:
-	schema = (
-		Schema
-		. new(
-			{
-				"id": Schema.Type.U16,
-			}
-		)
-	)
+	schema = (Schema.new({"id": Schema.Type.U16, "quantity": Schema.Type.U32}))
+
+
+func _ready() -> void:
+	print(item_name)
 
 
 func is_same_type(item_data: ItemData) -> bool:
@@ -37,8 +34,13 @@ func is_same_type(item_data: ItemData) -> bool:
 
 
 func to_bytes() -> PackedByteArray:
-	schema.create_buffer({"id": ItemDb.id_from_name(name_normalized)})
+	schema.create_buffer({"id": ItemDb.id_from_name(name_normalized), "quantity": 123456})
 	return schema.data_array
+
+
+## we get the dict of everything
+## every item will figure out its own stuff and overload this function
+## by default it's just an id
 
 
 func from_bytes(bytes: PackedByteArray) -> void:
@@ -54,7 +56,3 @@ func to_dict() -> Dictionary:
 
 func get_schema() -> Dictionary:
 	return schema.get_schema()
-
-
-func register() -> void:
-	ItemDb.id_from_name(uid)
