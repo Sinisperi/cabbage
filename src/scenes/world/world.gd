@@ -10,14 +10,14 @@ class_name World extends Node3D
 
 
 func _ready() -> void:
+	ItemDb.init()
+
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	Globals.world = self
 	NetworkManager.peer_disconnected.connect(_on_peer_disconnected)
 
-
 	# Currently there is a possibility that while player's data is saving, someone else is editing the chunk
 	# for this to happen it has to happen at the same time with difference of the time it would take to save a json file
-
 
 
 func _on_peer_disconnected(peer_id: int, _player_id: int) -> void:

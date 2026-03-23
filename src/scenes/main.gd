@@ -55,9 +55,9 @@ func test() -> void:
 	}
 
 	person_schema.create_buffer(input_data)
-	print("input====================== \n", input_data)
-	print("output ================================")
-	print(person_schema.from_bytes(person_schema.data_array))
+	#print("input====================== \n", input_data)
+	#print("output ================================")
+	#print(person_schema.from_bytes(person_schema.data_array))
 	pass
 
 

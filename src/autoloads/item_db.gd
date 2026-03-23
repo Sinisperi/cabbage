@@ -4,17 +4,51 @@ const ITEMS_PATH = "res://src/resources/items/"
 const WORLD_DICT_FILE_NAME = "world_dict.dat"
 const ITEMS_MANIFEST_FILE = "items.manifest"
 
-var items: Dictionary = {}
-var _name_to_path: Dictionary = {}
+var _items_manifest: Dictionary = {}
 var _id_to_name: Dictionary = {}
 var _name_to_id: Dictionary = {}
 var _is_dirty: bool = false
 var _next_item_id: int = 0
 
 
+func init() -> void:
+	load_items_manifest()
+	_request_world_dict.rpc_id(1)
+
+
+@rpc("any_peer", "call_local")
+func _request_world_dict() -> void:
+	if multiplayer.is_server():
+		if _id_to_name.is_empty() || _name_to_id.is_empty():
+			load_world_dict()
+		var peer_id: int = multiplayer.get_remote_sender_id()
+		if peer_id > 1:
+			send_world_dict.rpc_id(peer_id, _id_to_name)
+		else:
+			if _name_to_id.is_empty() || _id_to_name.is_empty():
+				load_world_dict()
+
+
+@rpc("any_peer", "call_remote")
+func send_world_dict(dict: Dictionary) -> void:
+	_reset_state()
+	_id_to_name = dict
+	for id: int in dict:
+		_name_to_id[dict[id]] = id
+		if id >= _next_item_id:
+			_next_item_id = id + 1
+
+
+func _reset_state() -> void:
+	_name_to_id.clear()
+	_id_to_name.clear()
+	_next_item_id = 0
+	_is_dirty = false
+
+
 func load_world_dict() -> void:
-	#_id_to_name.clear()
-	#_name_to_id.clear()
+	_id_to_name.clear()
+	_name_to_id.clear()
 
 	var file_path: String = SaveDataManager.current_save_path + WORLD_DICT_FILE_NAME
 	if !FileAccess.file_exists(file_path):
@@ -43,7 +77,7 @@ func save_world_dict() -> void:
 			file.store_16(id)
 			file.store_pascal_string(_id_to_name[id])
 		file.close()
-	_is_dirty = false
+		_is_dirty = false
 
 
 func name_from_id(id: int) -> String:
@@ -53,11 +87,10 @@ func name_from_id(id: int) -> String:
 
 
 func id_from_name(item_name: String) -> int:
-	if !item_name.length():
-		print("item with no name")
 	if !_name_to_id.has(item_name):
 		_is_dirty = true
 		var id: int = _next_item_id
+		# if not multiplayer.is_server(): send rpc to ask for id if it's not already in _name_to_id
 		_next_item_id += 1
 		_name_to_id[item_name] = id
 		_id_to_name[id] = item_name
@@ -65,65 +98,40 @@ func id_from_name(item_name: String) -> int:
 	return _name_to_id[item_name]
 
 
-func item_from_id(id: int) -> ItemData:
+@rpc("any_peer", "call_local")
+func _request_item_id_from_name(item_name: String) -> int:
+	return 0
+
+
+func get_item_by_id(id: int) -> ItemData:
 	var item_data: ItemData = null
 	var item_name: String = name_from_id(id)
 
 	if item_name == "unknown_item":
 		return item_data
 
-	if _name_to_path.has(item_name):
-		var resource_path: String = ITEMS_PATH.path_join(_name_to_path[item_name])
-		item_data = load(resource_path)
+	if _items_manifest.has(item_name):
+		var resource_path: String = ITEMS_PATH.path_join(_items_manifest[item_name])
+		item_data = load(resource_path).duplicate()
 
 	return item_data
 
 
-func _load_item_paths() -> void:
+func load_items_manifest() -> void:
 	var file_name: String = ITEMS_PATH.path_join(ITEMS_MANIFEST_FILE)
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.READ)
 	if file:
 		var data: Variant = file.get_var()
-		print(data)
+		_items_manifest = data
 	else:
 		printerr("Unable to load manifest file ", file_name)
 
 
-# OLD WAY
-func _ready() -> void:
-	_load_items(ITEMS_PATH)
-	_load_item_paths()
-	load_world_dict()
-
-
-func _load_items(path: String) -> void:
-	var dir: DirAccess = DirAccess.open(path)
-	if dir:
-		dir.list_dir_begin()
-		var file_name: String = dir.get_next()
-		while file_name != "":
-			var full_path: String = path + file_name
-			if dir.current_is_dir():
-				_load_items(full_path + "/")
-			elif file_name.ends_with(".tres"):
-				var item: Resource = load(full_path)
-
-				if item is ItemData:
-					items[item.uid] = item
-
-			file_name = dir.get_next()
+# by name
+func get_item(item_uid: String) -> ItemData:
+	var res: ItemData = null
+	if _items_manifest.has(item_uid):
+		res = load(ITEMS_PATH.path_join(_items_manifest[item_uid])).duplicate()
 	else:
-		printerr("No such directory ", path)
-
-
-func get_item(id: String) -> ItemData:
-	if items.has(id):
-		return items[id].duplicate()
-	printerr(
-		"Item with id ",
-		id,
-		" does not exist!\nDid you forget to add its resource to ",
-		ITEMS_PATH,
-		"???\nYou silly silly goose"
-	)
-	return null
+		printerr("Failed to load an item resource ", item_uid, " from items.manifest")
+	return res
