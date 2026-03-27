@@ -11,6 +11,7 @@ class_name ItemDrop extends RigidBody3D
 @onready var interaction_area_collider: CollisionShape3D = %InteractionAreaCollider
 
 var is_registered_in_chunk: bool = false
+var index_in_chunk: int = -1
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
@@ -29,7 +30,6 @@ func _ready() -> void:
 		return
 	await update_visuals()
 	interaction_area.interacted_with.connect(_on_being_interacted_with)
-	#if multiplayer.is_server():
 	sleeping_state_changed.connect(_on_sleeping_state_changed)
 
 func _on_being_interacted_with() -> bool:
@@ -40,17 +40,17 @@ func _on_being_interacted_with() -> bool:
 @rpc("any_peer", "call_local")
 func destroy_itself() -> void:
 	if owner:
+		Globals.chunker.remove_editor_entity_from_chunk(self)
 		queue_free()
-		Globals.chunker.remove_editor_entity_from_chunk(generate_entity_data())
 	else:
-		if multiplayer.is_server():
-			Globals.chunker.remove_entity_from_chunk(generate_entity_data())
-			queue_free()
+		Globals.chunker.remove_entity_from_chunk(self)
+		queue_free()
 
 func generate_entity_data() -> Dictionary:
 	return {
-		"item_id": name,
+		"entity_id": name,
 		"item_data": data.to_dict(),
+		"registered_in_chunk": is_registered_in_chunk,
 		"position": {
 			"x": position.x,
 			"y": position.y,
@@ -85,6 +85,7 @@ func update_visuals() -> void:
 
 
 func _on_sleeping_state_changed() -> void:
+	print("sleep9ing stated", is_registered_in_chunk)
 	if !is_registered_in_chunk:
 		is_registered_in_chunk = true
 		if sleeping:
@@ -96,5 +97,5 @@ func _on_sleeping_state_changed() -> void:
 				## when client leaves, host saves the chunk data that host has, when client reenters
 				## it requests and gets new chunk data and spawns accordingly
 				if multiplayer.is_server():
-					Globals.chunker.add_entity_to_chunk(generate_entity_data())
+					Globals.chunker.add_entity_to_chunk(self)
 				freeze = true

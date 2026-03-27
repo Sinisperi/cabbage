@@ -165,7 +165,9 @@ func _on_connected_to_server() -> void:
 
 @rpc("any_peer", "call_remote")
 func load_world(has_save: bool) -> void:
+	ItemDb.init()
 	if !has_save:
+		
 		EventBus.world.world_spawn_requested.emit(func(_world: World) -> void: Globals.player_ui.show_character_creator())
 	else:
 		EventBus.world.world_spawn_requested.emit(func(world: World) -> void: world._request_player_spawn.rpc_id(1))

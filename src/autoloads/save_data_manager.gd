@@ -89,10 +89,11 @@ func load_root_save_file(path: String) -> Dictionary:
 	if !FileAccess.file_exists(file_name):
 		return {"last_played": "00-00-00"}
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.READ)
+	
 	var json: JSON = JSON.new()
 	json.parse(file.get_line())
 	var data: Variant = json.data
-	return data
+	return data if data else {"last_played": "00-00-00"}
 
 
 func take_screenshot() -> void:

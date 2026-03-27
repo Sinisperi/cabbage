@@ -36,6 +36,8 @@ func _on_confirm_button_pressed() -> void:
 
 @rpc("any_peer", "call_remote")
 func load_world(has_save: bool) -> void:
+	ItemDb.init()
+
 	if !has_save:
 		EventBus.world.world_spawn_requested.emit(func(_world: World) -> void: Globals.player_ui.show_character_creator())
 	else:

@@ -44,8 +44,7 @@ func to_bytes() -> PackedByteArray:
 
 
 func from_bytes(bytes: PackedByteArray) -> void:
-	var data: Dictionary = schema.from_bytes(bytes)
-	print("item data ", data)
+	schema.from_bytes(bytes)
 
 
 func to_dict() -> Dictionary:

@@ -58,7 +58,8 @@ func init_equipment_request(peer_id: int) -> void:
 		
 @rpc("authority", "call_remote")
 func _init_equipment(equipment: Array) -> void:
-	print("equipment ", equipment)
+	#print("equipment ", equipment)
+	pass
 
 	for i in equipment.size():
 		equipment_grid.get_child(i).slot_index = i

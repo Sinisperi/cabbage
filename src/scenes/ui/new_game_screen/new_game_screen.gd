@@ -23,4 +23,6 @@ func _go_back_button_pressed() -> void:
 
 @rpc("any_peer", "call_local")
 func load_world_with_character_creator() -> void:
+	ItemDb.init()
+
 	EventBus.world.world_spawn_requested.emit(func(_world: World) -> void: Globals.player_ui.show_character_creator())

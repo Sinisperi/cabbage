@@ -13,6 +13,7 @@ class_name Player extends CharacterBody3D
 @export var jog_fov_multiplier: float = 1.05
 
 @onready var camera_3d: Camera3D = %Camera3D
+@onready var multiplayer_synchronizer: MultiplayerSynchronizer = %MultiplayerSynchronizer
 
 @onready var current_speed: float = walk_speed
 @onready var current_state: State = State.IDLE
@@ -28,8 +29,8 @@ var current_blend_space: Vector2 = Vector2.ZERO
 var input_direction: Vector2
 var current_time_scale: float = 1.0
 
-func _enter_tree() -> void:
-	set_multiplayer_authority(int(name))
+#func _enter_tree() -> void:
+	#set_multiplayer_authority(int(name))
 
 func _ready() -> void:
 	if !is_multiplayer_authority():
@@ -42,6 +43,7 @@ func _ready() -> void:
 		camera_3d.make_current()
 		EventBus.ui.mouse_mode_changed.connect(_on_mouse_mode_changed)
 		Globals.screenshot_sub_viewport = %SubViewport
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:

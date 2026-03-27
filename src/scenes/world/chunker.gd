@@ -146,24 +146,31 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 	highlight_chunk(chunk, "LOADED", peer_id > 1)
 	if peer_id > 1:
 		## TODO send only removed editor spawned items
-		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk].chunk_data.removed_editor_entities, chunk)
+		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk].chunk_data.removed_editor_entities, loaded_chunks[chunk].chunk_data.entities, chunk)
 		
 
 @rpc("any_peer", "call_remote")
-func send_chunk_data_to_peer(removed_editor_entities: Array, chunk: Vector2i) -> void:
+func send_chunk_data_to_peer(removed_editor_entities: Array, entities: Dictionary, chunk: Vector2i) -> void:
+	var loaded_chunk: Dictionary = loaded_chunks.get(chunk, {})
+	if loaded_chunk.has("chunk_data"):
+		EventBus.world.item_sync_requested.emit(entities, loaded_chunk.chunk_data.entities.duplicate())
+	else:
+		EventBus.world.item_sync_requested.emit(entities, {})
+		
 	loaded_chunks[chunk] = {
 		"chunk_viewers": [],
 		"player_count": 1,
 		"life_time": CHUNK_LIFE_TIME,
 		"is_dirty": false,
 		"chunk_data": {
-			"entities": {},
+			"entities": entities,
 			"removed_editor_entities": removed_editor_entities
 		}
 	}
 	highlight_chunk(chunk, "LOADED")
 	despawn_editor_spawned_items(chunk)
-
+	
+	
 
 func despawn_editor_spawned_items(chunk: Vector2i) -> void:
 	for i: String in loaded_chunks[chunk].chunk_data.removed_editor_entities:
@@ -174,8 +181,9 @@ func despawn_editor_spawned_items(chunk: Vector2i) -> void:
 
 
 func spawn_player_spawned_items(chunk: Vector2i) -> void:
+	if loaded_chunks[chunk].chunk_data.entities.size():
+		print_debug(loaded_chunks[chunk].chunk_data.entities)
 	for i: Variant in loaded_chunks[chunk].chunk_data.entities:
-		#print("spawning ", i)
 		EventBus.world.item_spawn_requested.emit(loaded_chunks[chunk].chunk_data.entities[i])
 
 
@@ -264,32 +272,41 @@ func send_player_exit_request(chunk: Vector2i) -> void:
 
 
 
-func add_entity_to_chunk(entity_data: Dictionary) -> void:
+func add_entity_to_chunk(entity: ItemDrop) -> void:
+	var entity_data: Dictionary = entity.generate_entity_data()
+	#==============================
 	var pos: Vector3 = Vector3(entity_data.position.x, entity_data.position.y, entity_data.position.z)
 	var chunk: Vector2i = get_chunk_coord_from_pos(pos)
 	if !loaded_chunks.has(chunk):
 		printerr("Somehow trying to drop stuff at the chunk ", chunk, " which is
 		not loaded!")
-	loaded_chunks[chunk].chunk_data.entities[entity_data.item_id] = entity_data
+	#entity.index_in_chunk = loaded_chunks[chunk].chunk_data.entities.size()
+	#loaded_chunks[chunk].chunk_data.entities.push_back(entity_data)
+	
+	loaded_chunks[chunk].chunk_data.entities[entity.name] = entity_data
+	
 	loaded_chunks[chunk].is_dirty = true
 	print("dropping ", entity_data)
 
 
-func remove_entity_from_chunk(entity_data: Dictionary) -> void:
+func remove_entity_from_chunk(entity: ItemDrop) -> void:
+	var entity_data: Dictionary = entity.generate_entity_data()
 	var pos: Vector3 = Vector3(entity_data.position.x, entity_data.position.y, entity_data.position.z)
 	var chunk: Vector2i = get_chunk_coord_from_pos(pos)
 	if !loaded_chunks.has(chunk):
 		printerr("Somehow trying to pick up stuff at the chunk ", chunk, " which is
 		not loaded!")
-	loaded_chunks[chunk].chunk_data.entities.erase(entity_data.item_id)
+	loaded_chunks[chunk].chunk_data.entities.erase(entity.name)
+	#loaded_chunks[chunk].chunk_data.entities[entity.index_in_chunk] = null
 	loaded_chunks[chunk].is_dirty = true
 	print("removed entity", entity_data)
 
 
-func remove_editor_entity_from_chunk(entity_data: Dictionary) -> void:
+func remove_editor_entity_from_chunk(entity: ItemDrop) -> void:
+	var entity_data: Dictionary = entity.generate_entity_data()
 	var pos: Vector3 = Vector3(entity_data.position.x, entity_data.position.y, entity_data.position.z)
 	var chunk: Vector2i = get_chunk_coord_from_pos(pos)
-	loaded_chunks[chunk].chunk_data.removed_editor_entities.push_back(entity_data.item_id)
+	loaded_chunks[chunk].chunk_data.removed_editor_entities.push_back(entity.name)
 	loaded_chunks[chunk].is_dirty = true
 
 

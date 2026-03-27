@@ -70,7 +70,7 @@ func load_player_data(peer_id: int) -> Dictionary:
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.READ)
 	json.parse(file.get_line())
 	var data: Variant = json.data
-	print(data, " save file")
+	#print(data, " save file")
 	return data
 
 
@@ -119,3 +119,7 @@ func remove_player_peer(peer_id: int) -> Player:
 		active_players.erase(active_peers[peer_id])
 		active_peers.erase(peer_id)
 	return removed_player
+
+func reset() -> void:
+	active_peers.clear()
+	active_players.clear()

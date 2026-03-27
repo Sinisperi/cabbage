@@ -31,6 +31,7 @@ class InventorySignals:
 
 class WorldSignals:
 	signal item_spawn_requested(item_data: Variant)
+	signal item_sync_requested(item_data: Variant)
 	signal player_spawned_item_despawn_requested(item_id: String)
 	signal world_spawn_requested(callback: Callable)
 	signal world_cleanup_finished

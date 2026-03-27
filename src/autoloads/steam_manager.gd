@@ -60,8 +60,7 @@ func join_lobby(lobby_id_string: String) -> Dictionary:
 func _on_steam_lobby_created(response: int, lobby_id: int) -> void:
 	current_lobby_id = lobby_id
 	lobby_created.emit(response, lobby_id)
-	var res: bool = Steam.setLobbyData(lobby_id, "is_joinable", "true")
-	print("lobby created ", res)
+	Steam.setLobbyData(lobby_id, "is_joinable", "true")
 
 
 func _on_steam_lobby_joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:

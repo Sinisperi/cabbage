@@ -31,11 +31,13 @@ enum ConnectionType
 	MULTIPLAYER_CLIENT
 }
 
+
 enum LobbyType
 {
 	FRIENDS_ONLY = Steam.LobbyType.LOBBY_TYPE_FRIENDS_ONLY,
 	PRIVATE = Steam.LobbyType.LOBBY_TYPE_PRIVATE
 }
+
 
 var current_connection_type: ConnectionType = ConnectionType.NONE
 
@@ -46,11 +48,12 @@ func _ready() -> void:
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 
+
 func _enable_local_host() -> Error:
 	if multiplayer.has_multiplayer_peer():
 		multiplayer.multiplayer_peer.close()
 	peer = ENetMultiplayerPeer.new()
-	var response: Error = peer.create_server(_find_available_port(), 1)
+	var response: Error = peer.create_server(_find_available_port())
 	if response == OK:
 		multiplayer.multiplayer_peer = peer
 		local_host_created.emit()
@@ -59,7 +62,8 @@ func _enable_local_host() -> Error:
 		
 		_reset_peer()
 	return response
-	
+
+
 
 func _create_local_client() -> Error:
 	print("local port ", local_client_port)
@@ -108,7 +112,7 @@ func get_player_id(peer_id: int) -> int:
 		if peer is SteamMultiplayerPeer:
 			return SteamManager.get_peer_steam_id(peer_id)
 		else:
-			return 69
+			return 69 + multiplayer.get_peers().size() # the only way to test locally, in production need to change to os id or something
 	else:
 		return 0
 
@@ -117,6 +121,7 @@ func switch_connection_type(connection_type: ConnectionType) -> Error:
 	var error: Error = OK
 	if connection_type == current_connection_type: return error
 	SteamManager.leave_lobby()
+	PlayerManager.reset()
 	_reset_peer()
 	_stop_broadcast()
 	await get_tree().process_frame
