@@ -91,7 +91,6 @@ func save_world_dict() -> void:
 
 
 func name_from_id(id: int) -> String:
-	#print("ID TO NAME: ", _id_to_name)
 	if !_id_to_name.has(id):
 		return "unknown_item"
 	return _id_to_name[id]

@@ -44,7 +44,6 @@ func _handle_pick_item() -> void:
 
 	var new_draggable_item: DraggableItem = draggable_item_scene.instantiate()
 	new_draggable_item.data = slot_data
-	print(slot_data.to_bytes())
 	slot_data.from_bytes(slot_data.to_bytes())
 	item_picked.emit(slot_index)
 	get_tree().get_first_node_in_group("inventory").add_child(new_draggable_item)

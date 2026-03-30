@@ -112,11 +112,9 @@ func get_loaded_chunks(delta: float) -> void:
 
 
 func _handle_player_exit(chunk: Vector2i, peer_id: int, bypass_cache: bool = false) -> void:
-	print("trying to move chunks to cache from peer ", peer_id)
 	if !loaded_chunks.has(chunk): return
 	loaded_chunks[chunk].chunk_viewers.erase(peer_id)
 	loaded_chunks[chunk].player_count -= 1
-	print(loaded_chunks[chunk].player_count, " player count")
 	highlight_chunk(chunk, "LOADED", loaded_chunks[chunk].player_count)
 	
 	if bypass_cache:
@@ -138,25 +136,21 @@ func request_chunk_data(chunk_x: int, chunk_y: int) -> void:
 			print("loaded chunk ", chunk, " from cache and sent to peer ", peer_id)
 		else:
 			loaded_chunks[chunk] = load_chunk_data(chunk)
-			spawn_player_spawned_items(chunk)
-		despawn_editor_spawned_items(chunk)
+			Globals.item_spawner.load_player_spawned_items(loaded_chunks[chunk].chunk_data.entities)
+			Globals.item_spawner.update_editor_spawned_items(loaded_chunks[chunk].chunk_data.removed_editor_entities)
+			
 	if !loaded_chunks[chunk].chunk_viewers.has(peer_id):
 		loaded_chunks[chunk].chunk_viewers.push_back(peer_id)
+		
 	loaded_chunks[chunk].player_count += 1
 	highlight_chunk(chunk, "LOADED", peer_id > 1)
+	
 	if peer_id > 1:
-		## TODO send only removed editor spawned items
 		send_chunk_data_to_peer.rpc_id(peer_id, loaded_chunks[chunk].chunk_data.removed_editor_entities, loaded_chunks[chunk].chunk_data.entities, chunk)
 		
 
 @rpc("any_peer", "call_remote")
 func send_chunk_data_to_peer(removed_editor_entities: Array, entities: Dictionary, chunk: Vector2i) -> void:
-	var loaded_chunk: Dictionary = loaded_chunks.get(chunk, {})
-	if loaded_chunk.has("chunk_data"):
-		EventBus.world.item_sync_requested.emit(entities, loaded_chunk.chunk_data.entities.duplicate())
-	else:
-		EventBus.world.item_sync_requested.emit(entities, {})
-		
 	loaded_chunks[chunk] = {
 		"chunk_viewers": [],
 		"player_count": 1,
@@ -168,33 +162,17 @@ func send_chunk_data_to_peer(removed_editor_entities: Array, entities: Dictionar
 		}
 	}
 	highlight_chunk(chunk, "LOADED")
-	despawn_editor_spawned_items(chunk)
+	Globals.item_spawner.update_editor_spawned_items(removed_editor_entities)
+	
+	Globals.item_spawner.load_player_spawned_items(entities)
 	
 	
-
-func despawn_editor_spawned_items(chunk: Vector2i) -> void:
-	for i: String in loaded_chunks[chunk].chunk_data.removed_editor_entities:
-		if editor_spawned_items.has_node("./" + i):
-			print(" has node trying to remove")
-			var item: Node = editor_spawned_items.get_node("./" + i)
-			editor_spawned_items.remove_child(item)
-
-
-func spawn_player_spawned_items(chunk: Vector2i) -> void:
-	if loaded_chunks[chunk].chunk_data.entities.size():
-		print_debug(loaded_chunks[chunk].chunk_data.entities)
-	for i: Variant in loaded_chunks[chunk].chunk_data.entities:
-		EventBus.world.item_spawn_requested.emit(loaded_chunks[chunk].chunk_data.entities[i])
-
-
-func despawn_player_spawned_items(items: Dictionary) -> void:
-	for i: Variant in items:
-		EventBus.world.player_spawned_item_despawn_requested.emit(i)
-
 
 func move_chunk_to_cache(chunk: Vector2i) -> void:
 	chunk_cache[chunk] = loaded_chunks[chunk]
 	chunk_cache[chunk].player_count = 0
+	if !multiplayer.is_server():
+		Globals.item_spawner.unload_player_spawned_items(chunk_cache[chunk].chunk_data.entities.keys())
 	loaded_chunks.erase(chunk)
 	highlight_chunk(chunk, "CACHED")
 	
@@ -258,7 +236,8 @@ func update_chunk_cache(delta: float) -> void:
 				if multiplayer.is_server():
 					ChunkLoader.save_chunk(i, chunk_cache[i].chunk_data)
 			if multiplayer.is_server():
-				despawn_player_spawned_items(chunk_cache[i].chunk_data.entities)
+				#despawn_player_spawned_items(chunk_cache[i].chunk_data.entities)
+				Globals.item_spawner.unload_player_spawned_items(chunk_cache[i].chunk_data.entities.keys())
 			chunk_cache.erase(i)
 			highlight_chunk(i, "UNLOADED")
 
@@ -270,21 +249,14 @@ func send_player_exit_request(chunk: Vector2i) -> void:
 	
 	
 
-
-
 func add_entity_to_chunk(entity: ItemDrop) -> void:
 	var entity_data: Dictionary = entity.generate_entity_data()
-	#==============================
 	var pos: Vector3 = Vector3(entity_data.position.x, entity_data.position.y, entity_data.position.z)
 	var chunk: Vector2i = get_chunk_coord_from_pos(pos)
 	if !loaded_chunks.has(chunk):
 		printerr("Somehow trying to drop stuff at the chunk ", chunk, " which is
 		not loaded!")
-	#entity.index_in_chunk = loaded_chunks[chunk].chunk_data.entities.size()
-	#loaded_chunks[chunk].chunk_data.entities.push_back(entity_data)
-	
 	loaded_chunks[chunk].chunk_data.entities[entity.name] = entity_data
-	
 	loaded_chunks[chunk].is_dirty = true
 	print("dropping ", entity_data)
 
@@ -296,20 +268,41 @@ func remove_entity_from_chunk(entity: ItemDrop) -> void:
 	if !loaded_chunks.has(chunk):
 		printerr("Somehow trying to pick up stuff at the chunk ", chunk, " which is
 		not loaded!")
+		return
 	loaded_chunks[chunk].chunk_data.entities.erase(entity.name)
-	#loaded_chunks[chunk].chunk_data.entities[entity.index_in_chunk] = null
 	loaded_chunks[chunk].is_dirty = true
-	print("removed entity", entity_data)
+	request_entity_removal_from_chunk.rpc_id(1, {"x": chunk.x, "y": chunk.y}, entity_data.entity_id)
+
+@rpc("any_peer", "call_local")
+func request_entity_removal_from_chunk(chunk_p: Dictionary, entity_id: String) -> void:
+	var chunk: Vector2i = Vector2i(chunk_p.x, chunk_p.y)
+	if !loaded_chunks.has(chunk):
+		printerr("Peer ", multiplayer.get_remote_sender_id(), " is trying to remove entity from chunk that isn't loaded!")
+		return
+	var chunk_peers: Array = loaded_chunks[chunk].chunk_viewers
+	EventBus.world.player_spawned_item_pickup_requested.emit(entity_id, chunk_peers)
 
 
 func remove_editor_entity_from_chunk(entity: ItemDrop) -> void:
 	var entity_data: Dictionary = entity.generate_entity_data()
 	var pos: Vector3 = Vector3(entity_data.position.x, entity_data.position.y, entity_data.position.z)
 	var chunk: Vector2i = get_chunk_coord_from_pos(pos)
-	loaded_chunks[chunk].chunk_data.removed_editor_entities.push_back(entity.name)
-	loaded_chunks[chunk].is_dirty = true
+	if loaded_chunks.has(chunk):
+		loaded_chunks[chunk].chunk_data.removed_editor_entities.push_back(entity.name)
+		loaded_chunks[chunk].is_dirty = true
+	
+	EventBus.world.editor_spawned_item_despawn_requested.emit(entity_data.entity_id, loaded_chunks[chunk].chunk_viewers)
+	#var item: ItemDrop = editor_spawned_items.get_node_or_null("./" + entity.name)
+	#if item:
+		#item.queue_free()
 
 
+func get_peers_in_chunk_by_pos(pos: Vector3) -> Array:
+	var res: Array = []
+	var chunk: Vector2i = get_chunk_coord_from_pos(pos)
+	if loaded_chunks.has(chunk):
+		res = loaded_chunks[chunk].chunk_viewers
+	return res
 
 
 func highlight_chunk(pos: Vector2i, tag: String, is_client: bool = false) -> void:

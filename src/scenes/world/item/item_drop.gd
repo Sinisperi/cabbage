@@ -34,17 +34,14 @@ func _ready() -> void:
 
 func _on_being_interacted_with() -> bool:
 	EventBus.inventory.item_pick_up_requested.emit(data)
-	destroy_itself.rpc()
+	destroy_itself()
 	return true
 
-@rpc("any_peer", "call_local")
 func destroy_itself() -> void:
 	if owner:
 		Globals.chunker.remove_editor_entity_from_chunk(self)
-		queue_free()
 	else:
 		Globals.chunker.remove_entity_from_chunk(self)
-		queue_free()
 
 func generate_entity_data() -> Dictionary:
 	return {
@@ -85,7 +82,6 @@ func update_visuals() -> void:
 
 
 func _on_sleeping_state_changed() -> void:
-	print("sleep9ing stated", is_registered_in_chunk)
 	if !is_registered_in_chunk:
 		is_registered_in_chunk = true
 		if sleeping:

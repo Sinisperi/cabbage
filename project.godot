@@ -122,6 +122,10 @@ toggle_debug_screen={
 
 3d/physics_engine="Jolt Physics"
 
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+
 [steam]
 
 initialization/app_id=0

@@ -52,14 +52,11 @@ func init_equipment_request(peer_id: int) -> void:
 		if peer_id <= 1:
 			_init_equipment(equipment_items)
 		else:
-			print(peer_id, "this is called asdfasdf;lkjasd;flkjasdf;lkj")
 			_init_equipment.rpc_id(peer_id, equipment_items)
 
 		
 @rpc("authority", "call_remote")
 func _init_equipment(equipment: Array) -> void:
-	#print("equipment ", equipment)
-	pass
 
 	for i in equipment.size():
 		equipment_grid.get_child(i).slot_index = i

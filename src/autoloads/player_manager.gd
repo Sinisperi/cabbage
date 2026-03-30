@@ -68,14 +68,12 @@ func load_player_data(peer_id: int) -> Dictionary:
 		return {}
 	var json: JSON = JSON.new()
 	var file: FileAccess = FileAccess.open(file_name, FileAccess.READ)
-	json.parse(file.get_line())
+	json.parse(file.get_as_text())
 	var data: Variant = json.data
-	#print(data, " save file")
 	return data
 
 
 func save_player_data(peer_id: int) -> void:
-	print("trying to save player data", active_players)
 	var file_name: String = SaveDataManager.current_save_path + SAVE_DIR + str(active_peers[peer_id]) + ".json"
 	var player_pointer: Player = get_player_pointer(peer_id)
 	if player_pointer == null:

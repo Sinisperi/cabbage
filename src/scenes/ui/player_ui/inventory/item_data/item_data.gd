@@ -25,10 +25,6 @@ func _init() -> void:
 	schema = (Schema.new({"id": Schema.Type.U16, "quantity": Schema.Type.U32}))
 
 
-func _ready() -> void:
-	print(item_name)
-
-
 func is_same_type(item_data: ItemData) -> bool:
 	return item_data.uid == uid
 

@@ -58,9 +58,9 @@ func _input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton && event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			$DebugCamera.global_position += (global_position - $DebugCamera.global_position).normalized() * 0.1
+			$DebugCamera.global_position += (global_position - $DebugCamera.global_position).normalized() * 1.0
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			$DebugCamera.global_position -= (global_position - $DebugCamera.global_position).normalized() * 0.1
+			$DebugCamera.global_position -= (global_position - $DebugCamera.global_position).normalized() * 1.0
 			## HAHAHAHAHA CANNOT SAVE WHILE IN INVENTORY BECAUSE PROCESS_INPUT IS FALSE LUL LUL LUL
 
 
@@ -146,7 +146,6 @@ func _state_to_animation() -> String:
 func _on_mouse_mode_changed(mode: int) -> void:
 	if is_multiplayer_authority():
 		var enabled: bool = true if mode == Input.MOUSE_MODE_CAPTURED else false
-		print(enabled, "enabled")
 		set_process_input(enabled)
 		set_process_unhandled_input(enabled)
 		set_process_unhandled_key_input(enabled)

@@ -23,6 +23,8 @@ func _on_save_game_button_pressed() -> void:
 
 
 func _on_quit_button_pressed() -> void:
+	if multiplayer.is_server():
+		await SaveDataManager.save_game()
 	await NetworkManager.switch_connection_type(NetworkManager.ConnectionType.NONE)
 	EventBus.ui.main_menu_requested.emit()
 	Globals.world.call_deferred("queue_free")

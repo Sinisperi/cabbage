@@ -40,7 +40,7 @@ func _ready() -> void:
 	Globals.inventory = self
 	inventory_grid.item_picked.connect(func(index: int) -> void: _remove_item.rpc_id(1, InventoryType.ITEM, index))
 	inventory_grid.item_placed.connect(func(index: int, item_data: ItemData) -> void:
-		_add_item.rpc_id(1, InventoryType.ITEM, index, item_data.to_dict()); print(item_data.resource_path))
+		_add_item.rpc_id(1, InventoryType.ITEM, index, item_data.to_dict()))
 	
 	hot_bar_slots.item_picked.connect(func(index: int) -> void: _remove_item.rpc_id(1, InventoryType.HOT_BAR, index))
 	hot_bar_slots.item_placed.connect(func(index: int, item_data: ItemData) -> void:
@@ -98,11 +98,9 @@ func _add_item(inventory_type: InventoryType, index: int, item_data: Variant) ->
 			return
 		
 		if item_data != null:
-			print(item_data)
 			inventory_kind[index] = ItemDb.get_item_by_id(item_data.uid)
 		else:
 			inventory_kind[index] = null
-		prints(peer_id, "item added")
 	
 
 

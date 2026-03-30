@@ -40,6 +40,7 @@ func save_game() -> void:
 	PlayerManager.save_active_players()
 	#PlayerManager.save_inactive_players()
 	ChunkLoader.save_world()
+	ChunkLoader.defragment_region_files()
 	ItemDb.save_world_dict()
 	save_root_save_file()
 	await take_screenshot()
@@ -63,7 +64,6 @@ func _remove_dir_recursive(file_path: String) -> void:
 				file_name = dir.get_next()
 				continue
 			var current_path: String = file_path + "/" + file_name
-			print(current_path)
 			if dir.current_is_dir():
 				_remove_dir_recursive(current_path)
 			else:
