@@ -107,7 +107,6 @@ func get_loaded_chunks(delta: float) -> void:
 	loaded_region_ids = active_region_ids
 	chunks_in_area_ids = new_chunks_in_area
 	print("====================================================================")
-	
 
 
 
@@ -236,7 +235,6 @@ func update_chunk_cache(delta: float) -> void:
 				if multiplayer.is_server():
 					ChunkLoader.save_chunk(i, chunk_cache[i].chunk_data)
 			if multiplayer.is_server():
-				#despawn_player_spawned_items(chunk_cache[i].chunk_data.entities)
 				Globals.item_spawner.unload_player_spawned_items(chunk_cache[i].chunk_data.entities.keys())
 			chunk_cache.erase(i)
 			highlight_chunk(i, "UNLOADED")
@@ -292,9 +290,7 @@ func remove_editor_entity_from_chunk(entity: ItemDrop) -> void:
 		loaded_chunks[chunk].is_dirty = true
 	
 	EventBus.world.editor_spawned_item_despawn_requested.emit(entity_data.entity_id, loaded_chunks[chunk].chunk_viewers)
-	#var item: ItemDrop = editor_spawned_items.get_node_or_null("./" + entity.name)
-	#if item:
-		#item.queue_free()
+
 
 
 func get_peers_in_chunk_by_pos(pos: Vector3) -> Array:
