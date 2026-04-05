@@ -13,11 +13,14 @@ class_name Player extends CharacterBody3D
 @export var jog_fov_multiplier: float = 1.05
 
 @onready var camera_3d: Camera3D = %Camera3D
+@onready var debug_camera: Camera3D = %DebugCamera
+@onready var camera_pivot: Node3D = %CameraPivot
 @onready var multiplayer_synchronizer: MultiplayerSynchronizer = %MultiplayerSynchronizer
 
 @onready var current_speed: float = walk_speed
 @onready var current_state: State = State.IDLE
 
+var is_in_3rd_person: bool = false
 
 enum State
 {
@@ -49,18 +52,24 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x * 0.001
 		camera_3d.rotation.x -= event.relative.y * 0.001
+		if is_in_3rd_person:
+			camera_pivot.rotation.x -= event.relative.y * 0.001
+			#camera_pivot.rotation.y += event.relative.x * 0.001
 	if event is InputEventKey:
 		if event.keycode == KEY_F5 && event.is_pressed():
-			$DebugCamera.current = !$DebugCamera.current
+			debug_camera.current = !debug_camera.current
+			is_in_3rd_person = debug_camera.current
+		if event.keycode == KEY_PAGEUP && event.is_pressed():
+			global_position.y += 50.0
 	
 
 func _input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton && event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			$DebugCamera.global_position += (global_position - $DebugCamera.global_position).normalized() * 1.0
+			debug_camera.global_position += (global_position - debug_camera.global_position).normalized() * 1.0
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			$DebugCamera.global_position -= (global_position - $DebugCamera.global_position).normalized() * 1.0
+			debug_camera.global_position -= (global_position - debug_camera.global_position).normalized() * 1.0
 			## HAHAHAHAHA CANNOT SAVE WHILE IN INVENTORY BECAUSE PROCESS_INPUT IS FALSE LUL LUL LUL
 
 

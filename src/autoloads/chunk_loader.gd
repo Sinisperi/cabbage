@@ -62,9 +62,10 @@ func load_chunk(chunk_coords: Vector2i) -> Dictionary:
 
 
 func defragment_region_files() -> void:
-	var files: Array = DirAccess.get_files_at(SaveDataManager.current_save_path + SAVE_DIR)
-	for i: String in files:
-		_defragment_region_file(i)
+	if DirAccess.dir_exists_absolute(SaveDataManager.current_save_path + SAVE_DIR):
+		var files: Array = DirAccess.get_files_at(SaveDataManager.current_save_path + SAVE_DIR)
+		for i: String in files:
+			_defragment_region_file(i)
 
 
 func _defragment_region_file(file_name: String) -> void:

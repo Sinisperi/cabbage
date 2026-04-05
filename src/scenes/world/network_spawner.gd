@@ -100,7 +100,7 @@ func _create_player(peer_id: int, save_data: Dictionary) -> Player:
 	player.name = str(peer_id)
 	if save_data.is_empty():
 		var spawn_point: Vector2 = Vector2(0.0, 0.0)
-		player.position = Vector3(spawn_point.x, player.position.y, spawn_point.y)
+		player.position = Vector3(spawn_point.x, player.position.y + 100.0, spawn_point.y)
 	else:
 		player.position = Vector3(save_data.position.x, save_data.position.y, save_data.position.z)
 	player.set_multiplayer_authority(peer_id)
